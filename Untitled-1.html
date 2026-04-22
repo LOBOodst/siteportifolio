@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="pt-pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hosch Alef | Game Programmer & Systems Designer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;700;900&display=swap');
+        :root { --bg: #050505; --accent: #3b82f6; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg); color: #a1a1aa; overflow-x: hidden; scroll-behavior: smooth; }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        .hero-title { font-weight: 900; letter-spacing: -0.06em; line-height: 0.85; }
+        .project-card { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); border: 1px solid #141417; background: #08080a; cursor: pointer; display: flex; flex-direction: column; overflow: hidden; }
+        .project-card:hover { border-color: var(--accent); transform: translateY(-4px); box-shadow: 0 20px 40px -20px rgba(59, 130, 246, 0.15); }
+        .card-img { width: 100%; height: 180px; object-fit: cover; grayscale: 100%; transition: grayscale 0.4s; border-bottom: 1px solid #141417; }
+        .project-card:hover .card-img { grayscale: 0%; }
+        .featured-border { border: 1px solid #1d4ed8; background: linear-gradient(145deg, #0a0a0c 0%, #050505 100%); }
+        .page-transition { animation: fadeIn 0.4s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="selection:bg-blue-600 selection:text-white">
+
+    <div id="app" class="max-w-6xl mx-auto px-6 py-10">
+        </div>
+
+    <script>
+        const config = {
+            profile: {
+                name: "Hosch Alef",
+                role: "Game Programmer & Systems Designer",
+                photo: "images/sua_foto.jpg", // Atualiza com o nome do teu ficheiro de foto
+                bio: "Estudante de Bacharelado em Desenvolvimento de Jogos. Vejo a programação como uma forma de arte — uma ferramenta para dar vida a ideias.",
+                linkedin: "https://www.linkedin.com/in/alefhosch/",
+                github: "https://github.com/LOB-workshop",
+                email: "mailto:seuemail@exemplo.com"
+            },
+            skills: [
+                { n: "Python", l: "Advanced", c: "text-red-500" },
+                { n: "HTML/CSS", l: "Advanced", c: "text-red-500" },
+                { n: "C#", l: "Intermediate", c: "text-purple-500" },
+                { n: "Unity", l: "Intermediate", c: "text-purple-500" },
+                { n: "Unreal", l: "Intermediate", c: "text-purple-500" },
+                { n: "SQL", l: "Beginner", c: "text-blue-500" },
+                { n: "JS", l: "Beginner", c: "text-blue-500" }
+            ],
+            projects: [
+                {
+                    id: "shadow-of-orum",
+                    title: "Shadow of Orum",
+                    role: "Solo Developer",
+                    type: "Action-RPG / Metroidvania",
+                    img: "images/orum_hero.jpg", 
+                    shortDesc: "RPG de ação sombrio baseado na mitologia Afro-Brasileira.",
+                    fullDesc: `Shadow of Orum é um Action-RPG que mergulha num universo de mitologia Afro-Brasileira e fantasia espiritual. <br><br><strong>Destaques Técnicos:</strong><br>• Sistema de combate inspirado em Hollow Knight e Blasphemous.<br>• Co-op local: Dois protagonistas (Yalena e Kairum) com habilidades complementares.<br>• Mecânica de sacrifício de HP para ressuscitação entre jogadores.<br>• 16 buffs de 'Axé' (Gifts) obtidos através de guias espirituais.<br>• 8 bosses principais baseados em Orixás corrompidos.`,
+                    tech: ["Unreal Engine", "C++", "Systems Architecture", "Game Design"],
+                    links: { github: "#", demo: "#" },
+                    featured: true
+                },
+                {
+                    id: "shogi-system",
+                    title: "Tsukimaru - Shogi",
+                    role: "Systems Programmer",
+                    type: "Logic / Strategy",
+                    img: "images/tsukimaru_shogi_01.png",
+                    shortDesc: "Implementação completa de Shogi (Xadrez Japonês) em 3D.",
+                    fullDesc: `Desenvolvimento de lógica de tabuleiro determinística e gestão de estados complexos.<br><br><strong>Funcionalidades:</strong><br>• Validação rigorosa de movimentos para todas as peças.<br>• Sistema de captura e 'Drop' (reintrodução de peças no tabuleiro).<br>• Lógica de promoção de peças ao atingir a zona inimiga.`,
+                    tech: ["Unreal Engine", "Math", "State Machines"],
+                    links: { github: "#", demo: "#" }
+                },
+                {
+                    id: "dialogue-system",
+                    title: "Tsukimaru - Dialogue",
+                    role: "Gameplay Programmer",
+                    type: "Systems / Unreal",
+                    img: "images/tsukimaru_dialogue_01.png",
+                    shortDesc: "Sistema de diálogo dinâmico orientado a dados.",
+                    fullDesc: `Ferramenta modular para criação de conversas não-lineares.<br><br><strong>Características:</strong><br>• Carregamento de ficheiros de diálogo baseados em condições de jogo.<br>• Sistema de flags que permite que as conversas evoluam dinamicamente.<br>• Interface customizável e suporte para eventos de gameplay disparados pelo diálogo.`,
+                    tech: ["Unreal Engine", "Blueprints", "Data Management"],
+                    links: { github: "https://github.com/LOB-workshop", demo: "#" }
+                },
+                {
+                    id: "datacrash",
+                    title: "DataCrash",
+                    role: "Lead Programmer",
+                    type: "Game Jam / Unity",
+                    img: "images/datacrash_page.png",
+                    shortDesc: "Survival game frenético criado em 72 horas para uma Game Jam.",
+                    fullDesc: `Um desafio de desenvolvimento rápido focado em loop de gameplay e polimento de combate.<br><br><strong>Sinopse:</strong> Controlas um funcionário de escritório que deve combater um vírus informático que tenta sabotar o teu trabalho.`,
+                    tech: ["Unity", "C#", "Rapid Prototyping"],
+                    links: { github: "https://github.com/LOB-workshop", demo: "https://loboodst.itch.io/datacrash" }
+                },
+                {
+                    id: "pirate-aim",
+                    title: "Pirate Aim",
+                    role: "Programmer",
+                    type: "Team Project / Unity",
+                    img: "images/pirate_aim_01.jpg",
+                    shortDesc: "Coleção de microgames inspirada em WarioWare.",
+                    fullDesc: `Projeto colaborativo focado na coordenação de sistemas e integração de múltiplos estilos de gameplay.<br><br><strong>Contribuição:</strong> Lógica central de timers, transições e sistema de eventos para deteção de vitória em microgames.`,
+                    tech: ["Unity", "C#", "Teamwork"],
+                    links: { github: "#", demo: "https://drive.google.com/file/d/1yGat7C6ub7AYErfETQ637Ha_l83bpV5c/view" }
+                }
+            ]
+        };
+
+        const render = () => {
+            const hash = window.location.hash.replace('#', '');
+            const app = document.getElementById('app');
+            
+            if (!hash || hash === 'home') app.innerHTML = renderHome();
+            else {
+                const project = config.projects.find(p => p.id === hash);
+                app.innerHTML = project ? renderProjectDetail(project) : renderHome();
+            }
+            lucide.createIcons();
+            window.scrollTo(0, 0);
+        };
+
+        const renderHome = () => `
+            <div class="page-transition">
+                <nav class="flex justify-between items-center mb-24">
+                    <div class="mono text-[10px] font-bold tracking-[0.4em] text-zinc-700">Hosch.Systems_v5.0</div>
+                    <div class="flex gap-6 items-center">
+                        <a href="${config.profile.github}" target="_blank" class="hover:text-white transition"><i data-lucide="github" size="18"></i></a>
+                        <a href="${config.profile.linkedin}" target="_blank" class="hover:text-white transition"><i data-lucide="linkedin" size="18"></i></a>
+                        <a href="${config.profile.email}" class="bg-zinc-900 border border-zinc-800 text-white px-4 py-2 text-[10px] font-bold uppercase tracking-widest hover:bg-white hover:text-black transition">Contact</a>
+                    </div>
+                </nav>
+
+                <header class="mb-32 grid grid-cols-1 md:grid-cols-12 gap-10 items-center">
+                    <div class="md:col-span-3">
+                        <img src="${config.profile.photo}" alt="${config.profile.name}" class="w-40 h-40 object-cover border-2 border-zinc-900 grayscale hover:grayscale-0 transition-all duration-500">
+                    </div>
+                    <div class="md:col-span-9">
+                        <h1 class="hero-title text-7xl md:text-[9rem] text-white uppercase leading-none mb-6">HOSCH<br><span class="text-blue-600">ALEF</span></h1>
+                        <p class="text-xl md:text-2xl text-zinc-500 italic max-w-2xl border-l-2 border-zinc-900 pl-6 leading-tight">"${config.profile.bio}"</p>
+                    </div>
+                </header>
+
+                <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3 mb-32">
+                    ${config.skills.map(s => `<div class="bg-zinc-900/20 border border-zinc-900 p-4 text-center group hover:border-blue-500 transition">
+                        <p class="text-white font-bold text-xs uppercase mb-1">${s.n}</p>
+                        <p class="mono text-[8px] uppercase ${s.c} font-bold tracking-widest">${s.l}</p>
+                    </div>`).join('')}
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-24">
+                    ${config.projects.map(p => `
+                        <div onclick="window.location.hash='${p.id}'" class="project-card ${p.featured ? 'md:col-span-2 featured-border' : ''}">
+                            <img src="${p.img}" alt="${p.title}" class="card-img">
+                            <div class="p-8">
+                                <div class="flex justify-between mb-8 items-center">
+                                    <span class="mono text-[9px] text-zinc-600 uppercase font-bold tracking-[0.2em]">${p.type}</span>
+                                    <i data-lucide="arrow-up-right" class="text-zinc-800" size="18"></i>
+                                </div>
+                                <h3 class="${p.featured ? 'text-4xl md:text-6xl' : 'text-2xl'} font-black text-white mb-4 uppercase tracking-tighter">${p.title}</h3>
+                                <p class="text-zinc-500 text-sm mb-8 max-w-xl leading-relaxed">${p.shortDesc}</p>
+                                <div class="flex flex-wrap gap-2">
+                                    ${p.tech.map(t => `<span class="mono text-[8px] border border-zinc-800 px-2 py-0.5 text-zinc-500 uppercase font-bold tracking-tighter">${t}</span>`).join('')}
+                                </div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+
+        const renderProjectDetail = (p) => `
+            <div class="page-transition">
+                <button onclick="window.location.hash='home'" class="flex items-center gap-2 text-zinc-600 hover:text-white mb-16 transition mono text-[10px] uppercase font-black tracking-widest">
+                    <i data-lucide="chevron-left" size="16"></i> Back to Archive
+                </button>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-16">
+                    <div class="lg:col-span-8">
+                        <img src="${p.img}" alt="${p.title}" class="w-full h-80 object-cover mb-12 border border-zinc-900 grayscale-[50%]">
+                        <span class="mono text-[10px] text-blue-500 uppercase font-black tracking-[0.4em]">${p.type}</span>
+                        <h1 class="text-6xl md:text-8xl font-black text-white uppercase tracking-tighter mt-6 mb-12 leading-none">${p.title}</h1>
+                        <div class="text-zinc-400 text-xl leading-relaxed space-y-6">${p.fullDesc}</div>
+                    </div>
+
+                    <div class="lg:col-span-4">
+                        <div class="bg-zinc-900/30 border border-zinc-900 p-10 sticky top-10">
+                            <h3 class="mono text-white text-[10px] uppercase font-black tracking-[0.5em] mb-10 border-b border-zinc-800 pb-4 text-center">Tech Sheet</h3>
+                            <div class="space-y-8">
+                                <div><p class="text-[9px] text-zinc-700 uppercase font-bold mb-2">Primary Role</p><p class="text-white font-black uppercase text-sm">${p.role}</p></div>
+                                <div><p class="text-[9px] text-zinc-700 uppercase mb-3 font-bold">Stack</p><div class="flex flex-wrap gap-2">
+                                    ${p.tech.map(t => `<span class="mono text-[9px] bg-zinc-800 text-zinc-400 px-2 py-1 uppercase font-black tracking-tighter">${t}</span>`).join('')}
+                                </div></div>
+                                <div class="pt-10 flex gap-6 border-t border-zinc-900">
+                                    ${p.links.github !== '#' ? `<a href="${p.links.github}" target="_blank" class="text-white hover:text-blue-500 transition"><i data-lucide="github" size="22"></i></a>` : ''}
+                                    ${p.links.demo !== '#' ? `<a href="${p.links.demo}" target="_blank" class="text-white hover:text-blue-500 transition flex items-center gap-2 text-[10px] font-black uppercase tracking-widest">Live Demo <i data-lucide="external-link" size="16"></i></a>` : ''}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        window.addEventListener('hashchange', render);
+        window.addEventListener('load', render);
+    </script>
+</body>
+</html>
