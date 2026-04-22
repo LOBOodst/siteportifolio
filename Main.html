@@ -1,217 +1,489 @@
-<!DOCTYPE html>
-<html lang="pt-pt">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!doctype html>
+<html lang="pt-PT">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title>Hosch Alef | Game Programmer & Systems Designer</title>
+    <meta
+      name="description"
+      content="Portfólio de Hosch Alef, Game Programmer e Systems Designer especializado em C#, C++, Unity e Unreal Engine."
+    />
+    <meta
+      name="keywords"
+      content="Game Programmer, Systems Designer, Unreal Engine, Unity, C++, C#, Portfólio, Game Development"
+    />
+    <meta name="author" content="Hosch Alef" />
+
+    <meta property="og:title" content="Hosch Alef | Game Programmer" />
+    <meta
+      property="og:description"
+      content="Especialista em Sistemas de Gameplay, Lógica Determinística e Arquitetura de Jogos."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="images/photo_portifolio.png" />
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
+
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;700;900&display=swap');
-        
-        :root { --bg: #050505; --accent: #3b82f6; }
-        body { 
-            font-family: 'Inter', sans-serif; 
-            background-color: var(--bg); 
-            color: #a1a1aa; 
-            background-image: radial-gradient(circle at 50% -20%, #1e1e24 0%, transparent 50%);
+      @import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;500;700;900&display=swap");
+
+      :root {
+        --bg: #050505;
+        --accent: #3b82f6;
+        --glass-bg: rgba(13, 13, 15, 0.6);
+        --glass-border: rgba(255, 255, 255, 0.05);
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: var(--bg);
+        color: #a1a1aa;
+        background-image: radial-gradient(
+          circle at 50% -20%,
+          #1e1e24 0%,
+          transparent 60%
+        );
+        background-attachment: fixed;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .mono {
+        font-family: "JetBrains Mono", monospace;
+      }
+      .hero-title {
+        font-weight: 900;
+        letter-spacing: -0.06em;
+        line-height: 0.85;
+      }
+
+      /* Glassmorphism Refinado */
+      .glass {
+        background: var(--glass-bg);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid var(--glass-border);
+      }
+
+      /* Cards Interativos */
+      .project-card {
+        transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+        cursor: pointer;
+        border: 1px solid #141417;
+        background: #08080a;
+      }
+      .project-card:hover {
+        border-color: var(--accent);
+        transform: translateY(-8px);
+        box-shadow: 0 20px 40px -20px rgba(59, 130, 246, 0.25);
+      }
+
+      /* Imagens e Filtros Otimizados */
+      .card-img,
+      .gallery-img {
+        filter: grayscale(100%) contrast(1.1);
+        transition: 0.6s ease;
+        width: 100%;
+        object-fit: cover;
+      }
+      .project-card:hover .card-img,
+      .gallery-img:hover {
+        filter: grayscale(0%) contrast(1);
+      }
+
+      .profile-photo {
+        filter: grayscale(100%);
+        transition:
+          filter 0.5s ease,
+          border-color 0.5s ease;
+        border: 2px solid #141417;
+      }
+      .profile-photo:hover {
+        filter: grayscale(0%);
+        border-color: var(--accent);
+      }
+
+      /* Animações de Scroll (Scroll Reveal) */
+      .reveal {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: 0.8s all cubic-bezier(0.2, 0.8, 0.2, 1);
+      }
+      .reveal.active {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .page-transition {
+        animation: fadeIn 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(15px);
         }
-
-        .mono { font-family: 'JetBrains Mono', monospace; }
-        .hero-title { font-weight: 900; letter-spacing: -0.06em; line-height: 0.8; }
-        
-        .glass { background: rgba(13, 13, 15, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.05); }
-        
-        /* Correção de Filtro para VS Code */
-        .project-card { transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); cursor: pointer; border: 1px solid #141417; background: #08080a; }
-        .project-card:hover { border-color: var(--accent); transform: translateY(-8px); }
-        
-        .card-img, .gallery-img { 
-            filter: grayscale(100%); 
-            transition: 0.6s ease; 
-            width: 100%; 
-            object-fit: cover; 
+        to {
+          opacity: 1;
+          transform: translateY(0);
         }
-        .project-card:hover .card-img, .gallery-img:hover { filter: grayscale(0%); }
+      }
 
-        .profile-photo { filter: grayscale(100%); transition: 0.5s ease; border: 2px solid #141417; }
-        .profile-photo:hover { filter: grayscale(0%); border-color: var(--accent); }
-
-        .page-transition { animation: fadeIn 0.4s ease-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+      /* Scrollbar Customizada */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: var(--bg);
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #27272a;
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: var(--accent);
+      }
     </style>
-</head>
-<body>
-
-    <div id="app" class="max-w-6xl mx-auto px-6 py-10"></div>
+  </head>
+  <body class="selection:bg-blue-600 selection:text-white overflow-x-hidden">
+    <main
+      id="app"
+      class="max-w-6xl mx-auto px-6 py-10 min-h-screen flex flex-col"
+    ></main>
 
     <script>
-        const config = {
-            profile: {
-                name: "Hosch Alef",
-                role: "Game Programmer & Systems Designer",
-                photo: "images/photo_portifolio.png",
-                bio: "Estudante de Bacharelado em Desenvolvimento de Jogos. Vejo a programação como uma arte capaz de materializar mundos e sistemas complexos.",
-                linkedin: "https://www.linkedin.com/in/alefhosch/",
-                github: "https://github.com/LOB-workshop",
-                email: "mailto:alefhosch@exemplo.com"
-            },
-            skills: [
-                { n: "Python", l: "Advanced", c: "text-red-500" },
-                { n: "C#", l: "Intermediate", c: "text-purple-500" },
-                { n: "Unity", l: "Intermediate", c: "text-purple-500" },
-                { n: "Unreal", l: "Intermediate", c: "text-purple-500" },
-                { n: "HTML/CSS", l: "Advanced", c: "text-red-500" }
+      // --- BASE DE DADOS MODULAR ---
+      const config = {
+        profile: {
+          name: "Hosch Alef",
+          role: "Game Programmer & Systems Designer",
+          photo: "images/photo_portifolio.png", // Certifica-te que o nome do ficheiro corresponde
+          bio: "Estudante de Bacharelado em Desenvolvimento de Jogos. Encaro a programação como uma arte capaz de materializar mundos e arquitetar sistemas complexos.",
+          linkedin: "https://www.linkedin.com/in/alefhosch/",
+          github: "https://github.com/LOB-workshop",
+          email: "mailto:alefhosch@exemplo.com",
+        },
+        skills: [
+          {
+            n: "C++",
+            l: "Advanced",
+            c: "text-blue-500 bg-blue-500/10 border-blue-500/20",
+          },
+          {
+            n: "C#",
+            l: "Advanced",
+            c: "text-purple-500 bg-purple-500/10 border-purple-500/20",
+          },
+          {
+            n: "Unreal",
+            l: "Intermediate",
+            c: "text-gray-300 bg-gray-500/10 border-gray-500/20",
+          },
+          {
+            n: "Unity",
+            l: "Intermediate",
+            c: "text-gray-300 bg-gray-500/10 border-gray-500/20",
+          },
+          {
+            n: "Python",
+            l: "Intermediate",
+            c: "text-yellow-500 bg-yellow-500/10 border-yellow-500/20",
+          },
+          {
+            n: "SQL",
+            l: "Beginner",
+            c: "text-cyan-500 bg-cyan-500/10 border-cyan-500/20",
+          },
+        ],
+        projects: [
+          {
+            id: "shadow-of-orum",
+            title: "Shadow of Orum",
+            role: "Solo Developer",
+            type: "Featured / Action-RPG",
+            images: ["images/ProjectShadowOfOrum.png"],
+            shortDesc:
+              "RPG de ação sombrio baseado na mitologia Afro-Brasileira.",
+            fullDesc: `Desenvolvimento de uma experiência de combate 'souls-like' intensa e narrativa espiritual. Foco em arquitetura de sistemas escaláveis e Game Feel.<br><br><strong>Destaques de Engenharia:</strong><br><ul class="list-disc pl-5 space-y-2 mt-4 text-zinc-300"><li><strong>Co-op Assíncrono/Local:</strong> Sistema mecânico de sacrifício de HP para ressurreição.</li><li><strong>Event Bus System:</strong> Implementação de 16 buffs modulares (Axé) totalmente desacoplados da lógica do jogador.</li><li><strong>State Machine (IA):</strong> Comportamentos complexos para Bosses inspirados em grandes títulos do género.</li></ul>`,
+            tech: ["Unreal Engine", "C++", "Systems Architecture"],
+            links: { github: "#", demo: "#" },
+            featured: true,
+          },
+          {
+            id: "shogi-system",
+            title: "Tsukimaru Shogi",
+            role: "Systems Programmer",
+            type: "Logic / Strategy",
+            images: [
+              "images/tsukimaru_shogi_01.jpg",
+              "images/tsukimaru_shogi_02.jpg",
             ],
-            projects: [
-                {
-                    id: "shadow-of-orum",
-                    title: "Shadow of Orum",
-                    role: "Solo Developer",
-                    type: "Featured / Action-RPG",
-                    images: ["images/tsukimaru_dialogue_02.jpg"], 
-                    shortDesc: "RPG de ação sombrio baseado na mitologia Afro-Brasileira.",
-                    fullDesc: `Sistemas de combate souls-like com mecânicas de sacrifício de HP em co-op local.`,
-                    tech: ["Unreal Engine", "C++", "Systems"],
-                    links: { github: "#", demo: "#" },
-                    featured: true
-                },
-                {
-                    id: "shogi-system",
-                    title: "Tsukimaru - Shogi",
-                    role: "Systems Programmer",
-                    type: "Logic / Strategy",
-                    images: ["images/tsukimaru_shogi_01.jpg", "images/tsukimaru_shogi_02.jpg"],
-                    shortDesc: "Implementação 3D completa de Shogi.",
-                    fullDesc: `Foco em lógica determinística e validação de movimentos complexos e sistema de drop.`,
-                    tech: ["Unreal Engine", "Math", "States"],
-                    links: { github: "#", demo: "#" }
-                },
-                {
-                    id: "dialogue-system",
-                    title: "Tsukimaru - Dialogue",
-                    role: "Gameplay Programmer",
-                    type: "Narrative Systems",
-                    images: ["images/tsukimaru_dialogue_01.jpg", "images/tsukimaru_dialogue_02.jpg"],
-                    shortDesc: "Sistema de diálogo dinâmico orientado a dados.",
-                    fullDesc: `Ferramenta modular para criação de conversas não-lineares.`,
-                    tech: ["Blueprints", "Data Driven"],
-                    links: { github: "#", demo: "#" }
-                },
-                {
-                    id: "datacrash",
-                    title: "DataCrash",
-                    role: "Lead Programmer",
-                    type: "Game Jam Project",
-                    images: ["images/datacrash_page.png"],
-                    shortDesc: "Survival game frenético criado em 72 horas.",
-                    fullDesc: `Demonstração de agilidade técnica e polimento sob pressão.`,
-                    tech: ["Unity", "C#", "Fast Prototype"],
-                    links: { github: "#", demo: "https://loboodst.itch.io/datacrash" }
-                },
-                {
-                    id: "pirate-aim",
-                    title: "Pirate Aim",
-                    role: "Programmer",
-                    type: "Team Project",
-                    images: ["images/pirate_aim_01.jpg", "images/pirate_aim_02.jpg", "images/pirate_aim_03.jpg", "images/pirate_aim_04.jpg"],
-                    shortDesc: "Coleção de microgames colaborativa.",
-                    fullDesc: `Coordenação de sistemas e integração de assets em equipa.`,
-                    tech: ["C#", "Unity", "Teamwork"],
-                    links: { github: "#", demo: "https://drive.google.com/file/d/1yGat7C6ub7AYErfETQ637Ha_l83bpV5c/view" }
-                }
-            ]
-        };
+            shortDesc: "Implementação 3D rigorosa do clássico Xadrez Japonês.",
+            fullDesc: `Projeto desenhado para demonstrar domínio absoluto sobre lógica determinística, validação de estados e manipulação de matrizes tridimensionais.<br><br><strong>Funcionalidades Implementadas:</strong><br><ul class="list-disc pl-5 space-y-2 mt-4 text-zinc-300"><li>Motor de validação de regras com suporte a 'Drops' de peças capturadas.</li><li>Sistema de promoção de unidades dependente de zonas no tabuleiro.</li><li>Lógica de deteção de Xeque e Xeque-Mate.</li></ul>`,
+            tech: ["Unreal Engine", "Math", "State Machines"],
+            links: { github: "#", demo: "#" },
+          },
+          {
+            id: "dialogue-system",
+            title: "Dialogue System",
+            role: "Gameplay Programmer",
+            type: "Narrative Systems",
+            images: [
+              "images/tsukimaru_dialogue_01.jpg",
+              "images/tsukimaru_dialogue_02.jpg",
+            ],
+            shortDesc: "Ferramenta modular Data-Driven para narrativas.",
+            fullDesc: `Desenvolvimento de um sistema genérico e reutilizável para gestão de narrativas complexas e não-lineares.<br><br><strong>Características Técnicas:</strong><br><ul class="list-disc pl-5 space-y-2 mt-4 text-zinc-300"><li><strong>Data-Driven:</strong> Carregamento de dados a partir de tabelas JSON/CSV externas.</li><li><strong>Condicionais de Jogo:</strong> O diálogo ramifica-se com base em flags e variáveis de estado do mundo.</li></ul>`,
+            tech: ["Blueprints", "Data Driven", "UI/UX"],
+            links: { github: "#", demo: "#" },
+          },
+          {
+            id: "datacrash",
+            title: "DataCrash",
+            role: "Lead Programmer",
+            type: "Game Jam Project",
+            images: ["images/datacrash_page.png"],
+            shortDesc:
+              "Survival game frenético criado num desafio de 72 horas.",
+            fullDesc: `Prova de capacidade de entrega rápida (MVP) e foco em polimento essencial sob forte restrição temporal. O foco central foi garantir que o 'Game Feel' estivesse impecável logo nas primeiras iterações.`,
+            tech: ["Unity", "C#", "Fast Prototype"],
+            links: {
+              github: "https://github.com/LOB-workshop",
+              demo: "https://loboodst.itch.io/datacrash",
+            },
+          },
+          {
+            id: "pirate-aim",
+            title: "Pirate Aim",
+            role: "Programmer",
+            type: "Team Project",
+            images: [
+              "images/pirate_aim_01.jpg",
+              "images/pirate_aim_02.jpg",
+              "images/pirate_aim_03.jpg",
+              "images/pirate_aim_04.jpg",
+            ],
+            shortDesc: "Coleção colaborativa de microgames estilo WarioWare.",
+            fullDesc: `Projeto focado no trabalho em equipa, exigindo alta coordenação técnica para fundir o trabalho de vários programadores e artistas num único fluxo de jogo contínuo.<br><br>Responsável pela transição de cenários, sincronização de tempos e gestão global da pontuação.`,
+            tech: ["C#", "Unity", "Teamwork", "Git"],
+            links: {
+              github: "#",
+              demo: "https://drive.google.com/file/d/1yGat7C6ub7AYErfETQ637Ha_l83bpV5c/view",
+            },
+          },
+          {
+            id: "elevator-talks",
+            title: "Elevator Talks",
+            role: "Gameplay Programmer",
+            type: "Game Jam / Narrative",
+            images: [
+              "images/elevator_talks_01.png",
+              "images/elevator_talks_02.png",
+            ],
+            shortDesc:
+              "Simulador de conversas desconfortáveis num elevador infinito.",
+            fullDesc: `Desenvolvido para uma Game Jam, este projeto explora a tensão social através de mecânicas de diálogo rápidas e aleatoriedade de eventos.<br><br><strong>Destaques de Engenharia:</strong><br><ul class="list-disc pl-5 space-y-2 mt-4 text-zinc-300"><li><strong>FSM (Finite State Machine):</strong> Gestão de estados do elevador (movimento, abertura de portas, eventos de luz).</li><li><strong>Weighted Random System:</strong> Sistema de pesos para garantir que os encontros com NPCs não se repitam de forma previsível.</li><li><strong>Spatial Audio Integration:</strong> Implementação de áudio 3D para aumentar a imersão e a sensação de claustrofobia no ambiente.</li></ul>`,
+            tech: ["Unity", "C#", "Logic Systems", "Game Jam"],
+            links: {
+              github: "#",
+              demo: "https://loboodst.itch.io/elevator-talks",
+            },
+          },
+          {
+            id: "garage-war",
+            title: "Garage War",
+            role: "Gameplay Programmer",
+            type: "Local Co-op / Party Game",
+            images: [
+              "images/garage_war_01.png",  
+              "images/garage_war_02.png",
+              "images/garage_war_03.png",
+            ], 
+            shortDesc:
+              "Party game frenético para 2 a 4 jogadores, inspirado em Overcooked e mecânicas de tuning.",
+            fullDesc: `Desenvolvido com foco em mecânicas cooperativas de sofá (Couch Co-op) e física de caos, onde duas equipas competem para montar e tunar carros.<br><br><strong>Destaques de Engenharia:</strong><br><ul class="list-disc pl-5 space-y-2 mt-4 text-zinc-300"><li><strong>Multi-Input Handling:</strong> Implementação de um sistema robusto para gerir até 4 comandos em simultâneo (gamepads/teclado), garantindo a atribuição correta aos jogadores.</li><li><strong>Dynamic Task Validator:</strong> Arquitetura de um sistema processual de 'pedidos de clientes' que valida a combinação correta de peças modulares nos carros em tempo real.</li><li><strong>Interaction & Sabotage Mechanics:</strong> Programação de física e colisões focadas no "caos divertido", permitindo sabotar a equipa adversária sem quebrar o Game State.</li></ul>`,
+            tech: ["Unity", "C#", "Local Multiplayer", "Task Systems"],
+            links: { github: "#", demo: "https://loboodst.itch.io/garagewar" },
+          },
+        ],
+      };
 
-        const render = () => {
-            const hash = window.location.hash.replace('#', '');
-            const app = document.getElementById('app');
-            if (!hash || hash === 'home') app.innerHTML = renderHome();
-            else {
-                const project = config.projects.find(p => p.id === hash);
-                app.innerHTML = project ? renderProjectDetail(project) : renderHome();
-            }
-            lucide.createIcons();
-        };
+      // --- SISTEMA DE ROUTING SPA ---
+      const render = () => {
+        const hash = window.location.hash.replace("#", "");
+        const app = document.getElementById("app");
 
-        const renderHome = () => `
-            <div class="page-transition">
-                <nav class="flex justify-between items-center mb-24 glass p-4 px-8 rounded-full">
-                    <div class="mono text-xs font-bold tracking-[0.4em] text-zinc-600 uppercase">Hosch.Sys_v5.7</div>
-                    <div class="flex gap-6 items-center">
-                        <a href="${config.profile.github}" target="_blank"><i data-lucide="github" size="18"></i></a>
-                        <a href="${config.profile.linkedin}" target="_blank"><i data-lucide="linkedin" size="18"></i></a>
-                    </div>
-                </nav>
+        if (!hash || hash === "home") app.innerHTML = renderHome();
+        else {
+          const project = config.projects.find((p) => p.id === hash);
+          app.innerHTML = project ? renderProjectDetail(project) : renderHome();
+        }
+        lucide.createIcons();
+        initScrollReveal();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      };
 
-                <header class="mb-32 grid grid-cols-1 md:grid-cols-12 gap-10 items-center">
-                    <div class="md:col-span-3 text-center">
-                        <img src="${config.profile.photo}" class="profile-photo w-48 h-48 object-cover rounded-xl mx-auto">
-                    </div>
-                    <div class="md:col-span-9 text-left">
-                        <h1 class="hero-title text-7xl md:text-[10rem] text-white uppercase leading-none mb-6">HOSCH<br><span class="text-blue-600">ALEF</span></h1>
-                        <p class="text-xl text-zinc-500 italic border-l-2 border-blue-600/30 pl-6">"${config.profile.bio}"</p>
+      // --- INICIALIZADOR DO SCROLL REVEAL ---
+      const initScrollReveal = () => {
+        const reveals = document.querySelectorAll(".reveal");
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("active");
+                // Opcional: Descomentar a linha abaixo se quiseres que anime apenas uma vez
+                // observer.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.1, rootMargin: "0px 0px -50px 0px" },
+        );
+
+        reveals.forEach((el) => observer.observe(el));
+
+        // Força a revelação imediata de elementos que já estão no topo da página
+        setTimeout(() => {
+          reveals.forEach((el) => {
+            const rect = el.getBoundingClientRect();
+            if (rect.top < window.innerHeight) el.classList.add("active");
+          });
+        }, 100);
+      };
+
+      // --- VIEWS ---
+      const renderHome = () => `
+            <div class="page-transition flex-grow flex flex-col">
+                <header class="mb-24">
+                    <nav class="flex justify-between items-center glass p-4 px-6 md:px-8 rounded-full mb-20 reveal">
+                        <div class="mono text-xs font-bold tracking-[0.4em] text-zinc-500 uppercase">Hosch.Sys_v6.0</div>
+                        <div class="flex gap-4 md:gap-6 items-center">
+                            <a href="${config.profile.github}" target="_blank" rel="noopener noreferrer" class="text-zinc-400 hover:text-white transition" aria-label="GitHub"><i data-lucide="github" size="20"></i></a>
+                            <a href="${config.profile.linkedin}" target="_blank" rel="noopener noreferrer" class="text-zinc-400 hover:text-blue-500 transition" aria-label="LinkedIn"><i data-lucide="linkedin" size="20"></i></a>
+                            <a href="${config.profile.email}" class="bg-white text-black px-5 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-blue-600 hover:text-white transition shadow-lg">Contact</a>
+                        </div>
+                    </nav>
+
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-10 items-center reveal">
+                        <div class="md:col-span-3 text-center md:text-left flex justify-center md:justify-start">
+                            <img src="${config.profile.photo}" alt="Foto de Perfil de ${config.profile.name}" class="profile-photo w-40 h-40 md:w-56 md:h-56 object-cover rounded-2xl shadow-2xl">
+                        </div>
+                        <div class="md:col-span-9 text-center md:text-left">
+                            <h1 class="hero-title text-6xl md:text-[9rem] text-white uppercase leading-none mb-6">HOSCH<br><span class="text-blue-600">ALEF</span></h1>
+                            <p class="text-lg md:text-2xl text-zinc-400 italic max-w-3xl border-l-2 border-blue-600/30 pl-6 leading-relaxed mx-auto md:mx-0">"${config.profile.bio}"</p>
+                        </div>
                     </div>
                 </header>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-24">
-                    ${config.projects.map(p => `
-                        <div onclick="window.location.hash='${p.id}'" class="project-card rounded-2xl overflow-hidden ${p.featured ? 'md:col-span-2' : ''}">
-                            <img src="${p.images[0]}" class="card-img h-64">
-                            <div class="p-8">
-                                <h3 class="text-3xl font-black text-white mb-4 uppercase">${p.title}</h3>
-                                <p class="text-zinc-500 text-sm mb-6">${p.shortDesc}</p>
-                                <div class="flex flex-wrap gap-2">
-                                    ${p.tech.map(t => `<span class="mono text-[8px] bg-zinc-900 px-3 py-1 text-zinc-400 rounded-full font-bold uppercase">${t}</span>`).join('')}
+                <section class="mb-32 reveal" aria-label="Tecnologias">
+                    <h2 class="mono text-xs font-bold text-zinc-600 uppercase tracking-widest mb-6 border-b border-zinc-900 pb-2">Tech Stack</h2>
+                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                        ${config.skills
+                          .map(
+                            (
+                              s,
+                            ) => `<div class="glass border ${s.c} p-4 text-center rounded-xl hover:scale-105 transition duration-300">
+                            <p class="font-bold text-sm uppercase mb-1">${s.n}</p>
+                            <p class="mono text-[9px] uppercase font-bold tracking-widest opacity-80">${s.l}</p>
+                        </div>`,
+                          )
+                          .join("")}
+                    </div>
+                </section>
+
+                <section class="mb-24 flex-grow" aria-label="Projetos">
+                    <h2 class="mono text-xs font-bold text-zinc-600 uppercase tracking-widest mb-8 border-b border-zinc-900 pb-2">Project Archives</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        ${config.projects
+                          .map(
+                            (p, index) => `
+                            <article onclick="window.location.hash='${p.id}'" class="project-card rounded-2xl overflow-hidden reveal ${p.featured ? "md:col-span-2" : ""}" style="transition-delay: ${index * 100}ms">
+                                <figure class="overflow-hidden">
+                                    <img src="${p.images[0]}" alt="Capa do projeto ${p.title}" class="card-img ${p.featured ? "h-72" : "h-56"}" loading="lazy">
+                                </figure>
+                                <div class="p-8 md:p-10">
+                                    <header class="flex justify-between items-center mb-6">
+                                        <span class="mono text-[10px] text-zinc-500 uppercase font-bold tracking-[0.2em] bg-zinc-900/50 px-3 py-1 rounded-full">${p.type}</span>
+                                        <i data-lucide="arrow-up-right" class="text-zinc-600 group-hover:text-blue-500 transition" size="20"></i>
+                                    </header>
+                                    <h3 class="${p.featured ? "text-5xl md:text-6xl" : "text-3xl"} font-black text-white mb-4 uppercase tracking-tighter leading-none">${p.title}</h3>
+                                    <p class="text-zinc-400 text-sm md:text-base mb-8 max-w-2xl leading-relaxed">${p.shortDesc}</p>
+                                    <footer class="flex flex-wrap gap-2 mt-auto">
+                                        ${p.tech.map((t) => `<span class="mono text-[9px] bg-zinc-900 border border-white/5 px-3 py-1 text-zinc-400 rounded-full font-bold uppercase tracking-wide">${t}</span>`).join("")}
+                                    </footer>
                                 </div>
-                            </div>
-                        </div>
-                    `).join('')}
-                </div>
+                            </article>
+                        `,
+                          )
+                          .join("")}
+                    </div>
+                </section>
+                
+                <footer class="mt-auto py-8 text-center border-t border-zinc-900 reveal">
+                    <p class="mono text-[10px] text-zinc-600 uppercase tracking-widest">© ${new Date().getFullYear()} Hosch Alef // Game Programmer</p>
+                </footer>
             </div>
         `;
 
-        const renderProjectDetail = (p) => `
-            <div class="page-transition">
-                <button onclick="window.location.hash='home'" class="flex items-center gap-2 text-zinc-500 hover:text-white mb-12 mono text-xs font-bold uppercase tracking-widest">
-                    <i data-lucide="chevron-left" size="18"></i> Back
-                </button>
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-16">
-                    <div class="lg:col-span-8">
-                        <h1 class="text-6xl md:text-8xl font-black text-white uppercase mb-12 leading-none">${p.title}</h1>
-                        <div class="text-zinc-400 text-xl leading-relaxed mb-16">${p.fullDesc}</div>
+      const renderProjectDetail = (p) => `
+            <article class="page-transition max-w-5xl mx-auto flex-grow">
+                <nav class="mb-12">
+                    <button onclick="window.location.hash='home'" class="flex items-center gap-2 text-zinc-500 hover:text-white transition mono text-[11px] uppercase font-bold tracking-widest bg-zinc-900/50 px-4 py-2 rounded-full border border-zinc-800 hover:border-zinc-600">
+                        <i data-lucide="chevron-left" size="16"></i> Voltar ao Arquivo
+                    </button>
+                </nav>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 md:gap-16">
+                    <div class="lg:col-span-8 reveal">
+                        <header class="mb-12">
+                            <span class="mono text-[10px] text-blue-500 bg-blue-500/10 border border-blue-500/20 px-3 py-1 rounded-full uppercase font-bold tracking-[0.2em] mb-6 inline-block">${p.type}</span>
+                            <h1 class="text-5xl md:text-7xl font-black text-white uppercase tracking-tighter leading-none mb-6">${p.title}</h1>
+                        </header>
                         
-                        <div class="grid grid-cols-1 gap-6">
-                            ${p.images.map(img => `
-                                <div class="rounded-2xl overflow-hidden border border-zinc-800">
-                                    <img src="${img}" class="gallery-img w-full">
-                                </div>
-                            `).join('')}
-                        </div>
+                        <section class="text-zinc-400 text-lg md:text-xl leading-relaxed mb-16 prose prose-invert max-w-none">
+                            ${p.fullDesc}
+                        </section>
+                        
+                        <section aria-label="Galeria de Imagens do Projeto" class="space-y-6">
+                            ${p.images
+                              .map(
+                                (img, index) => `
+                                <figure class="rounded-2xl overflow-hidden border border-zinc-800 glass reveal" style="transition-delay: ${index * 150}ms">
+                                    <img src="${img}" alt="Screenshot técnica de ${p.title}" class="gallery-img w-full h-auto object-cover" loading="lazy">
+                                </figure>
+                            `,
+                              )
+                              .join("")}
+                        </section>
                     </div>
-                    <div class="lg:col-span-4">
-                        <div class="glass p-10 rounded-3xl sticky top-10 border-blue-500/10">
-                            <h3 class="mono text-white text-[10px] uppercase font-black tracking-[0.5em] mb-10 border-b border-white/5 pb-4">Metadata</h3>
-                            <div class="space-y-8">
-                                <div><p class="text-[9px] text-zinc-600 uppercase font-bold mb-2">Role</p><p class="text-white font-bold uppercase">${p.role}</p></div>
-                                <div><p class="text-[9px] text-zinc-700 uppercase mb-3 font-bold">Stack</p>
-                                    <div class="flex flex-wrap gap-2">
-                                        ${p.tech.map(t => `<span class="mono text-[9px] bg-blue-600/10 text-blue-400 px-3 py-1 rounded-full uppercase font-black">${t}</span>`).join('')}
-                                    </div>
+
+                    <aside class="lg:col-span-4 reveal" style="transition-delay: 200ms">
+                        <div class="glass p-8 md:p-10 rounded-3xl sticky top-10 border-blue-500/10">
+                            <h3 class="mono text-white text-[10px] uppercase font-bold tracking-[0.4em] mb-8 border-b border-white/5 pb-4">Ficha Técnica</h3>
+                            
+                            <dl class="space-y-8">
+                                <div>
+                                    <dt class="text-[10px] text-zinc-600 uppercase font-bold mb-2 tracking-widest">Função Principal</dt>
+                                    <dd class="text-white font-bold uppercase text-sm">${p.role}</dd>
                                 </div>
-                                <div class="pt-10 flex gap-6 border-t border-white/5">
-                                    <a href="${p.links.github}" class="text-white hover:text-blue-500"><i data-lucide="github" size="22"></i></a>
-                                    ${p.links.demo !== '#' ? `<a href="${p.links.demo}" class="text-white hover:text-blue-500 flex items-center gap-2 text-xs font-bold uppercase tracking-widest">Demo <i data-lucide="external-link" size="16"></i></a>` : ''}
+                                <div>
+                                    <dt class="text-[10px] text-zinc-600 uppercase font-bold mb-3 tracking-widest">Stack Tecnológico</dt>
+                                    <dd class="flex flex-wrap gap-2">
+                                        ${p.tech.map((t) => `<span class="mono text-[9px] bg-blue-600/10 text-blue-400 px-3 py-1 rounded-full border border-blue-500/10 uppercase font-bold tracking-tight">${t}</span>`).join("")}
+                                    </dd>
                                 </div>
+                            </dl>
+
+                            <div class="pt-10 mt-10 border-t border-white/5 flex gap-4 md:gap-6">
+                                ${p.links.github !== "#" ? `<a href="${p.links.github}" target="_blank" rel="noopener noreferrer" class="bg-zinc-800 p-3 rounded-full text-white hover:bg-blue-600 transition" aria-label="Repositório GitHub"><i data-lucide="github" size="22"></i></a>` : ""}
+                                ${p.links.demo !== "#" ? `<a href="${p.links.demo}" target="_blank" rel="noopener noreferrer" class="bg-white text-black px-6 py-3 rounded-full hover:bg-blue-600 hover:text-white transition flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest flex-grow justify-center shadow-lg">Ver Projeto <i data-lucide="external-link" size="16"></i></a>` : ""}
                             </div>
                         </div>
-                    </div>
+                    </aside>
                 </div>
-            </div>
+            </article>
         `;
 
-        window.addEventListener('hashchange', render);
-        window.addEventListener('load', render);
+      window.addEventListener("hashchange", render);
+      window.addEventListener("load", render);
     </script>
-</body>
+  </body>
 </html>
