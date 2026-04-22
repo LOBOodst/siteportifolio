@@ -8,54 +8,71 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;700;900&display=swap');
+        
         :root { --bg: #050505; --accent: #3b82f6; }
-        body { font-family: 'Inter', sans-serif; background-color: var(--bg); color: #a1a1aa; overflow-x: hidden; scroll-behavior: smooth; }
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: var(--bg); 
+            color: #a1a1aa; 
+            background-image: radial-gradient(circle at 50% -20%, #1e1e24 0%, transparent 50%);
+        }
+
         .mono { font-family: 'JetBrains Mono', monospace; }
-        .hero-title { font-weight: 900; letter-spacing: -0.06em; line-height: 0.85; }
-        .project-card { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); border: 1px solid #141417; background: #08080a; cursor: pointer; display: flex; flex-direction: column; overflow: hidden; }
-        .project-card:hover { border-color: var(--accent); transform: translateY(-4px); box-shadow: 0 20px 40px -20px rgba(59, 130, 246, 0.15); }
-        .card-img { width: 100%; height: 180px; object-fit: cover; grayscale: 100%; transition: grayscale 0.4s; border-bottom: 1px solid #141417; }
-        .project-card:hover .card-img { grayscale: 0%; }
-        .featured-border { border: 1px solid #1d4ed8; background: linear-gradient(145deg, #0a0a0c 0%, #050505 100%); }
+        .hero-title { font-weight: 900; letter-spacing: -0.06em; line-height: 0.8; }
+        
+        .glass { background: rgba(13, 13, 15, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.05); }
+        
+        /* Correção de Filtro para VS Code */
+        .project-card { transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); cursor: pointer; border: 1px solid #141417; background: #08080a; }
+        .project-card:hover { border-color: var(--accent); transform: translateY(-8px); }
+        
+        .card-img, .gallery-img { 
+            filter: grayscale(100%); 
+            transition: 0.6s ease; 
+            width: 100%; 
+            object-fit: cover; 
+        }
+        .project-card:hover .card-img, .gallery-img:hover { filter: grayscale(0%); }
+
+        .profile-photo { filter: grayscale(100%); transition: 0.5s ease; border: 2px solid #141417; }
+        .profile-photo:hover { filter: grayscale(0%); border-color: var(--accent); }
+
         .page-transition { animation: fadeIn 0.4s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
-<body class="selection:bg-blue-600 selection:text-white">
+<body>
 
-    <div id="app" class="max-w-6xl mx-auto px-6 py-10">
-        </div>
+    <div id="app" class="max-w-6xl mx-auto px-6 py-10"></div>
 
     <script>
         const config = {
             profile: {
                 name: "Hosch Alef",
                 role: "Game Programmer & Systems Designer",
-                photo: "images/photo portifolio.png", // Atualiza com o nome do teu ficheiro de foto
-                bio: "Estudante de Bacharelado em Desenvolvimento de Jogos. Vejo a programação como uma forma de arte — uma ferramenta para dar vida a ideias.",
+                photo: "images/photo_portifolio.png",
+                bio: "Estudante de Bacharelado em Desenvolvimento de Jogos. Vejo a programação como uma arte capaz de materializar mundos e sistemas complexos.",
                 linkedin: "https://www.linkedin.com/in/alefhosch/",
                 github: "https://github.com/LOB-workshop",
-                email: "mailto:seuemail@exemplo.com"
+                email: "mailto:alefhosch@exemplo.com"
             },
             skills: [
                 { n: "Python", l: "Advanced", c: "text-red-500" },
-                { n: "HTML/CSS", l: "Advanced", c: "text-red-500" },
                 { n: "C#", l: "Intermediate", c: "text-purple-500" },
                 { n: "Unity", l: "Intermediate", c: "text-purple-500" },
                 { n: "Unreal", l: "Intermediate", c: "text-purple-500" },
-                { n: "SQL", l: "Beginner", c: "text-blue-500" },
-                { n: "JS", l: "Beginner", c: "text-blue-500" }
+                { n: "HTML/CSS", l: "Advanced", c: "text-red-500" }
             ],
             projects: [
                 {
                     id: "shadow-of-orum",
                     title: "Shadow of Orum",
                     role: "Solo Developer",
-                    type: "Action-RPG / Metroidvania",
-                    img: "images/orum_hero.jpg", 
+                    type: "Featured / Action-RPG",
+                    images: ["images/tsukimaru_dialogue_02.jpg"], 
                     shortDesc: "RPG de ação sombrio baseado na mitologia Afro-Brasileira.",
-                    fullDesc: `Shadow of Orum é um Action-RPG que mergulha num universo de mitologia Afro-Brasileira e fantasia espiritual. <br><br><strong>Destaques Técnicos:</strong><br>• Sistema de combate inspirado em Hollow Knight e Blasphemous.<br>• Co-op local: Dois protagonistas (Yalena e Kairum) com habilidades complementares.<br>• Mecânica de sacrifício de HP para ressuscitação entre jogadores.<br>• 16 buffs de 'Axé' (Gifts) obtidos através de guias espirituais.<br>• 8 bosses principais baseados em Orixás corrompidos.`,
-                    tech: ["Unreal Engine", "C++", "Systems Architecture", "Game Design"],
+                    fullDesc: `Sistemas de combate souls-like com mecânicas de sacrifício de HP em co-op local.`,
+                    tech: ["Unreal Engine", "C++", "Systems"],
                     links: { github: "#", demo: "#" },
                     featured: true
                 },
@@ -64,43 +81,43 @@
                     title: "Tsukimaru - Shogi",
                     role: "Systems Programmer",
                     type: "Logic / Strategy",
-                    img: "images/tsukimaru_shogi_01.png",
-                    shortDesc: "Implementação completa de Shogi (Xadrez Japonês) em 3D.",
-                    fullDesc: `Desenvolvimento de lógica de tabuleiro determinística e gestão de estados complexos.<br><br><strong>Funcionalidades:</strong><br>• Validação rigorosa de movimentos para todas as peças.<br>• Sistema de captura e 'Drop' (reintrodução de peças no tabuleiro).<br>• Lógica de promoção de peças ao atingir a zona inimiga.`,
-                    tech: ["Unreal Engine", "Math", "State Machines"],
+                    images: ["images/tsukimaru_shogi_01.jpg", "images/tsukimaru_shogi_02.jpg"],
+                    shortDesc: "Implementação 3D completa de Shogi.",
+                    fullDesc: `Foco em lógica determinística e validação de movimentos complexos e sistema de drop.`,
+                    tech: ["Unreal Engine", "Math", "States"],
                     links: { github: "#", demo: "#" }
                 },
                 {
                     id: "dialogue-system",
                     title: "Tsukimaru - Dialogue",
                     role: "Gameplay Programmer",
-                    type: "Systems / Unreal",
-                    img: "images/tsukimaru_dialogue_01.png",
+                    type: "Narrative Systems",
+                    images: ["images/tsukimaru_dialogue_01.jpg", "images/tsukimaru_dialogue_02.jpg"],
                     shortDesc: "Sistema de diálogo dinâmico orientado a dados.",
-                    fullDesc: `Ferramenta modular para criação de conversas não-lineares.<br><br><strong>Características:</strong><br>• Carregamento de ficheiros de diálogo baseados em condições de jogo.<br>• Sistema de flags que permite que as conversas evoluam dinamicamente.<br>• Interface customizável e suporte para eventos de gameplay disparados pelo diálogo.`,
-                    tech: ["Unreal Engine", "Blueprints", "Data Management"],
-                    links: { github: "https://github.com/LOB-workshop", demo: "#" }
+                    fullDesc: `Ferramenta modular para criação de conversas não-lineares.`,
+                    tech: ["Blueprints", "Data Driven"],
+                    links: { github: "#", demo: "#" }
                 },
                 {
                     id: "datacrash",
                     title: "DataCrash",
                     role: "Lead Programmer",
-                    type: "Game Jam / Unity",
-                    img: "images/datacrash_page.png",
-                    shortDesc: "Survival game frenético criado em 72 horas para uma Game Jam.",
-                    fullDesc: `Um desafio de desenvolvimento rápido focado em loop de gameplay e polimento de combate.<br><br><strong>Sinopse:</strong> Controlas um funcionário de escritório que deve combater um vírus informático que tenta sabotar o teu trabalho.`,
-                    tech: ["Unity", "C#", "Rapid Prototyping"],
-                    links: { github: "https://github.com/LOB-workshop", demo: "https://loboodst.itch.io/datacrash" }
+                    type: "Game Jam Project",
+                    images: ["images/datacrash_page.png"],
+                    shortDesc: "Survival game frenético criado em 72 horas.",
+                    fullDesc: `Demonstração de agilidade técnica e polimento sob pressão.`,
+                    tech: ["Unity", "C#", "Fast Prototype"],
+                    links: { github: "#", demo: "https://loboodst.itch.io/datacrash" }
                 },
                 {
                     id: "pirate-aim",
                     title: "Pirate Aim",
                     role: "Programmer",
-                    type: "Team Project / Unity",
-                    img: "images/pirate_aim_01.jpg",
-                    shortDesc: "Coleção de microgames inspirada em WarioWare.",
-                    fullDesc: `Projeto colaborativo focado na coordenação de sistemas e integração de múltiplos estilos de gameplay.<br><br><strong>Contribuição:</strong> Lógica central de timers, transições e sistema de eventos para deteção de vitória em microgames.`,
-                    tech: ["Unity", "C#", "Teamwork"],
+                    type: "Team Project",
+                    images: ["images/pirate_aim_01.jpg", "images/pirate_aim_02.jpg", "images/pirate_aim_03.jpg", "images/pirate_aim_04.jpg"],
+                    shortDesc: "Coleção de microgames colaborativa.",
+                    fullDesc: `Coordenação de sistemas e integração de assets em equipa.`,
+                    tech: ["C#", "Unity", "Teamwork"],
                     links: { github: "#", demo: "https://drive.google.com/file/d/1yGat7C6ub7AYErfETQ637Ha_l83bpV5c/view" }
                 }
             ]
@@ -109,57 +126,43 @@
         const render = () => {
             const hash = window.location.hash.replace('#', '');
             const app = document.getElementById('app');
-            
             if (!hash || hash === 'home') app.innerHTML = renderHome();
             else {
                 const project = config.projects.find(p => p.id === hash);
                 app.innerHTML = project ? renderProjectDetail(project) : renderHome();
             }
             lucide.createIcons();
-            window.scrollTo(0, 0);
         };
 
         const renderHome = () => `
             <div class="page-transition">
-                <nav class="flex justify-between items-center mb-24">
-                    <div class="mono text-[10px] font-bold tracking-[0.4em] text-zinc-700">Hosch.Systems_v5.0</div>
+                <nav class="flex justify-between items-center mb-24 glass p-4 px-8 rounded-full">
+                    <div class="mono text-xs font-bold tracking-[0.4em] text-zinc-600 uppercase">Hosch.Sys_v5.7</div>
                     <div class="flex gap-6 items-center">
-                        <a href="${config.profile.github}" target="_blank" class="hover:text-white transition"><i data-lucide="github" size="18"></i></a>
-                        <a href="${config.profile.linkedin}" target="_blank" class="hover:text-white transition"><i data-lucide="linkedin" size="18"></i></a>
-                        <a href="${config.profile.email}" class="bg-zinc-900 border border-zinc-800 text-white px-4 py-2 text-[10px] font-bold uppercase tracking-widest hover:bg-white hover:text-black transition">Contact</a>
+                        <a href="${config.profile.github}" target="_blank"><i data-lucide="github" size="18"></i></a>
+                        <a href="${config.profile.linkedin}" target="_blank"><i data-lucide="linkedin" size="18"></i></a>
                     </div>
                 </nav>
 
                 <header class="mb-32 grid grid-cols-1 md:grid-cols-12 gap-10 items-center">
-                    <div class="md:col-span-3">
-                        <img src="${config.profile.photo}" alt="${config.profile.name}" class="w-40 h-40 object-cover border-2 border-zinc-900 grayscale hover:grayscale-0 transition-all duration-500">
+                    <div class="md:col-span-3 text-center">
+                        <img src="${config.profile.photo}" class="profile-photo w-48 h-48 object-cover rounded-xl mx-auto">
                     </div>
-                    <div class="md:col-span-9">
-                        <h1 class="hero-title text-7xl md:text-[9rem] text-white uppercase leading-none mb-6">HOSCH<br><span class="text-blue-600">ALEF</span></h1>
-                        <p class="text-xl md:text-2xl text-zinc-500 italic max-w-2xl border-l-2 border-zinc-900 pl-6 leading-tight">"${config.profile.bio}"</p>
+                    <div class="md:col-span-9 text-left">
+                        <h1 class="hero-title text-7xl md:text-[10rem] text-white uppercase leading-none mb-6">HOSCH<br><span class="text-blue-600">ALEF</span></h1>
+                        <p class="text-xl text-zinc-500 italic border-l-2 border-blue-600/30 pl-6">"${config.profile.bio}"</p>
                     </div>
                 </header>
 
-                <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3 mb-32">
-                    ${config.skills.map(s => `<div class="bg-zinc-900/20 border border-zinc-900 p-4 text-center group hover:border-blue-500 transition">
-                        <p class="text-white font-bold text-xs uppercase mb-1">${s.n}</p>
-                        <p class="mono text-[8px] uppercase ${s.c} font-bold tracking-widest">${s.l}</p>
-                    </div>`).join('')}
-                </div>
-
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-24">
                     ${config.projects.map(p => `
-                        <div onclick="window.location.hash='${p.id}'" class="project-card ${p.featured ? 'md:col-span-2 featured-border' : ''}">
-                            <img src="${p.img}" alt="${p.title}" class="card-img">
+                        <div onclick="window.location.hash='${p.id}'" class="project-card rounded-2xl overflow-hidden ${p.featured ? 'md:col-span-2' : ''}">
+                            <img src="${p.images[0]}" class="card-img h-64">
                             <div class="p-8">
-                                <div class="flex justify-between mb-8 items-center">
-                                    <span class="mono text-[9px] text-zinc-600 uppercase font-bold tracking-[0.2em]">${p.type}</span>
-                                    <i data-lucide="arrow-up-right" class="text-zinc-800" size="18"></i>
-                                </div>
-                                <h3 class="${p.featured ? 'text-4xl md:text-6xl' : 'text-2xl'} font-black text-white mb-4 uppercase tracking-tighter">${p.title}</h3>
-                                <p class="text-zinc-500 text-sm mb-8 max-w-xl leading-relaxed">${p.shortDesc}</p>
+                                <h3 class="text-3xl font-black text-white mb-4 uppercase">${p.title}</h3>
+                                <p class="text-zinc-500 text-sm mb-6">${p.shortDesc}</p>
                                 <div class="flex flex-wrap gap-2">
-                                    ${p.tech.map(t => `<span class="mono text-[8px] border border-zinc-800 px-2 py-0.5 text-zinc-500 uppercase font-bold tracking-tighter">${t}</span>`).join('')}
+                                    ${p.tech.map(t => `<span class="mono text-[8px] bg-zinc-900 px-3 py-1 text-zinc-400 rounded-full font-bold uppercase">${t}</span>`).join('')}
                                 </div>
                             </div>
                         </div>
@@ -170,29 +173,35 @@
 
         const renderProjectDetail = (p) => `
             <div class="page-transition">
-                <button onclick="window.location.hash='home'" class="flex items-center gap-2 text-zinc-600 hover:text-white mb-16 transition mono text-[10px] uppercase font-black tracking-widest">
-                    <i data-lucide="chevron-left" size="16"></i> Back to Archive
+                <button onclick="window.location.hash='home'" class="flex items-center gap-2 text-zinc-500 hover:text-white mb-12 mono text-xs font-bold uppercase tracking-widest">
+                    <i data-lucide="chevron-left" size="18"></i> Back
                 </button>
-
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-16">
                     <div class="lg:col-span-8">
-                        <img src="${p.img}" alt="${p.title}" class="w-full h-80 object-cover mb-12 border border-zinc-900 grayscale-[50%]">
-                        <span class="mono text-[10px] text-blue-500 uppercase font-black tracking-[0.4em]">${p.type}</span>
-                        <h1 class="text-6xl md:text-8xl font-black text-white uppercase tracking-tighter mt-6 mb-12 leading-none">${p.title}</h1>
-                        <div class="text-zinc-400 text-xl leading-relaxed space-y-6">${p.fullDesc}</div>
+                        <h1 class="text-6xl md:text-8xl font-black text-white uppercase mb-12 leading-none">${p.title}</h1>
+                        <div class="text-zinc-400 text-xl leading-relaxed mb-16">${p.fullDesc}</div>
+                        
+                        <div class="grid grid-cols-1 gap-6">
+                            ${p.images.map(img => `
+                                <div class="rounded-2xl overflow-hidden border border-zinc-800">
+                                    <img src="${img}" class="gallery-img w-full">
+                                </div>
+                            `).join('')}
+                        </div>
                     </div>
-
                     <div class="lg:col-span-4">
-                        <div class="bg-zinc-900/30 border border-zinc-900 p-10 sticky top-10">
-                            <h3 class="mono text-white text-[10px] uppercase font-black tracking-[0.5em] mb-10 border-b border-zinc-800 pb-4 text-center">Tech Sheet</h3>
+                        <div class="glass p-10 rounded-3xl sticky top-10 border-blue-500/10">
+                            <h3 class="mono text-white text-[10px] uppercase font-black tracking-[0.5em] mb-10 border-b border-white/5 pb-4">Metadata</h3>
                             <div class="space-y-8">
-                                <div><p class="text-[9px] text-zinc-700 uppercase font-bold mb-2">Primary Role</p><p class="text-white font-black uppercase text-sm">${p.role}</p></div>
-                                <div><p class="text-[9px] text-zinc-700 uppercase mb-3 font-bold">Stack</p><div class="flex flex-wrap gap-2">
-                                    ${p.tech.map(t => `<span class="mono text-[9px] bg-zinc-800 text-zinc-400 px-2 py-1 uppercase font-black tracking-tighter">${t}</span>`).join('')}
-                                </div></div>
-                                <div class="pt-10 flex gap-6 border-t border-zinc-900">
-                                    ${p.links.github !== '#' ? `<a href="${p.links.github}" target="_blank" class="text-white hover:text-blue-500 transition"><i data-lucide="github" size="22"></i></a>` : ''}
-                                    ${p.links.demo !== '#' ? `<a href="${p.links.demo}" target="_blank" class="text-white hover:text-blue-500 transition flex items-center gap-2 text-[10px] font-black uppercase tracking-widest">Live Demo <i data-lucide="external-link" size="16"></i></a>` : ''}
+                                <div><p class="text-[9px] text-zinc-600 uppercase font-bold mb-2">Role</p><p class="text-white font-bold uppercase">${p.role}</p></div>
+                                <div><p class="text-[9px] text-zinc-700 uppercase mb-3 font-bold">Stack</p>
+                                    <div class="flex flex-wrap gap-2">
+                                        ${p.tech.map(t => `<span class="mono text-[9px] bg-blue-600/10 text-blue-400 px-3 py-1 rounded-full uppercase font-black">${t}</span>`).join('')}
+                                    </div>
+                                </div>
+                                <div class="pt-10 flex gap-6 border-t border-white/5">
+                                    <a href="${p.links.github}" class="text-white hover:text-blue-500"><i data-lucide="github" size="22"></i></a>
+                                    ${p.links.demo !== '#' ? `<a href="${p.links.demo}" class="text-white hover:text-blue-500 flex items-center gap-2 text-xs font-bold uppercase tracking-widest">Demo <i data-lucide="external-link" size="16"></i></a>` : ''}
                                 </div>
                             </div>
                         </div>
