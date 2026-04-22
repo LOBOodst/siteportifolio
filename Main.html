@@ -8,29 +8,115 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
       @import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;500;700;900&display=swap");
-      :root { --bg: #050505; --accent: #3b82f6; --glass-bg: rgba(13, 13, 15, 0.6); --glass-border: rgba(255, 255, 255, 0.05); }
-      body { font-family: "Inter", sans-serif; background-color: var(--bg); color: #a1a1aa; background-image: radial-gradient(circle at 50% -20%, #1e1e24 0%, transparent 60%); background-attachment: fixed; -webkit-font-smoothing: antialiased; }
-      .mono { font-family: "JetBrains Mono", monospace; }
-      .hero-title { font-weight: 900; letter-spacing: -0.06em; line-height: 0.85; }
-      .glass { background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid var(--glass-border); }
-      .project-card { transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); cursor: pointer; border: 1px solid #141417; background: #08080a; }
-      .project-card:hover { border-color: var(--accent); transform: translateY(-8px); box-shadow: 0 20px 40px -20px rgba(59, 130, 246, 0.25); }
-      .card-img, .gallery-img { filter: grayscale(100%) contrast(1.1); transition: 0.6s ease; width: 100%; object-fit: cover; }
-      .project-card:hover .card-img, .gallery-img:hover { filter: grayscale(0%) contrast(1); }
-      .profile-photo { filter: grayscale(100%); transition: filter 0.5s ease, border-color 0.5s ease; border: 2px solid #141417; }
-      .profile-photo:hover { filter: grayscale(0%); border-color: var(--accent); }
-      .reveal { opacity: 0; transform: translateY(30px); transition: 0.8s all cubic-bezier(0.2, 0.8, 0.2, 1); }
-      .reveal.active { opacity: 1; transform: translateY(0); }
-      .page-transition { animation: fadeIn 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
-      @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-      ::-webkit-scrollbar { width: 8px; }
-      ::-webkit-scrollbar-track { background: var(--bg); }
-      ::-webkit-scrollbar-thumb { background: #27272a; border-radius: 4px; }
-      ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+      :root {
+        --bg: #050505;
+        --accent: #3b82f6;
+        --glass-bg: rgba(13, 13, 15, 0.6);
+        --glass-border: rgba(255, 255, 255, 0.05);
+      }
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: var(--bg);
+        color: #a1a1aa;
+        background-image: radial-gradient(
+          circle at 50% -20%,
+          #1e1e24 0%,
+          transparent 60%
+        );
+        background-attachment: fixed;
+        -webkit-font-smoothing: antialiased;
+      }
+      .mono {
+        font-family: "JetBrains Mono", monospace;
+      }
+      .hero-title {
+        font-weight: 900;
+        letter-spacing: -0.06em;
+        line-height: 0.85;
+      }
+      .glass {
+        background: var(--glass-bg);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid var(--glass-border);
+      }
+      .project-card {
+        transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+        cursor: pointer;
+        border: 1px solid #141417;
+        background: #08080a;
+      }
+      .project-card:hover {
+        border-color: var(--accent);
+        transform: translateY(-8px);
+        box-shadow: 0 20px 40px -20px rgba(59, 130, 246, 0.25);
+      }
+      .card-img,
+      .gallery-img,
+      .gallery-video {
+        filter: grayscale(100%) contrast(1.1);
+        transition: 0.6s ease;
+        width: 100%;
+        object-fit: cover;
+      }
+      .project-card:hover .card-img,
+      .gallery-img:hover,
+      .gallery-video:hover {
+        filter: grayscale(0%) contrast(1);
+      }
+      .profile-photo {
+        filter: grayscale(100%);
+        transition:
+          filter 0.5s ease,
+          border-color 0.5s ease;
+        border: 2px solid #141417;
+      }
+      .profile-photo:hover {
+        filter: grayscale(0%);
+        border-color: var(--accent);
+      }
+      .reveal {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: 0.8s all cubic-bezier(0.2, 0.8, 0.2, 1);
+      }
+      .reveal.active {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .page-transition {
+        animation: fadeIn 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(15px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: var(--bg);
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #27272a;
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: var(--accent);
+      }
     </style>
   </head>
   <body class="selection:bg-blue-600 selection:text-white overflow-x-hidden">
-    <main id="app" class="max-w-6xl mx-auto px-6 py-10 min-h-screen flex flex-col"></main>
+    <main
+      id="app"
+      class="max-w-6xl mx-auto px-6 py-10 min-h-screen flex flex-col"
+    ></main>
 
     <script>
       const translations = {
@@ -46,8 +132,12 @@
           viewProject: "View Project",
           location: "Belgium",
           bio: "I'm Hosch Alef, an undergraduate specializing in Game Development with a strong passion for transforming creative concepts into immersive experiences. I see programming as a form of art—a powerful tool to bring ideas to life.",
-          aboutTitle: "About",
-          aboutText: "Proficient and experienced with both Unity and Unreal Engine, I also bring a solid foundation in web development. Whether it's building gameplay systems, designing mechanics, or crafting intuitive interfaces, I aim to create projects that are both technically sound and emotionally engaging. I'm actively seeking a challenging opportunity to contribute to an innovative team where I can grow, collaborate, and help shape unique digital experiences."
+          aboutTitle: "About Me",
+          aboutRole: "Game Programmer & Systems Designer",
+          downloadCV: "Download Curriculum",
+          aboutText:
+            "Proficient and experienced with both Unity and Unreal Engine, I also bring a solid foundation in web development. Whether it's building gameplay systems, designing mechanics, or crafting intuitive interfaces, I aim to create projects that are both technically sound and emotionally engaging. I'm actively seeking a challenging opportunity to contribute to an innovative team where I can grow, collaborate, and help shape unique digital experiences.",
+          videoLabel: "Demonstration Video",
         },
         pt: {
           contactBtn: "Contacto",
@@ -61,8 +151,12 @@
           viewProject: "Ver Projeto",
           location: "Bélgica",
           bio: "Sou Hosch Alef, estudante especializado em Desenvolvimento de Jogos com uma forte paixão por transformar conceitos criativos em experiências imersivas. Vejo a programação como uma forma de arte — uma ferramenta poderosa para dar vida a ideias.",
-          aboutTitle: "Sobre",
-          aboutText: "Proficiente e experiente tanto em Unity quanto em Unreal Engine, também possuo uma base sólida em desenvolvimento web. Seja construindo sistemas de gameplay, projetando mecânicas ou criando interfaces intuitivas, o meu objetivo é criar projetos tecnicamente robustos e emocionalmente envolventes. Procuro ativamente uma oportunidade desafiadora para contribuir com uma equipa inovadora onde possa crescer, colaborar e ajudar a moldar experiências digitais únicas."
+          aboutTitle: "Sobre Mim",
+          aboutRole: "Programador de Jogos & Systems Designer",
+          downloadCV: "Baixar Currículo",
+          aboutText:
+            "Proficiente e experiente tanto em Unity quanto em Unreal Engine, também possuo uma base sólida em desenvolvimento web. Seja construindo sistemas de gameplay, projetando mecânicas ou criando interfaces intuitivas, o meu objetivo é criar projetos tecnicamente robustos e emocionalmente envolventes. Procuro ativamente uma oportunidade desafiadora para contribuir com uma equipa inovadora onde possa crescer, colaborar e ajudar a moldar experiências digitais únicas.",
+          videoLabel: "Vídeo de Demonstração",
         },
         fr: {
           contactBtn: "Contact",
@@ -77,11 +171,15 @@
           location: "Belgique",
           bio: "Je suis Hosch Alef, un étudiant de premier cycle spécialisé dans le développement de jeux avec une forte passion pour la transformation de concepts créatifs en expériences immersives. Je vois la programmation comme une forme d'art, un outil puissant pour donner vie aux idées.",
           aboutTitle: "À propos",
-          aboutText: "Compétent et expérimenté avec Unity et Unreal Engine, j'apporte également une base solide en développement web. Qu'il s'agisse de construire des systèmes de jeu, de concevoir des mécaniques ou de créer des interfaces intuitives, mon objectif est de créer des projets à la fois techniquement solides et émotionnellement engageants. Je recherche activement une opportunité stimulante pour contribuer à une équipe innovante où je peux grandir, collaborer et aider à façonner des expériences numériques uniques."
-        }
+          aboutRole: "Programmeur de Jeux & Systems Designer",
+          downloadCV: "Télécharger le CV",
+          aboutText:
+            "Compétent et expérimenté avec Unity et Unreal Engine, j'apporte également une base solide en développement web. Qu'il s'agisse de construire des systèmes de jeu, de concevoir des mécaniques ou de créer des interfaces intuitives, mon objectif est de créer des projets à la fois techniquement solides et émotionnellement engageants. Je recherche activement une opportunité stimulante pour contribuer à une équipe innovante où je peux grandir, collaborer et aider à façonner des expériences numériques uniques.",
+          videoLabel: "Vidéo de démonstration",
+        },
       };
 
-      let currentLang = 'en';
+      let currentLang = "en";
 
       const config = {
         profile: {
@@ -92,71 +190,146 @@
           email: "mailto:alefah.ah@gmail.com",
         },
         skills: [
-          { n: "Unreal Engine", l: "Intermediate", c: "text-gray-300 bg-gray-500/10 border-gray-500/20" },
-          { n: "Unity", l: "Intermediate", c: "text-gray-300 bg-gray-500/10 border-gray-500/20" },
-          { n: "C++", l: "Intermediate", c: "text-blue-500 bg-blue-500/10 border-blue-500/20" },
-          { n: "C#", l: "Intermediate", c: "text-purple-500 bg-purple-500/10 border-purple-500/20" },
-          { n: "Python", l: "Intermediate", c: "text-yellow-500 bg-yellow-500/10 border-yellow-500/20" },
-          { n: "SQL", l: "Beginner", c: "text-cyan-500 bg-cyan-500/10 border-cyan-500/20" },
+          {
+            n: "Unreal Engine",
+            l: "Intermediate",
+            c: "text-gray-300 bg-gray-500/10 border-gray-500/20",
+          },
+          {
+            n: "Unity",
+            l: "Intermediate",
+            c: "text-gray-300 bg-gray-500/10 border-gray-500/20",
+          },
+          {
+            n: "C++",
+            l: "Intermediate",
+            c: "text-blue-500 bg-blue-500/10 border-blue-500/20",
+          },
+          {
+            n: "C#",
+            l: "Intermediate",
+            c: "text-purple-500 bg-purple-500/10 border-purple-500/20",
+          },
+          {
+            n: "Python",
+            l: "Intermediate",
+            c: "text-yellow-500 bg-yellow-500/10 border-yellow-500/20",
+          },
+          {
+            n: "SQL",
+            l: "Beginner",
+            c: "text-cyan-500 bg-cyan-500/10 border-cyan-500/20",
+          },
         ],
         projects: [
           {
-            id: "shadow-of-orum",
-            title: "Shadow of Orum",
-            role: "Solo Developer",
-            type: "Featured / Action-RPG",
-            images: ["images/ProjectShadowOfOrum.png"],
-            tech: ["Unreal Engine", "C++", "Systems Architecture"],
+            id: "tactical-rpg",
+            title: "Tactical Turn-Based RPG Architecture",
+            role: "Lead Systems Programmer",
+            type: "Featured / Technical Project",
+            images: [
+              "images/taticalRPG_1.png",
+              "images/taticalRPG_2.png",
+              "images/taticalRPG_3.png",
+            ],
+
+            tech: ["Unreal Engine", "C++", "Architecture"],
             links: { github: "#", demo: "#" },
             featured: true,
             desc: {
-              en: "Dark action RPG based on Afro-Brazilian mythology. Focus on scalable systems architecture and Game Feel.",
-              pt: "RPG de ação sombrio baseado na mitologia Afro-Brasileira. Foco em arquitetura de sistemas escaláveis e Game Feel.",
-              fr: "RPG d'action sombre basé sur la mythologie afro-brésilienne. Focus sur l'architecture des systèmes et le Game Feel."
+              en: "Modular Turn-Based RPG framework implemented in C++ within Unreal Engine.",
+              pt: "Arquitetura técnica de um RPG tático por turnos implementado em C++ na Unreal Engine.",
+              fr: "Architecture technique d'un RPG tactique au tour par tour implémentée en C++.",
             },
             fullDesc: {
-              en: "Development of an intense 'souls-like' combat experience and spiritual narrative. Focus on scalable systems architecture and Game Feel.<br><br><strong>Engineering Highlights:</strong><ul class='list-disc pl-5 space-y-2 mt-4'><li><strong>Asynchronous/Local Co-op:</strong> HP sacrifice mechanic for resurrection.</li><li><strong>Event Bus System:</strong> Implementation of 16 modular buffs (Axé) decoupled from player logic.</li><li><strong>State Machine (AI):</strong> Complex behaviors for Bosses.</li></ul>",
-              pt: "Desenvolvimento de uma experiência de combate 'souls-like' intensa e narrativa espiritual. Foco em arquitetura de sistemas escaláveis e Game Feel.<br><br><strong>Destaques de Engenharia:</strong><ul class='list-disc pl-5 space-y-2 mt-4'><li><strong>Co-op Assíncrono/Local:</strong> Sistema mecânico de sacrifício de HP para ressurreição.</li><li><strong>Event Bus System:</strong> Implementação de 16 buffs modulares (Axé) totalmente desacoplados da lógica do jogador.</li><li><strong>State Machine (IA):</strong> Comportamentos complexos para Bosses.</li></ul>",
-              fr: "Développement d'une expérience de combat intense 'souls-like' et d'un récit spirituel. Focus sur l'architecture des systèmes et le Game Feel.<br><br><strong>Points forts techniques:</strong><ul class='list-disc pl-5 space-y-2 mt-4'><li><strong>Coopérative asynchrone/locale:</strong> Mécanique de sacrifice de PV pour la résurrection.</li><li><strong>Event Bus System:</strong> Mise en œuvre de 16 buffs modulaires (Axé) découplés de la logique du joueur.</li><li><strong>State Machine (IA):</strong> Comportements complexes pour les Boss.</li></ul>"
-            }
+              en: `This project implements a modular Tactical RPG framework.
+                  <br><br><strong>Grid System:</strong> Matrix-based tile management, pathfinding validation, and world-to-grid logical mapping.
+                  <br><strong>Turn Manager:</strong> Decoupled flow control for active units, initiative queues, and state handling (Start, Action, End).
+                  <br><strong>Character System:</strong> Base unit classes for Players and AI, integrating attributes, animations, and grid rules.
+                  <br><strong>Combat & Movement:</strong> Range calculation, LOS (Line of Sight) checks, and A* pathfinding integration.`,
+              pt: `Este projeto implementa um Tactical RPG em C++ dentro da Unreal Engine, estruturado em sistemas modulares.
+                  <br><br><strong>Grid System (Sistema de Grade):</strong> Gerenciamento de matriz de tiles, validação de movimentação e mapeamento lógico.
+                  <br><strong>Turn Manager (Sistema de Turnos):</strong> Controle de fluxo desacoplado, filas de iniciativa e estados de turno (Início, Ação, Fim).
+                  <br><strong>Character System:</strong> Unidades base para Player e IA, integrando atributos, animações e regras do grid.
+                  <br><strong>Movimentação e Combate:</strong> Cálculo de alcance, verificação de linha de visão e integração com Pathfinding.`,
+              fr: `Ce projet implémente un framework Tactical RPG modulaire en C++.
+                  <br><br><strong>Grid System:</strong> Gestion de grille, validation de mouvement et mapping logique.
+                  <br><strong>Turn Manager:</strong> Contrôle du flux de combat, files d'attente d'initiative et gestion d'états.
+                  <br><strong>Character System:</strong> Classes d'unités pour joueurs et IA avec attributs et règles de grille.`,
+            },
           },
-           {
+          {
             id: "garage-war",
             title: "Garage War",
             role: "Gameplay Programmer",
             type: "Local Co-op / Party Game",
-            images: ["images/garage_war_01.png", "images/garage_war_02.png", "images/garage_war_03.png"],
-            tech: ["Unity", "C#", "Local Multiplayer", "Task Systems"],
+            images: [
+              "images/garage_war_01.png",
+              "images/garage_war_02.png",
+              "images/garage_war_03.png",
+            ],
+            tech: ["Unity", "C#", "Multiplayer"],
+            featured: true,
             links: { github: "#", demo: "https://loboodst.itch.io/garagewar" },
             desc: {
-              en: "Frantic party game inspired by Overcooked and tuning mechanics.",
-              pt: "Party game frenético inspirado em Overcooked e mecânicas de tuning.",
-              fr: "Jeu de fête frénétique inspiré par Overcooked et le tuning."
+              en: "Overcooked-inspired car tuning party game.",
+              pt: "Party game de tuning inspirado em Overcooked.",
+              fr: "Jeu de fête tuning.",
             },
             fullDesc: {
-              en: "Focused on couch co-op mechanics and chaos physics.<ul class='list-disc pl-5 space-y-2 mt-4'><li><strong>Multi-Input:</strong> Support for up to 4 simultaneous gamepads.</li><li><strong>Task Validator:</strong> Procedural system validating modular part combinations in real-time.</li></ul>",
-              pt: "Foco em mecânicas cooperativas de sofá e física de caos.<ul class='list-disc pl-5 space-y-2 mt-4'><li><strong>Multi-Input:</strong> Suporte para até 4 comandos simultâneos.</li><li><strong>Task Validator:</strong> Sistema processual que valida combinações de peças modulares em tempo real.</li></ul>",
-              fr: "Focus sur les mécanismes de coopération locale et la physique du chaos.<ul class='list-disc pl-5 space-y-2 mt-4'><li><strong>Multi-Input:</strong> Support pour jusqu'à 4 manettes simultanées.</li><li><strong>Task Validator:</strong> Système procédural validant les combinaisons de pièces en temps réel.</li></ul>"
-            }
+              en: "4-player multi-input handling and real-time task validation.",
+              pt: "Gestão de multi-input para 4 jogadores e validação de tarefas em tempo real.",
+              fr: "Multijoueur local.",
+            },
+          },
+          {
+            id: "unreal-mechanics",
+            title: "Unreal Engine Mechanics Challenge",
+            role: "Gameplay Programmer",
+            type: "Featured / Mechanics Study",
+            images: ["images/unrealmecanins.png"],
+            videos: [
+              "videos/bullet_drop.mp4",
+              "videos/vats_system.mp4",
+              "videos/possession_system.mp4",
+            ],
+            tech: ["Unreal Engine", "Blueprints", "Game Design"],
+            links: { github: "#", demo: "#" },
+            desc: {
+              en: "First experience with Unreal Engine: recreating iconic mechanics 100% in Blueprints.",
+              pt: "Primeira experiência com Unreal Engine: recriação de 3 mecânicas icónicas 100% em Blueprints.",
+              fr: "Première expérience avec Unreal Engine : recréer 3 mécaniques iconiques 100% en Blueprints.",
+            },
+            fullDesc: {
+              en: "For my first contact with Unreal Engine, I challenged myself to recreate three complex gameplay systems from major titles using exclusively Visual Scripting (Blueprints):<br><br>1. <strong>Bullet Drop (Sniper Elite):</strong> Ballistics system with gravity and distance compensation.<br>2. <strong>V.A.T.S. System (Fallout):</strong> Dynamic target selection and time dilation logic.<br>3. <strong>Possession System (Lego Star Wars):</strong> Character swapping and AI controller takeover mechanics.",
+              pt: "No meu primeiro contacto com a Unreal Engine, desafiei-me a recriar três sistemas de gameplay complexos de grandes títulos utilizando exclusivamente Visual Scripting (Blueprints):<br><br>1. <strong>Bullet Drop (Sniper Elite):</strong> Sistema de balística com gravidade e compensação de distância.<br>2. <strong>Sistema V.A.T.S. (Fallout):</strong> Seleção dinâmica de alvos e lógica de dilatação temporal.<br>3. <strong>Sistema de Possessão (Lego Star Wars):</strong> Mecânica de troca de personagens e controlo de IA.",
+              fr: "Pour mon premier contact avec Unreal Engine, je me suis mis au défi de recréer trois systèmes de jeu complexes utilisant exclusivement des Blueprints :<br><br>1. <strong>Bullet Drop (Sniper Elite)</strong><br>2. <strong>Système V.A.T.S. (Fallout)</strong><br>3. <strong>Système de Possession (Lego Star Wars)</strong>",
+            },
           },
           {
             id: "elevator-talks",
             title: "Elevator Talks",
             role: "Gameplay Programmer",
             type: "Game Jam / Narrative",
-            images: ["images/elevator_talks_01.png", "images/elevator_talks_02.png"],
-            tech: ["Unity", "C#", "Logic Systems", "Game Jam"],
-            links: { github: "#", demo: "https://loboodst.itch.io/elevator-talks" },
+            images: [
+              "images/elevator_talks_01.png",
+              "images/elevator_talks_02.png",
+            ],
+            tech: ["Unity", "C#", "Logic"],
+            links: {
+              github: "#",
+              demo: "https://loboodst.itch.io/elevator-talks",
+            },
             desc: {
-              en: "Uncomfortable conversation simulator in an infinite elevator.",
-              pt: "Simulador de conversas desconfortáveis num elevador infinito.",
-              fr: "Simulateur de conversation inconfortable dans un ascenseur infini."
+              en: "Conversation simulator in an infinite elevator.",
+              pt: "Simulador de conversas num elevador infinito.",
+              fr: "Simulateur de conversation.",
             },
             fullDesc: {
-              en: "Explores social tension through quick dialogue mechanics and event randomness.<ul class='list-disc pl-5 space-y-2 mt-4'><li><strong>FSM:</strong> Elevator state management (movement, light events).</li><li><strong>Weighted Random System:</strong> Weighted system for unpredictable NPC encounters.</li></ul>",
-              pt: "Explora a tensão social através de mecânicas de diálogo rápidas e aleatoriedade de eventos.<ul class='list-disc pl-5 space-y-2 mt-4'><li><strong>FSM:</strong> Gestão de estados do elevador (movimento, eventos de luz).</li><li><strong>Weighted Random System:</strong> Sistema de pesos para garantir encontros aleatórios imprevisíveis com NPCs.</li></ul>",
-              fr: "Explore la tension sociale à travers des mécanismes de dialogue rapides et le hasard des événements.<ul class='list-disc pl-5 space-y-2 mt-4'><li><strong>FSM:</strong> Gestion de l'état de l'ascenseur (mouvement, lumière).</li><li><strong>Weighted Random System:</strong> Système pondéré pour des rencontres NPC imprévisibles.</li></ul>"
-            }
+              en: "Social tension mechanics using weighted random event systems.",
+              pt: "Mecânicas de tensão social utilizando sistemas de eventos aleatórios ponderados.",
+              fr: "Tension sociale.",
+            },
           },
           {
             id: "datacrash",
@@ -164,81 +337,119 @@
             role: "Lead Programmer",
             type: "Game Jam Project",
             images: ["images/datacrash_page.png"],
-            tech: ["Unity", "C#", "Fast Prototype"],
-            links: { github: "https://github.com/LOB-workshop", demo: "https://loboodst.itch.io/datacrash" },
+            tech: ["Unity", "C#", "Prototype"],
+            links: {
+              github: "https://github.com/LOB-workshop",
+              demo: "https://loboodst.itch.io/datacrash",
+            },
             desc: {
-              en: "Frantic survival game created in a 72-hour challenge.",
-              pt: "Survival game frenético criado num desafio de 72 horas.",
-              fr: "Jeu de survie frénétique créé lors d'un défi de 72 heures."
+              en: "72-hour survival game challenge.",
+              pt: "Jogo de sobrevivência criado em 72 horas.",
+              fr: "Jeu de survie en 72h.",
             },
             fullDesc: {
-              en: "Proof of MVP delivery capacity and essential polish focus under strong time constraints. Focused on perfect 'Game Feel' from initial iterations.",
-              pt: "Prova de capacidade de entrega de MVP e foco em polimento essencial sob forte restrição temporal. O foco central foi garantir que o 'Game Feel' estivesse impecável logo nas primeiras iterações.",
-              fr: "Preuve de capacité de livraison de MVP sous de fortes contraintes de temps. Focus sur un 'Game Feel' parfait dès les premières itérations."
-            }
+              en: "Rapid MVP development with high polish on the core loop.",
+              pt: "Desenvolvimento rápido de MVP com alto polimento no loop principal.",
+              fr: "Développement MVP rapide.",
+            },
           },
           {
             id: "pirate-aim",
             title: "Pirate Aim",
             role: "Programmer",
             type: "Team Project",
-            images: ["images/pirate_aim_01.jpg", "images/pirate_aim_02.jpg", "images/pirate_aim_03.jpg", "images/pirate_aim_04.jpg"],
-            tech: ["C#", "Unity", "Teamwork", "Git"],
-            links: { github: "#", demo: "https://drive.google.com/file/d/1yGat7C6ub7AYErfETQ637Ha_l83bpV5c/view" },
+            images: [
+              "images/pirate_aim_01.jpg",
+              "images/pirate_aim_02.jpg",
+              "images/pirate_aim_03.jpg",
+              "images/pirate_aim_04.jpg",
+            ],
+            tech: ["C#", "Unity", "Git"],
+            links: {
+              github: "#",
+              demo: "https://drive.google.com/file/d/1yGat7C6ub7AYErfETQ637Ha_l83bpV5c/view",
+            },
             desc: {
-              en: "Collaborative microgame collection in WarioWare style.",
-              pt: "Coleção colaborativa de microgames estilo WarioWare.",
-              fr: "Collection de micro-jeux collaboratifs dans le style WarioWare."
+              en: "WarioWare style microgame collection.",
+              pt: "Coleção de microgames estilo WarioWare.",
+              fr: "Collection de micro-jeux.",
             },
             fullDesc: {
-              en: "Team project requiring high technical coordination to merge work from multiple programmers and artists into a single continuous game flow.",
-              pt: "Projeto focado no trabalho em equipa, exigindo alta coordenação técnica para fundir o trabalho de vários programadores e artistas num único fluxo de jogo contínuo.",
-              fr: "Projet d'équipe nécessitant une coordination technique élevée pour fusionner le travail de plusieurs programmeurs et artistes."
-            }
+              en: "Team-based project focused on technical synchronization and variety.",
+              pt: "Projeto em equipa focado em sincronização técnica e variedade.",
+              fr: "Projet d'équipe.",
+            },
           },
-       
+          {
+            id: "shadow-of-orum",
+            title: "Shadow of Orum",
+            role: "Solo Developer",
+            type: "Action-RPG",
+            images: ["images/ProjectShadowOfOrum.png"],
+            tech: ["Unreal Engine", "C++", "Systems Architecture"],
+            links: { github: "#", demo: "#" },
+            desc: {
+              en: "Action-RPG based on Afro-Brazilian mythology.",
+              pt: "RPG de ação baseado na mitologia Afro-Brasileira.",
+              fr: "RPG d'action basé sur la mythologie afro-brésilienne.",
+            },
+            fullDesc: {
+              en: "Intense 'souls-like' combat experience. Highlights include an Event Bus System for buffs and complex AI State Machines.",
+              pt: "Experiência de combate 'souls-like' intensa. Destaques incluem um Event Bus System para buffs e State Machines de IA complexas.",
+              fr: "Expérience de combat intense de style 'souls-like'.",
+            },
+          },
           {
             id: "shogi-system",
             title: "Tsukimaru Shogi",
             role: "Systems Programmer",
             type: "Logic / Strategy",
-            images: ["images/tsukimaru_shogi_01.jpg", "images/tsukimaru_shogi_02.jpg"],
-            tech: ["Unreal Engine", "Math", "State Machines"],
+            images: [
+              "images/tsukimaru_shogi_01.jpg",
+              "images/tsukimaru_shogi_02.jpg",
+            ],
+            tech: ["Unreal Engine", "Math", "Logic"],
             links: { github: "#", demo: "#" },
             desc: {
-              en: "Rigorous 3D implementation of the classic Japanese Chess (Shogi).",
-              pt: "Implementação 3D rigorosa do clássico Xadrez Japonês (Shogi).",
-              fr: "Mise en œuvre 3D rigoureuse des échecs japonais classiques (Shogi)."
+              en: "3D implementation of Japanese Chess.",
+              pt: "Implementação 3D de Shogi.",
+              fr: "Mise en œuvre 3D du Shogi.",
             },
             fullDesc: {
-              en: "Project designed to demonstrate absolute mastery over deterministic logic, state validation, and 3D matrix manipulation.<br><br><strong>Implemented Features:</strong><ul class='list-disc pl-5 space-y-2 mt-4'><li>Rule validation engine with support for 'Drops' of captured pieces.</li><li>Unit promotion system dependent on board zones.</li><li>Check and Checkmate detection logic.</li></ul>",
-              pt: "Projeto desenhado para demonstrar domínio absoluto sobre lógica determinística, validação de estados e manipulação de matrizes tridimensionais.<br><br><strong>Funcionalidades Implementadas:</strong><ul class='list-disc pl-5 space-y-2 mt-4'><li>Motor de validação de regras com suporte a 'Drops' de peças capturadas.</li><li>Sistema de promoção de unidades dependente de zonas no tabuleiro.</li><li>Lógica de deteção de Xeque e Xeque-Mate.</li></ul>",
-              fr: "Projet conçu pour démontrer une maîtrise absolue de la logique déterministe, de la validation d'état et de la manipulation de matrices 3D.<br><br><strong>Fonctionnalités implémentées:</strong><ul class='list-disc pl-5 space-y-2 mt-4'><li>Moteur de validation des règles avec support pour les 'Drops' de pièces capturées.</li><li>Système de promotion des unités dépendant des zones du plateau.</li><li>Logique de détection d'échec et d'échec et mat.</li></ul>"
-            }
+              en: "Deterministic logic and state validation for complex board rules.",
+              pt: "Lógica determinística e validação de estados para regras complexas de tabuleiro.",
+              fr: "Logique déterministe.",
+            },
           },
           {
             id: "dialogue-system",
             title: "Dialogue System",
             role: "Gameplay Programmer",
             type: "Narrative Systems",
-            images: ["images/tsukimaru_dialogue_01.jpg", "images/tsukimaru_dialogue_02.jpg"],
-            tech: ["Blueprints", "Data Driven", "UI/UX"],
+            images: [
+              "images/tsukimaru_dialogue_01.jpg",
+              "images/tsukimaru_dialogue_02.jpg",
+            ],
+            tech: ["Blueprints", "Data Driven"],
             links: { github: "#", demo: "#" },
             desc: {
-              en: "Modular Data-Driven tool for complex branching narratives.",
-              pt: "Ferramenta modular Data-Driven para narrativas complexas e não-lineares.",
-              fr: "Outil modulaire piloté par les données pour des récits complexes."
+              en: "Modular Data-Driven narrative tool.",
+              pt: "Ferramenta modular Data-Driven para narrativas.",
+              fr: "Outil narratif modulaire.",
             },
             fullDesc: {
-              en: "Development of a generic and reusable system for managing complex non-linear narratives.<br><br><strong>Technical Features:</strong><ul class='list-disc pl-5 space-y-2 mt-4'><li><strong>Data-Driven:</strong> Loading data from external JSON/CSV tables.</li><li><strong>Game Conditionals:</strong> Dialogue branches based on world state flags.</li></ul>",
-              pt: "Desenvolvimento de um sistema genérico e reutilizável para gestão de narrativas complexas e não-lineares.<br><br><strong>Características Técnicas:</strong><ul class='list-disc pl-5 space-y-2 mt-4'><li><strong>Data-Driven:</strong> Carregamento de dados a partir de tabelas JSON/CSV externas.</li><li><strong>Condicionais de Jogo:</strong> O diálogo ramifica-se com base em flags e variáveis de estado do mundo.</li></ul>",
-              fr: "Développement d'un système générique et réutilisable pour la gestion de récits complexes non linéaires.<br><br><strong>Caractéristiques techniques:</strong><ul class='list-disc pl-5 space-y-2 mt-4'><li><strong>Data-Driven:</strong> Chargement des données à partir de tableaux JSON/CSV externes.</li><li><strong>Conditionnels de jeu:</strong> Le dialogue bifurque en fonction des drapeaux d'état du monde.</li></ul>"
-            }
+              en: "System using JSON/CSV for non-linear branching dialogues.",
+              pt: "Sistema que utiliza JSON/CSV para diálogos não-lineares.",
+              fr: "Système narratif.",
+            },
           },
-        ]
+        ],
       };
 
-      const setLanguage = (lang) => { currentLang = lang; render(); };
+      const setLanguage = (lang) => {
+        currentLang = lang;
+        render();
+      };
 
       const render = () => {
         const hash = window.location.hash.replace("#", "");
@@ -247,7 +458,9 @@
         if (!hash || hash === "home") app.innerHTML = renderHome(t);
         else {
           const project = config.projects.find((p) => p.id === hash);
-          app.innerHTML = project ? renderProjectDetail(project, t) : renderHome(t);
+          app.innerHTML = project
+            ? renderProjectDetail(project, t)
+            : renderHome(t);
         }
         lucide.createIcons();
         initScrollReveal();
@@ -261,15 +474,14 @@
                     <div class="mono text-xs font-bold text-zinc-500 uppercase tracking-widest">Hosch.Sys_v6.0</div>
                     <div class="flex gap-4 items-center">
                         <div class="flex gap-2 mr-4 border-r border-white/10 pr-4">
-                            <button onclick="setLanguage('en')" class="${currentLang==='en'?'text-blue-500':'text-zinc-500'} font-bold text-xs">EN</button>
-                            <button onclick="setLanguage('fr')" class="${currentLang==='fr'?'text-blue-500':'text-zinc-500'} font-bold text-xs">FR</button>
-                            <button onclick="setLanguage('pt')" class="${currentLang==='pt'?'text-blue-500':'text-zinc-500'} font-bold text-xs">PT</button>
+                            <button onclick="setLanguage('en')" class="${currentLang === "en" ? "text-blue-500" : "text-zinc-500"} font-bold text-xs">EN</button>
+                            <button onclick="setLanguage('fr')" class="${currentLang === "fr" ? "text-blue-500" : "text-zinc-500"} font-bold text-xs">FR</button>
+                            <button onclick="setLanguage('pt')" class="${currentLang === "pt" ? "text-blue-500" : "text-zinc-500"} font-bold text-xs">PT</button>
                         </div>
                         <a href="${config.profile.github}" target="_blank" class="text-zinc-400 hover:text-white transition"><i data-lucide="github" size="20"></i></a>
                         <a href="#contact" class="bg-white text-black px-5 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-blue-600 hover:text-white transition shadow-lg">${t.contactBtn}</a>
                     </div>
                 </nav>
-
                 <div class="grid grid-cols-1 md:grid-cols-12 gap-10 items-center reveal">
                     <div class="md:col-span-4 flex justify-center md:justify-start">
                         <img src="${config.profile.photo}" class="profile-photo w-56 h-56 object-cover rounded-2xl shadow-2xl">
@@ -284,26 +496,38 @@
             <section class="mb-20 reveal">
                 <h2 class="mono text-xs font-bold text-zinc-600 uppercase tracking-widest mb-6 border-b border-zinc-900 pb-2">${t.techTitle}</h2>
                 <div class="grid grid-cols-2 md:grid-cols-6 gap-4">
-                    ${config.skills.map(s => `
+                    ${config.skills
+                      .map(
+                        (s) => `
                         <div class="glass border ${s.c} p-4 text-center rounded-xl">
                             <p class="font-bold text-sm uppercase">${s.n}</p>
                             <p class="mono text-[9px] uppercase font-bold opacity-80">${s.l}</p>
                         </div>
-                    `).join("")}
+                    `,
+                      )
+                      .join("")}
                 </div>
             </section>
 
-            <section class="mb-32 reveal">
+           <section class="mb-32 reveal">
                 <div class="glass p-8 md:p-12 rounded-3xl border-white/5">
-                    <h2 class="mono text-xs font-bold text-blue-500 uppercase tracking-[0.3em] mb-6">${t.aboutTitle}</h2>
-                    <p class="text-xl md:text-2xl text-white font-medium leading-relaxed max-w-4xl">${t.aboutText}</p>
+                    <h2 class="mono text-xs font-bold text-blue-500 uppercase tracking-[0.3em] mb-2">${t.aboutTitle}</h2>
+                    <h3 class="text-3xl md:text-4xl font-black text-white uppercase mb-6 tracking-tighter">${t.aboutRole}</h3>
+                    <p class="text-xl md:text-2xl text-zinc-400 font-medium leading-relaxed max-w-4xl mb-10">${t.aboutText}</p>
+                    
+                    <a href="CV/Hosch_Alef_CV.pdf" target="_blank" class="inline-flex items-center gap-3 bg-white/5 hover:bg-blue-600 border border-white/10 hover:border-blue-500 text-white px-8 py-4 rounded-full font-bold uppercase text-xs tracking-widest transition-all duration-300">
+                        <i data-lucide="file-text" size="18"></i>
+                        ${t.downloadCV}
+                    </a>
                 </div>
             </section>
-
+            
             <section class="mb-24 flex-grow">
                 <h2 class="mono text-xs font-bold text-zinc-600 uppercase tracking-widest mb-8 border-b border-zinc-900 pb-2">${t.projectTitle}</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    ${config.projects.map(p => `
+                    ${config.projects
+                      .map(
+                        (p) => `
                         <article onclick="window.location.hash='${p.id}'" class="project-card rounded-2xl overflow-hidden reveal ${p.featured ? "md:col-span-2" : ""}">
                             <img src="${p.images[0]}" class="card-img ${p.featured ? "h-80" : "h-64"}">
                             <div class="p-8">
@@ -312,7 +536,9 @@
                                 <p class="text-zinc-400 text-base mt-4 leading-relaxed">${p.desc[currentLang]}</p>
                             </div>
                         </article>
-                    `).join("")}
+                    `,
+                      )
+                      .join("")}
                 </div>
             </section>
 
@@ -320,21 +546,14 @@
                 <div class="glass p-12 rounded-3xl text-center border-blue-500/10">
                     <h3 class="text-4xl md:text-5xl font-black text-white mb-6 uppercase tracking-tighter">${t.contactHero}</h3>
                     <div class="flex flex-wrap justify-center gap-6 mt-10">
-                        <a href="${config.profile.email}" class="bg-blue-600 text-white px-10 py-4 rounded-full font-bold uppercase hover:bg-blue-700 transition shadow-xl flex items-center gap-3">
-                            <i data-lucide="mail"></i> E-mail
-                        </a>
-                        <a href="${config.profile.github}" target="_blank" class="glass border-white/10 text-white px-10 py-4 rounded-full font-bold uppercase hover:bg-white hover:text-black transition flex items-center gap-3">
-                            <i data-lucide="github"></i> GitHub
-                        </a>
-                        <a href="${config.profile.linkedin}" target="_blank" class="glass border-white/10 text-white px-10 py-4 rounded-full font-bold uppercase hover:bg-white hover:text-black transition flex items-center gap-3">
-                            <i data-lucide="linkedin"></i> LinkedIn
-                        </a>
+                        <a href="${config.profile.email}" class="bg-blue-600 text-white px-10 py-4 rounded-full font-bold uppercase hover:bg-blue-700 transition shadow-xl flex items-center gap-3"><i data-lucide="mail"></i> E-mail</a>
+                        <a href="${config.profile.github}" target="_blank" class="glass border-white/10 text-white px-10 py-4 rounded-full font-bold uppercase hover:bg-white hover:text-black transition flex items-center gap-3"><i data-lucide="github" size="20"></i> GitHub</a>
+                        <a href="${config.profile.linkedin}" target="_blank" class="glass border-white/10 text-white px-10 py-4 rounded-full font-bold uppercase hover:bg-white hover:text-black transition flex items-center gap-3"><i data-lucide="linkedin" size="20"></i> LinkedIn</a>
                     </div>
                 </div>
             </section>
-
             <footer class="py-12 text-center border-t border-zinc-900">
-                <p class="mono text-[10px] text-zinc-600 uppercase tracking-widest">© ${new Date().getFullYear()} Hosch Alef // Game Programmer // ${t.location}</p>
+                <p class="mono text-[10px] text-zinc-600 uppercase tracking-widest">© ${new Date().getFullYear()} Hosch Alef // ${t.location}</p>
             </footer>
         </div>
       `;
@@ -348,11 +567,33 @@
                 <div class="lg:col-span-8">
                     <span class="mono text-[10px] text-blue-500 bg-blue-500/10 border border-blue-500/20 px-3 py-1 rounded-full uppercase font-bold mb-6 inline-block">${p.type}</span>
                     <h1 class="text-5xl md:text-7xl font-black text-white uppercase leading-none mb-12">${p.title}</h1>
+                    
                     <div class="text-zinc-400 text-lg leading-relaxed mb-16 prose prose-invert max-w-none">
                         ${p.fullDesc[currentLang]}
                     </div>
-                    <div class="space-y-10">
-                        ${p.images.map(img => `<img src="${img}" class="gallery-img rounded-2xl border border-zinc-800 shadow-2xl">`).join("")}
+
+                    <div class="space-y-12">
+                        ${
+                          p.videos
+                            ? p.videos
+                                .map(
+                                  (v) => `
+                            <div class="reveal">
+                                <p class="mono text-[10px] text-zinc-500 uppercase mb-4 tracking-widest flex items-center gap-2">
+                                    <i data-lucide="play-circle" size="14"></i> ${t.videoLabel}
+                                </p>
+                                <video class="gallery-video rounded-2xl border border-zinc-800 shadow-2xl" autoplay loop muted playsinline>
+                                    <source src="${v}" type="video/mp4">
+                                </video>
+                            </div>
+                        `,
+                                )
+                                .join("")
+                            : ""
+                        }
+                        
+                        ${p.images && !p.videos ? p.images.map((img) => `<img src="${img}" class="gallery-img rounded-2xl border border-zinc-800 shadow-2xl">`).join("") : ""}
+                        ${p.images && p.videos ? p.images.map((img) => `<img src="${img}" class="gallery-img rounded-2xl border border-zinc-800 shadow-2xl opacity-50">`).join("") : ""}
                     </div>
                 </div>
                 <aside class="lg:col-span-4">
@@ -360,10 +601,9 @@
                         <h3 class="mono text-white text-[10px] uppercase font-bold tracking-widest mb-8 border-b border-white/5 pb-4">${t.techSheet}</h3>
                         <div class="space-y-8">
                             <div><p class="text-[10px] text-zinc-600 uppercase font-bold mb-2 tracking-widest">${t.mainRole}</p><p class="text-white font-bold uppercase text-sm">${p.role}</p></div>
-                            <div><p class="text-[10px] text-zinc-600 uppercase font-bold mb-3 tracking-widest">Stack</p><div class="flex flex-wrap gap-2">${p.tech.map(tech => `<span class="mono text-[9px] bg-blue-600/10 text-blue-400 px-3 py-1 rounded-full border border-blue-500/10 font-bold uppercase">${tech}</span>`).join("")}</div></div>
+                            <div><p class="text-[10px] text-zinc-600 uppercase font-bold mb-3 tracking-widest">Stack</p><div class="flex flex-wrap gap-2">${p.tech.map((tech) => `<span class="mono text-[9px] bg-blue-600/10 text-blue-400 px-3 py-1 rounded-full border border-blue-500/10 font-bold uppercase">${tech}</span>`).join("")}</div></div>
                         </div>
                         <div class="mt-10 pt-10 border-t border-white/5 space-y-4">
-                             ${p.links.github !== "#" ? `<a href="${p.links.github}" target="_blank" class="bg-zinc-800 text-white p-3 rounded-full hover:bg-blue-600 transition flex items-center justify-center gap-2 text-xs uppercase font-bold"><i data-lucide="github" size="18"></i> GitHub</a>` : ""}
                              ${p.links.demo !== "#" ? `<a href="${p.links.demo}" target="_blank" class="bg-white text-black px-6 py-4 rounded-full hover:bg-blue-600 hover:text-white transition flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest justify-center shadow-lg">${t.viewProject} <i data-lucide="external-link" size="16"></i></a>` : ""}
                         </div>
                     </div>
@@ -374,10 +614,15 @@
 
       const initScrollReveal = () => {
         const reveals = document.querySelectorAll(".reveal");
-        const observer = new IntersectionObserver((entries) => {
-          entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add("active"); });
-        }, { threshold: 0.1 });
-        reveals.forEach(el => observer.observe(el));
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) entry.target.classList.add("active");
+            });
+          },
+          { threshold: 0.1 },
+        );
+        reveals.forEach((el) => observer.observe(el));
       };
       window.addEventListener("hashchange", render);
       window.addEventListener("load", render);
