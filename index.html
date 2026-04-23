@@ -8,111 +8,83 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
       @import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;500;700;900&display=swap");
+
       :root {
-        --bg: #050505;
-        --accent: #3b82f6;
-        --glass-bg: rgba(13, 13, 15, 0.6);
-        --glass-border: rgba(255, 255, 255, 0.05);
+        --bg-pure: #030303;
+        --accent-yellow: #facc15;
+        --accent-blue: #3b82f6;
+        --accent-purple: #a855f7;
+        --glass-bg: rgba(10, 10, 12, 0.85);
       }
+
       body {
         font-family: "Inter", sans-serif;
-        background-color: var(--bg);
-        color: #a1a1aa;
-        background-image: radial-gradient(
-          circle at 50% -20%,
-          #1e1e24 0%,
-          transparent 60%
-        );
+        background-color: var(--bg-pure);
+        color: #e2e8f0;
+        /* Fundo com efeito de profundidade e cores harmônicas */
+        background-image:
+          radial-gradient(
+            circle at 0% 0%,
+            rgba(59, 130, 246, 0.15) 0%,
+            transparent 35%
+          ),
+          radial-gradient(
+            circle at 100% 100%,
+            rgba(168, 85, 247, 0.15) 0%,
+            transparent 35%
+          ),
+          radial-gradient(
+            circle at 50% 50%,
+            rgba(250, 204, 21, 0.03) 0%,
+            transparent 50%
+          );
         background-attachment: fixed;
         -webkit-font-smoothing: antialiased;
       }
+
       .mono {
         font-family: "JetBrains Mono", monospace;
       }
-      .hero-title {
-        font-weight: 900;
-        letter-spacing: -0.06em;
-        line-height: 0.85;
-      }
+
       .glass {
         background: var(--glass-bg);
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
-        border: 1px solid var(--glass-border);
+        backdrop-filter: blur(24px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
       }
-      .project-card {
-        transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
-        cursor: pointer;
-        border: 1px solid #141417;
-        background: #08080a;
+
+      /* Título Principal com Gradiente Vivo */
+      .gradient-text {
+        background: linear-gradient(
+          to right,
+          var(--accent-blue),
+          var(--accent-purple),
+          var(--accent-yellow)
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: 900;
       }
-      .project-card:hover {
-        border-color: var(--accent);
-        transform: translateY(-8px);
-        box-shadow: 0 20px 40px -20px rgba(59, 130, 246, 0.25);
+
+      /* Botões e Destaques */
+      .lang-btn.active {
+        background: var(--accent-yellow);
+        color: black;
+        box-shadow: 0 0 20px rgba(250, 204, 21, 0.3);
       }
-      .card-img,
-      .gallery-img,
-      .gallery-video {
-        filter: grayscale(100%) contrast(1.1);
-        transition: 0.6s ease;
-        width: 100%;
-        object-fit: cover;
-      }
-      .project-card:hover .card-img,
-      .gallery-img:hover,
-      .gallery-video:hover {
-        filter: grayscale(0%) contrast(1);
-      }
+
       .profile-photo {
-        filter: grayscale(100%);
-        transition:
-          filter 0.5s ease,
-          border-color 0.5s ease;
-        border: 2px solid #141417;
+        border: 3px solid var(--accent-purple);
+        box-shadow: 0 0 50px rgba(168, 85, 247, 0.2);
       }
-      .profile-photo:hover {
-        filter: grayscale(0%);
-        border-color: var(--accent);
-      }
-      .reveal {
-        opacity: 0;
-        transform: translateY(30px);
-        transition: 0.8s all cubic-bezier(0.2, 0.8, 0.2, 1);
-      }
-      .reveal.active {
-        opacity: 1;
-        transform: translateY(0);
-      }
-      .page-transition {
-        animation: fadeIn 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-      }
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-          transform: translateY(15px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-      ::-webkit-scrollbar {
-        width: 8px;
-      }
-      ::-webkit-scrollbar-track {
-        background: var(--bg);
-      }
+
+      /* Scrollbar temática */
       ::-webkit-scrollbar-thumb {
-        background: #27272a;
-        border-radius: 4px;
-      }
-      ::-webkit-scrollbar-thumb:hover {
-        background: var(--accent);
+        background: linear-gradient(var(--accent-blue), var(--accent-purple));
+        border-radius: 5px;
       }
     </style>
   </head>
-  <body class="selection:bg-blue-600 selection:text-white overflow-x-hidden">
+  <body class="selection:bg-yellow-400 selection:text-black">
     <main
       id="app"
       class="max-w-6xl mx-auto px-6 py-10 min-h-screen flex flex-col"
@@ -122,60 +94,82 @@
       const translations = {
         en: {
           contactBtn: "Contact",
-          techTitle: "Tech Stack",
-          projectTitle: "Project Archives",
-          contactSection: "Contact & Social",
-          contactHero: "Let's build something amazing?",
-          backBtn: "Back to Archive",
-          techSheet: "Technical Sheet",
-          mainRole: "Primary Role",
-          viewProject: "View Project",
+          techTitle: "Technical Arsenal",
+          projectTitle: "Deployed Projects",
+          contactHero: "Let's build something legendary?",
+          backBtn: "Return to Base",
+          techSheet: "System Specs",
+          mainRole: "Primary Function",
+          viewProject: "Execute Demo",
           location: "Belgium",
-          bio: "I'm Hosch Alef, an undergraduate specializing in Game Development with a strong passion for transforming creative concepts into immersive experiences. I see programming as a form of art—a powerful tool to bring ideas to life.",
-          aboutTitle: "About Me",
-          aboutRole: "Game Programmer & Systems Designer",
-          downloadCV: "Download Curriculum",
+          bio: "I'm a passionate Game Programmer specializing in robust systems and immersive mechanics. I see code as a precision tool for complex creative visions.",
+          aboutTitle: "The Developer",
+          aboutRole: "Systems Engineer & Gameplay Architect",
+          downloadCV: "Download CV",
           aboutText:
-            "Proficient and experienced with both Unity and Unreal Engine, I also bring a solid foundation in web development. Whether it's building gameplay systems, designing mechanics, or crafting intuitive interfaces, I aim to create projects that are both technically sound and emotionally engaging. I'm actively seeking a challenging opportunity to contribute to an innovative team where I can grow, collaborate, and help shape unique digital experiences.",
-          videoLabel: "Demonstration Video",
+            "Expertise in Unity and Unreal (C++/C#). I focus on modular architecture and performance optimization. Available for high-impact professional missions or innovative personal collaborations.",
+          videoLabel: "Direct Footage",
+          discordLabel: "Comms (Discord)",
+
+          videoLabel: "Direct Footage",
+          discordLabel: "Comms (Discord)",
+          levelInter: "🔵 Intermediate",
+          levelInterBlue: "🔷 Intermediate",
+          levelInterGreen: "🟢 Intermediate",
+          levelStrong: "🟡 Strong Intermediate",
+          levelWorld: "🌍 Intermediate",
         },
         pt: {
-          contactBtn: "Contacto",
-          techTitle: "Tecnologias",
+          contactBtn: "Contato",
+          techTitle: "Arsenal Técnico",
           projectTitle: "Arquivo de Projetos",
-          contactSection: "Contacto & Social",
-          contactHero: "Vamos construir algo incrível?",
-          backBtn: "Voltar ao Arquivo",
+          contactHero: "Vamos criar algo lendário?",
+          backBtn: "Voltar ao Início",
           techSheet: "Ficha Técnica",
           mainRole: "Função Principal",
-          viewProject: "Ver Projeto",
+          viewProject: "Iniciar Demo",
           location: "Bélgica",
-          bio: "Sou Hosch Alef, estudante especializado em Desenvolvimento de Jogos com uma forte paixão por transformar conceitos criativos em experiências imersivas. Vejo a programação como uma forma de arte — uma ferramenta poderosa para dar vida a ideias.",
-          aboutTitle: "Sobre Mim",
-          aboutRole: "Programador de Jogos & Systems Designer",
+          bio: "Sou Programador de Jogos focado em sistemas robustos e mecânicas imersivas. Transformo lógica complexa em experiências fluidas.",
+          aboutTitle: "O Desenvolvedor",
+          aboutRole: "Engenheiro de Sistemas & Gameplay",
           downloadCV: "Baixar Currículo",
           aboutText:
-            "Proficiente e experiente tanto em Unity quanto em Unreal Engine, também possuo uma base sólida em desenvolvimento web. Seja construindo sistemas de gameplay, projetando mecânicas ou criando interfaces intuitivas, o meu objetivo é criar projetos tecnicamente robustos e emocionalmente envolventes. Procuro ativamente uma oportunidade desafiadora para contribuir com uma equipa inovadora onde possa crescer, colaborar e ajudar a moldar experiências digitais únicas.",
-          videoLabel: "Vídeo de Demonstração",
+            "Especialista em Unity e Unreal (C++/C#). Foco em arquitetura modular e otimização de performance. Disponível para oportunidades profissionais ou colaborações inovadoras.",
+          videoLabel: "Gravação de Gameplay",
+          discordLabel: "Discord",
+          videoLabel: "Gravação de Gameplay",
+          discordLabel: "Discord",
+          levelInter: "🔵 Intermediário",
+          levelInterBlue: "🔷 Intermediário",
+          levelInterGreen: "🟢 Intermediário",
+          levelStrong: "🟡 Intermediário Forte",
+          levelWorld: "🌍 Intermediário",
         },
         fr: {
           contactBtn: "Contact",
-          techTitle: "Technologies",
+          techTitle: "Arsenal Technique",
           projectTitle: "Archives des Projets",
-          contactSection: "Contact & Social",
-          contactHero: "Construisons quelque chose d'incroyable ?",
-          backBtn: "Retour aux Archives",
+          contactHero: "Prêt à créer quelque chose d'épique ?",
+          backBtn: "Retour",
           techSheet: "Fiche Technique",
           mainRole: "Rôle Principal",
-          viewProject: "Voir le Projet",
+          viewProject: "Lancer la Démo",
           location: "Belgique",
-          bio: "Je suis Hosch Alef, un étudiant de premier cycle spécialisé dans le développement de jeux avec une forte passion pour la transformation de concepts créatifs en expériences immersives. Je vois la programmation comme une forme d'art, un outil puissant pour donner vie aux idées.",
-          aboutTitle: "À propos",
-          aboutRole: "Programmeur de Jeux & Systems Designer",
-          downloadCV: "Télécharger le CV",
+          bio: "Je suis  programmeur de jeux créant des systèmes robustes. Je transforme la logique complexe en expériences fluides.",
+          aboutTitle: "Le Développeur",
+          aboutRole: "Architecte Systèmes & Gameplay",
+          downloadCV: "Télécharger CV",
           aboutText:
-            "Compétent et expérimenté avec Unity et Unreal Engine, j'apporte également une base solide en développement web. Qu'il s'agisse de construire des systèmes de jeu, de concevoir des mécaniques ou de créer des interfaces intuitives, mon objectif est de créer des projets à la fois techniquement solides et émotionnellement engageants. Je recherche activement une opportunité stimulante pour contribuer à une équipe innovante où je peux grandir, collaborer et aider à façonner des expériences numériques uniques.",
-          videoLabel: "Vidéo de démonstration",
+            "Expert Unity/Unreal (C++/C#). Focus sur la performance et le design modulaire. Ouvert aux opportunités et collaborations innovantes.",
+          videoLabel: "Séquence Gameplay",
+          discordLabel: "Discord",
+          videoLabel: "Séquence Gameplay",
+          discordLabel: "Discord",
+          levelInter: "🔵 Intermédiaire",
+          levelInterBlue: "🔷 Intermédiaire",
+          levelInterGreen: "🟢 Intermédiaire",
+          levelStrong: "🟡 Intermédiaire Fort",
+          levelWorld: "🌍 Intermédiaire",
         },
       };
 
@@ -188,39 +182,38 @@
           linkedin: "https://www.linkedin.com/in/alefhosch/",
           github: "https://github.com/LOBOodst",
           email: "mailto:alefah.ah@gmail.com",
+          discord: "https://discordapp.com/users/965563425021382666",
+          discordTag: "lobo_spartans",
         },
         skills: [
+          { n: "C++", l: "levelInter", c: "text-blue-400 border-blue-500/30" },
           {
             n: "Unreal Engine",
-            l: "Intermediate",
-            c: "text-gray-300 bg-gray-500/10 border-gray-500/20",
-          },
-          {
-            n: "Unity",
-            l: "Intermediate",
-            c: "text-gray-300 bg-gray-500/10 border-gray-500/20",
-          },
-          {
-            n: "C++",
-            l: "Intermediate",
-            c: "text-blue-500 bg-blue-500/10 border-blue-500/20",
+            l: "levelInterBlue",
+            c: "text-blue-500 border-blue-600/30",
           },
           {
             n: "C#",
-            l: "Intermediate",
-            c: "text-purple-500 bg-purple-500/10 border-purple-500/20",
+            l: "levelInterGreen",
+            c: "text-green-500 border-green-500/30",
+          },
+          {
+            n: "Unity",
+            l: "levelInterGreen",
+            c: "text-green-400 border-green-400/30",
           },
           {
             n: "Python",
-            l: "Intermediate",
-            c: "text-yellow-500 bg-yellow-500/10 border-yellow-500/20",
+            l: "levelStrong",
+            c: "text-yellow-400 border-yellow-400/30",
           },
           {
-            n: "SQL",
-            l: "Beginner",
-            c: "text-cyan-500 bg-cyan-500/10 border-cyan-500/20",
+            n: "JavaScript",
+            l: "levelWorld",
+            c: "text-yellow-500 border-yellow-500/30",
           },
         ],
+
         projects: [
           {
             id: "tactical-rpg",
@@ -232,7 +225,6 @@
               "images/taticalRPG_2.png",
               "images/taticalRPG_3.png",
             ],
-
             tech: ["Unreal Engine", "C++", "Architecture"],
             links: { github: "#", demo: "#" },
             featured: true,
@@ -244,18 +236,15 @@
             fullDesc: {
               en: `This project implements a modular Tactical RPG framework.
                   <br><br><strong>Grid System:</strong> Matrix-based tile management, pathfinding validation, and world-to-grid logical mapping.
-                  <br><strong>Turn Manager:</strong> Decoupled flow control for active units, initiative queues, and state handling (Start, Action, End).
-                  <br><strong>Character System:</strong> Base unit classes for Players and AI, integrating attributes, animations, and grid rules.
-                  <br><strong>Combat & Movement:</strong> Range calculation, LOS (Line of Sight) checks, and A* pathfinding integration.`,
+                  <br><strong>Turn Manager:</strong> Decoupled flow control for active units, initiative queues, and state handling.
+                  <br><strong>Character System:</strong> Base unit classes for Players and AI, integrating attributes and grid rules.`,
               pt: `Este projeto implementa um Tactical RPG em C++ dentro da Unreal Engine, estruturado em sistemas modulares.
-                  <br><br><strong>Grid System (Sistema de Grade):</strong> Gerenciamento de matriz de tiles, validação de movimentação e mapeamento lógico.
-                  <br><strong>Turn Manager (Sistema de Turnos):</strong> Controle de fluxo desacoplado, filas de iniciativa e estados de turno (Início, Ação, Fim).
-                  <br><strong>Character System:</strong> Unidades base para Player e IA, integrando atributos, animações e regras do grid.
-                  <br><strong>Movimentação e Combate:</strong> Cálculo de alcance, verificação de linha de visão e integração com Pathfinding.`,
+                  <br><br><strong>Grid System:</strong> Gerenciamento de matriz de tiles, validação de movimentação e mapeamento lógico.
+                  <br><strong>Turn Manager:</strong> Controle de fluxo desacoplado, filas de iniciativa e estados de turno.
+                  <br><strong>Character System:</strong> Unidades base para Player e IA, integrando atributos e regras do grid.`,
               fr: `Ce projet implémente un framework Tactical RPG modulaire en C++.
                   <br><br><strong>Grid System:</strong> Gestion de grille, validation de mouvement et mapping logique.
-                  <br><strong>Turn Manager:</strong> Contrôle du flux de combat, files d'attente d'initiative et gestion d'états.
-                  <br><strong>Character System:</strong> Classes d'unités pour joueurs et IA avec attributs et règles de grille.`,
+                  <br><strong>Turn Manager:</strong> Contrôle du flux de combat, files d'attente d'initiative et gestion d'états.`,
             },
           },
           {
@@ -274,12 +263,12 @@
             desc: {
               en: "Overcooked-inspired car tuning party game.",
               pt: "Party game de tuning inspirado em Overcooked.",
-              fr: "Jeu de fête tuning.",
+              fr: "Jeu de fête tuning inspiré par Overcooked.",
             },
             fullDesc: {
               en: "4-player multi-input handling and real-time task validation.",
               pt: "Gestão de multi-input para 4 jogadores e validação de tarefas em tempo real.",
-              fr: "Multijoueur local.",
+              fr: "Gestion multi-entrées pour 4 joueurs et validation des tâches en temps réel.",
             },
           },
           {
@@ -296,14 +285,14 @@
             tech: ["Unreal Engine", "Blueprints", "Game Design"],
             links: { github: "#", demo: "#" },
             desc: {
-              en: "First experience with Unreal Engine: recreating iconic mechanics 100% in Blueprints.",
-              pt: "Primeira experiência com Unreal Engine: recriação de 3 mecânicas icónicas 100% em Blueprints.",
-              fr: "Première expérience avec Unreal Engine : recréer 3 mécaniques iconiques 100% en Blueprints.",
+              en: "Recreating iconic mechanics 100% in Blueprints.",
+              pt: "Recriação de mecânicas icônicas 100% em Blueprints.",
+              fr: "Recréer des mécaniques iconiques 100% en Blueprints.",
             },
             fullDesc: {
-              en: "For my first contact with Unreal Engine, I challenged myself to recreate three complex gameplay systems from major titles using exclusively Visual Scripting (Blueprints):<br><br>1. <strong>Bullet Drop (Sniper Elite):</strong> Ballistics system with gravity and distance compensation.<br>2. <strong>V.A.T.S. System (Fallout):</strong> Dynamic target selection and time dilation logic.<br>3. <strong>Possession System (Lego Star Wars):</strong> Character swapping and AI controller takeover mechanics.",
-              pt: "No meu primeiro contacto com a Unreal Engine, desafiei-me a recriar três sistemas de gameplay complexos de grandes títulos utilizando exclusivamente Visual Scripting (Blueprints):<br><br>1. <strong>Bullet Drop (Sniper Elite):</strong> Sistema de balística com gravidade e compensação de distância.<br>2. <strong>Sistema V.A.T.S. (Fallout):</strong> Seleção dinâmica de alvos e lógica de dilatação temporal.<br>3. <strong>Sistema de Possessão (Lego Star Wars):</strong> Mecânica de troca de personagens e controlo de IA.",
-              fr: "Pour mon premier contact avec Unreal Engine, je me suis mis au défi de recréer trois systèmes de jeu complexes utilisant exclusivement des Blueprints :<br><br>1. <strong>Bullet Drop (Sniper Elite)</strong><br>2. <strong>Système V.A.T.S. (Fallout)</strong><br>3. <strong>Système de Possession (Lego Star Wars)</strong>",
+              en: "Recreation of complex gameplay systems using Visual Scripting:<br><br>1. <strong>Bullet Drop:</strong> Ballistics with gravity compensation.<br>2. <strong>V.A.T.S. System:</strong> Dynamic targeting and time dilation.<br>3. <strong>Possession System:</strong> Character swapping and AI takeover.",
+              pt: "Recriação de sistemas complexos via Visual Scripting:<br><br>1. <strong>Bullet Drop:</strong> Balística com compensação de gravidade.<br>2. <strong>Sistema V.A.T.S.:</strong> Seleção dinâmica de alvos e dilatação temporal.<br>3. <strong>Sistema de Possessão:</strong> Troca de personagens e controle de IA.",
+              fr: "Recréation de systèmes complexes via Visual Scripting.",
             },
           },
           {
@@ -323,12 +312,12 @@
             desc: {
               en: "Conversation simulator in an infinite elevator.",
               pt: "Simulador de conversas num elevador infinito.",
-              fr: "Simulateur de conversation.",
+              fr: "Simulateur de conversation dans un ascenseur infini.",
             },
             fullDesc: {
               en: "Social tension mechanics using weighted random event systems.",
               pt: "Mecânicas de tensão social utilizando sistemas de eventos aleatórios ponderados.",
-              fr: "Tension sociale.",
+              fr: "Mécaniques de tension sociale.",
             },
           },
           {
@@ -345,12 +334,12 @@
             desc: {
               en: "72-hour survival game challenge.",
               pt: "Jogo de sobrevivência criado em 72 horas.",
-              fr: "Jeu de survie en 72h.",
+              fr: "Jeu de survie créé en 72 heures.",
             },
             fullDesc: {
               en: "Rapid MVP development with high polish on the core loop.",
               pt: "Desenvolvimento rápido de MVP com alto polimento no loop principal.",
-              fr: "Développement MVP rapide.",
+              fr: "Développement rapide de MVP.",
             },
           },
           {
@@ -372,12 +361,12 @@
             desc: {
               en: "WarioWare style microgame collection.",
               pt: "Coleção de microgames estilo WarioWare.",
-              fr: "Collection de micro-jeux.",
+              fr: "Collection de micro-jeux style WarioWare.",
             },
             fullDesc: {
-              en: "Team-based project focused on technical synchronization and variety.",
-              pt: "Projeto em equipa focado em sincronização técnica e variedade.",
-              fr: "Projet d'équipe.",
+              en: "Team-based project focused on technical synchronization.",
+              pt: "Projeto em equipe focado em sincronização técnica.",
+              fr: "Projet d'équipe axé sur la synchronisation technique.",
             },
           },
           {
@@ -394,9 +383,9 @@
               fr: "RPG d'action basé sur la mythologie afro-brésilienne.",
             },
             fullDesc: {
-              en: "Intense 'souls-like' combat experience. Highlights include an Event Bus System for buffs and complex AI State Machines.",
-              pt: "Experiência de combate 'souls-like' intensa. Destaques incluem um Event Bus System para buffs e State Machines de IA complexas.",
-              fr: "Expérience de combat intense de style 'souls-like'.",
+              en: "Souls-like combat. Highlights include an Event Bus System and AI State Machines.",
+              pt: "Combate souls-like. Destaques incluem um Event Bus System e State Machines de IA.",
+              fr: "Combat souls-like. Points forts : Event Bus System et State Machines IA.",
             },
           },
           {
@@ -416,9 +405,9 @@
               fr: "Mise en œuvre 3D du Shogi.",
             },
             fullDesc: {
-              en: "Deterministic logic and state validation for complex board rules.",
-              pt: "Lógica determinística e validação de estados para regras complexas de tabuleiro.",
-              fr: "Logique déterministe.",
+              en: "Deterministic logic and state validation for complex rules.",
+              pt: "Lógica determinística e validação de estados para regras complexas.",
+              fr: "Logique déterministe et validation d'états.",
             },
           },
           {
@@ -435,12 +424,12 @@
             desc: {
               en: "Modular Data-Driven narrative tool.",
               pt: "Ferramenta modular Data-Driven para narrativas.",
-              fr: "Outil narratif modulaire.",
+              fr: "Outil narratif modulaire Data-Driven.",
             },
             fullDesc: {
               en: "System using JSON/CSV for non-linear branching dialogues.",
               pt: "Sistema que utiliza JSON/CSV para diálogos não-lineares.",
-              fr: "Système narratif.",
+              fr: "Système utilisant JSON/CSV.",
             },
           },
         ],
@@ -455,85 +444,90 @@
         const hash = window.location.hash.replace("#", "");
         const app = document.getElementById("app");
         const t = translations[currentLang];
-        if (!hash || hash === "home") app.innerHTML = renderHome(t);
-        else {
-          const project = config.projects.find((p) => p.id === hash);
-          app.innerHTML = project
-            ? renderProjectDetail(project, t)
-            : renderHome(t);
-        }
+        app.innerHTML =
+          !hash || hash === "home"
+            ? renderHome(t)
+            : renderProjectDetail(
+                config.projects.find((p) => p.id === hash) ||
+                  config.projects[0],
+                t,
+              );
         lucide.createIcons();
         initScrollReveal();
         window.scrollTo({ top: 0, behavior: "smooth" });
       };
 
       const renderHome = (t) => `
-        <div class="page-transition flex-grow flex flex-col">
-            <header class="mb-24">
-                <nav class="flex justify-between items-center glass p-4 px-6 rounded-full mb-20 reveal">
-                    <div class="mono text-xs font-bold text-zinc-500 uppercase tracking-widest">Hosch.Sys_v6.0</div>
-                    <div class="flex gap-4 items-center">
-                        <div class="flex gap-2 mr-4 border-r border-white/10 pr-4">
-                            <button onclick="setLanguage('en')" class="${currentLang === "en" ? "text-blue-500" : "text-zinc-500"} font-bold text-xs">EN</button>
-                            <button onclick="setLanguage('fr')" class="${currentLang === "fr" ? "text-blue-500" : "text-zinc-500"} font-bold text-xs">FR</button>
-                            <button onclick="setLanguage('pt')" class="${currentLang === "pt" ? "text-blue-500" : "text-zinc-500"} font-bold text-xs">PT</button>
-                        </div>
-                        <a href="${config.profile.github}" target="_blank" class="text-zinc-400 hover:text-white transition"><i data-lucide="github" size="20"></i></a>
-                        <a href="#contact" class="bg-white text-black px-5 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-blue-600 hover:text-white transition shadow-lg">${t.contactBtn}</a>
+        <div class="page-transition">
+            <nav class="flex justify-between items-center glass p-4 px-8 rounded-full mb-20 reveal">
+                <div class="mono text-xs font-black text-yellow-400">HOSCH.CORE_V1</div>
+                <div class="flex gap-6 items-center">
+                    <div class="flex gap-1 bg-white/5 p-1 rounded-xl border border-white/10">
+                        <button onclick="setLanguage('en')" class="lang-btn ${currentLang === "en" ? "active" : "text-zinc-500"}">EN</button>
+                        <button onclick="setLanguage('fr')" class="lang-btn ${currentLang === "fr" ? "active" : "text-zinc-500"}">FR</button>
+                        <button onclick="setLanguage('pt')" class="lang-btn ${currentLang === "pt" ? "active" : "text-zinc-500"}">PT</button>
                     </div>
-                </nav>
-                <div class="grid grid-cols-1 md:grid-cols-12 gap-10 items-center reveal">
-                    <div class="md:col-span-4 flex justify-center md:justify-start">
-                        <img src="${config.profile.photo}" class="profile-photo w-56 h-56 object-cover rounded-2xl shadow-2xl">
-                    </div>
-                    <div class="md:col-span-8 text-center md:text-left">
-                        <h1 class="hero-title text-6xl md:text-[7rem] text-white uppercase mb-6 leading-none">HOSCH<br><span class="text-blue-600">ALEF</span></h1>
-                        <p class="text-lg md:text-xl text-zinc-400 italic border-l-2 border-blue-600/30 pl-6 leading-relaxed">${t.bio}</p>
-                    </div>
+                    <a href="#contact" class="bg-blue-600 hover:bg-yellow-400 hover:text-black text-white px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest transition-all shadow-lg">${t.contactBtn}</a>
+                </div>
+            </nav>
+
+            <header class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center mb-32 reveal">
+                <div class="md:col-span-4 flex justify-center">
+                    <img src="${config.profile.photo}" class="profile-photo w-64 h-64 object-cover rounded-3xl">
+                </div>
+                <div class="md:col-span-8 text-center md:text-left">
+                    <h1 class="text-7xl md:text-[8.5rem] uppercase mb-4 leading-none tracking-tighter">
+                        <span class="gradient-text">HOSCH</span><br>
+                        <span class="gradient-text">ALEF</span>
+                    </h1>
+                    <p class="text-xl text-zinc-400 italic border-l-4 border-yellow-400 pl-6 max-w-2xl">${t.bio}</p>
                 </div>
             </header>
 
-            <section class="mb-20 reveal">
-                <h2 class="mono text-xs font-bold text-zinc-600 uppercase tracking-widest mb-6 border-b border-zinc-900 pb-2">${t.techTitle}</h2>
-                <div class="grid grid-cols-2 md:grid-cols-6 gap-4">
-                    ${config.skills
-                      .map(
-                        (s) => `
-                        <div class="glass border ${s.c} p-4 text-center rounded-xl">
-                            <p class="font-bold text-sm uppercase">${s.n}</p>
-                            <p class="mono text-[9px] uppercase font-bold opacity-80">${s.l}</p>
-                        </div>
-                    `,
-                      )
-                      .join("")}
-                </div>
-            </section>
+            <section class="mb-32 reveal">
+    <h2 class="mono text-xs font-black text-blue-500 uppercase tracking-[0.4em] mb-10 flex items-center gap-4">
+      <span class="h-px w-10 bg-blue-500"></span> ${t.techTitle}
+    </h2>
+    <div class="grid grid-cols-2 md:grid-cols-6 gap-4">
+        ${config.skills
+          .map(
+            (s) => `
+            <div class="glass border ${s.c} p-6 rounded-2xl group hover:bg-white/5 transition-all">
+                <p class="font-black text-sm uppercase">${s.n}</p>
+                <p class="mono text-[10px] opacity-60 mt-1">${t[s.l]}</p> 
+            </div>
+        `,
+          )
+          .join("")}
+    </div>
+</section>
 
-           <section class="mb-32 reveal">
-                <div class="glass p-8 md:p-12 rounded-3xl border-white/5">
-                    <h2 class="mono text-xs font-bold text-blue-500 uppercase tracking-[0.3em] mb-2">${t.aboutTitle}</h2>
-                    <h3 class="text-3xl md:text-4xl font-black text-white uppercase mb-6 tracking-tighter">${t.aboutRole}</h3>
-                    <p class="text-xl md:text-2xl text-zinc-400 font-medium leading-relaxed max-w-4xl mb-10">${t.aboutText}</p>
-                    
-                    <a href="CV/Hosch_Alef_CV.pdf" target="_blank" class="inline-flex items-center gap-3 bg-white/5 hover:bg-blue-600 border border-white/10 hover:border-blue-500 text-white px-8 py-4 rounded-full font-bold uppercase text-xs tracking-widest transition-all duration-300">
-                        <i data-lucide="file-text" size="18"></i>
-                        ${t.downloadCV}
+            <section class="mb-32">
+                <div class="glass p-12 md:p-16 rounded-[3rem] border-white/5 relative overflow-hidden">
+                    <div class="absolute -top-24 -right-24 w-64 h-64 bg-blue-600/10 blur-[100px]"></div>
+                    <h2 class="mono text-blue-500 text-xs font-black uppercase tracking-[0.4em] mb-4">${t.aboutTitle}</h2>
+                    <h3 class="text-4xl md:text-5xl font-black text-white uppercase mb-8 tracking-tighter">${t.aboutRole}</h3>
+                    <p class="text-xl md:text-2xl text-zinc-400 leading-relaxed max-w-4xl mb-12">${t.aboutText}</p>
+                    <a href="CV/Hosch_Alef_CV.pdf" target="_blank" class="inline-flex items-center gap-4 bg-yellow-400 text-black px-10 py-5 rounded-full font-black uppercase text-xs tracking-widest hover:scale-105 transition-all shadow-2xl">
+                        <i data-lucide="file-text"></i> ${t.downloadCV}
                     </a>
                 </div>
             </section>
-            
-            <section class="mb-24 flex-grow">
-                <h2 class="mono text-xs font-bold text-zinc-600 uppercase tracking-widest mb-8 border-b border-zinc-900 pb-2">${t.projectTitle}</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+            <section class="mb-32">
+                <h2 class="mono text-xs font-black text-purple-500 uppercase tracking-[0.4em] mb-10 flex items-center gap-4">
+                  <span class="h-px w-10 bg-purple-500"></span> ${t.projectTitle}
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
                     ${config.projects
                       .map(
                         (p) => `
-                        <article onclick="window.location.hash='${p.id}'" class="project-card rounded-2xl overflow-hidden reveal ${p.featured ? "md:col-span-2" : ""}">
-                            <img src="${p.images[0]}" class="card-img ${p.featured ? "h-80" : "h-64"}">
-                            <div class="p-8">
-                                <span class="mono text-[10px] text-zinc-500 uppercase font-bold tracking-widest">${p.type}</span>
-                                <h3 class="text-4xl font-black text-white mt-2 uppercase tracking-tighter leading-tight">${p.title}</h3>
-                                <p class="text-zinc-400 text-base mt-4 leading-relaxed">${p.desc[currentLang]}</p>
+                        <article onclick="window.location.hash='${p.id}'" class="project-card rounded-[2.5rem] reveal ${p.featured ? "md:col-span-2" : ""}">
+                            <img src="${p.images[0]}" class="card-img ${p.featured ? "h-96" : "h-72"} w-full object-cover">
+                            <div class="p-10">
+                                <span class="mono text-[10px] text-yellow-400 font-black uppercase tracking-widest">${p.type}</span>
+                                <h3 class="text-4xl font-black text-white mt-2 uppercase tracking-tighter">${p.title}</h3>
+                                <p class="text-zinc-400 mt-4 leading-relaxed">${p.desc[currentLang]}</p>
                             </div>
                         </article>
                     `,
@@ -543,69 +537,46 @@
             </section>
 
             <section id="contact" class="mb-32 reveal">
-                <div class="glass p-12 rounded-3xl text-center border-blue-500/10">
-                    <h3 class="text-4xl md:text-5xl font-black text-white mb-6 uppercase tracking-tighter">${t.contactHero}</h3>
-                    <div class="flex flex-wrap justify-center gap-6 mt-10">
-                        <a href="${config.profile.email}" class="bg-blue-600 text-white px-10 py-4 rounded-full font-bold uppercase hover:bg-blue-700 transition shadow-xl flex items-center gap-3"><i data-lucide="mail"></i> E-mail</a>
-                        <a href="${config.profile.github}" target="_blank" class="glass border-white/10 text-white px-10 py-4 rounded-full font-bold uppercase hover:bg-white hover:text-black transition flex items-center gap-3"><i data-lucide="github" size="20"></i> GitHub</a>
-                        <a href="${config.profile.linkedin}" target="_blank" class="glass border-white/10 text-white px-10 py-4 rounded-full font-bold uppercase hover:bg-white hover:text-black transition flex items-center gap-3"><i data-lucide="linkedin" size="20"></i> LinkedIn</a>
+                <div class="glass p-16 rounded-[4rem] text-center border-yellow-400/20">
+                    <h3 class="text-5xl md:text-7xl font-black text-white mb-10 uppercase tracking-tighter">Spawn <span class="text-blue-600">Point.</span></h3>
+                    <div class="flex flex-wrap justify-center gap-6">
+                        <a href="${config.profile.email}" class="bg-blue-600 text-white px-12 py-5 rounded-full font-black uppercase hover:scale-110 transition shadow-xl flex items-center gap-3">E-mail</a>
+                        <a href="${config.profile.discord}" target="_blank" class="bg-[#5865F2] text-white px-12 py-5 rounded-full font-black uppercase hover:scale-110 transition shadow-xl flex items-center gap-3">Discord</a>
+                        <a href="${config.profile.github}" target="_blank" class="glass text-white px-12 py-5 rounded-full font-black uppercase hover:bg-white hover:text-black transition">GitHub</a>
+                        <a href="${config.profile.linkedin}" target="_blank" class="glass text-white px-12 py-5 rounded-full font-black uppercase hover:bg-white hover:text-black transition">LinkedIn</a>
                     </div>
                 </div>
             </section>
-            <footer class="py-12 text-center border-t border-zinc-900">
-                <p class="mono text-[10px] text-zinc-600 uppercase tracking-widest">© ${new Date().getFullYear()} Hosch Alef // ${t.location}</p>
+
+            <footer class="py-12 text-center border-t border-white/5">
+                <p class="mono text-[10px] text-zinc-600 uppercase tracking-widest">© ${new Date().getFullYear()} // HOSCH ALEF // ${t.location}</p>
             </footer>
         </div>
       `;
 
       const renderProjectDetail = (p, t) => `
         <div class="page-transition">
-            <button onclick="window.location.hash='home'" class="flex items-center gap-2 text-zinc-500 hover:text-white transition mono text-[11px] uppercase font-bold mb-12">
-                <i data-lucide="chevron-left" size="16"></i> ${t.backBtn}
+            <button onclick="window.location.hash='home'" class="flex items-center gap-3 text-yellow-400 hover:text-white transition mono text-xs font-black uppercase mb-16">
+                <i data-lucide="arrow-left"></i> ${t.backBtn}
             </button>
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-16">
                 <div class="lg:col-span-8">
-                    <span class="mono text-[10px] text-blue-500 bg-blue-500/10 border border-blue-500/20 px-3 py-1 rounded-full uppercase font-bold mb-6 inline-block">${p.type}</span>
-                    <h1 class="text-5xl md:text-7xl font-black text-white uppercase leading-none mb-12">${p.title}</h1>
-                    
-                    <div class="text-zinc-400 text-lg leading-relaxed mb-16 prose prose-invert max-w-none">
-                        ${p.fullDesc[currentLang]}
-                    </div>
-
+                    <h1 class="text-6xl md:text-8xl font-black text-white uppercase leading-none mb-10 tracking-tighter">${p.title}</h1>
+                    <div class="text-zinc-400 text-xl leading-relaxed mb-16">${p.fullDesc[currentLang]}</div>
                     <div class="space-y-12">
-                        ${
-                          p.videos
-                            ? p.videos
-                                .map(
-                                  (v) => `
-                            <div class="reveal">
-                                <p class="mono text-[10px] text-zinc-500 uppercase mb-4 tracking-widest flex items-center gap-2">
-                                    <i data-lucide="play-circle" size="14"></i> ${t.videoLabel}
-                                </p>
-                                <video class="gallery-video rounded-2xl border border-zinc-800 shadow-2xl" autoplay loop muted playsinline>
-                                    <source src="${v}" type="video/mp4">
-                                </video>
-                            </div>
-                        `,
-                                )
-                                .join("")
-                            : ""
-                        }
-                        
-                        ${p.images && !p.videos ? p.images.map((img) => `<img src="${img}" class="gallery-img rounded-2xl border border-zinc-800 shadow-2xl">`).join("") : ""}
-                        ${p.images && p.videos ? p.images.map((img) => `<img src="${img}" class="gallery-img rounded-2xl border border-zinc-800 shadow-2xl opacity-50">`).join("") : ""}
+                        ${p.videos ? p.videos.map((v) => `<video class="rounded-3xl w-full border-2 border-white/5" autoplay loop muted playsinline><source src="${v}" type="video/mp4"></video>`).join("") : ""}
+                        ${p.images.map((img) => `<img src="${img}" class="rounded-3xl w-full border-2 border-white/5 shadow-2xl">`).join("")}
                     </div>
                 </div>
                 <aside class="lg:col-span-4">
-                    <div class="glass p-10 rounded-3xl sticky top-10 border-blue-500/10">
-                        <h3 class="mono text-white text-[10px] uppercase font-bold tracking-widest mb-8 border-b border-white/5 pb-4">${t.techSheet}</h3>
+                    <div class="glass p-10 rounded-[2.5rem] sticky top-10 border-blue-500/20">
+                        <h3 class="mono text-blue-500 text-xs font-black uppercase tracking-widest mb-10 border-b border-white/5 pb-4">${t.techSheet}</h3>
                         <div class="space-y-8">
-                            <div><p class="text-[10px] text-zinc-600 uppercase font-bold mb-2 tracking-widest">${t.mainRole}</p><p class="text-white font-bold uppercase text-sm">${p.role}</p></div>
-                            <div><p class="text-[10px] text-zinc-600 uppercase font-bold mb-3 tracking-widest">Stack</p><div class="flex flex-wrap gap-2">${p.tech.map((tech) => `<span class="mono text-[9px] bg-blue-600/10 text-blue-400 px-3 py-1 rounded-full border border-blue-500/10 font-bold uppercase">${tech}</span>`).join("")}</div></div>
+                            <div><p class="text-[10px] text-zinc-600 uppercase font-black mb-2">${t.mainRole}</p><p class="text-white font-black uppercase">${p.role}</p></div>
+                            <div><p class="text-[10px] text-zinc-600 uppercase font-black mb-3">Stack</p><div class="flex flex-wrap gap-2">${p.tech.map((tech) => `<span class="mono text-[9px] bg-yellow-400 text-black px-3 py-1 rounded-md font-black uppercase">${tech}</span>`).join("")}</div></div>
+                            <div><p class="text-[10px] text-zinc-600 uppercase font-black mb-2">Comms</p><a href="${config.profile.discord}" target="_blank" class="text-purple-500 font-black uppercase text-xs mono hover:underline">${config.profile.discordTag}</a></div>
                         </div>
-                        <div class="mt-10 pt-10 border-t border-white/5 space-y-4">
-                             ${p.links.demo !== "#" ? `<a href="${p.links.demo}" target="_blank" class="bg-white text-black px-6 py-4 rounded-full hover:bg-blue-600 hover:text-white transition flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest justify-center shadow-lg">${t.viewProject} <i data-lucide="external-link" size="16"></i></a>` : ""}
-                        </div>
+                        ${p.links.demo !== "#" ? `<a href="${p.links.demo}" target="_blank" class="mt-12 w-full bg-blue-600 text-white py-5 rounded-2xl font-black uppercase flex justify-center items-center gap-3 hover:bg-yellow-400 hover:text-black transition-all">${t.viewProject} <i data-lucide="zap"></i></a>` : ""}
                     </div>
                 </aside>
             </div>
@@ -624,6 +595,7 @@
         );
         reveals.forEach((el) => observer.observe(el));
       };
+
       window.addEventListener("hashchange", render);
       window.addEventListener("load", render);
     </script>
