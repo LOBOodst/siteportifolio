@@ -82,9 +82,82 @@
         background: linear-gradient(var(--accent-blue), var(--accent-purple));
         border-radius: 5px;
       }
+
+      /* Efeito de Reatividade nos Cards de Projeto */
+      .project-card {
+        transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+        cursor: pointer;
+        overflow: hidden;
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+      }
+
+      .project-card:hover {
+        transform: translateY(-15px) scale(1.01);
+        background: rgba(255, 255, 255, 0.05);
+        border-color: var(--accent-yellow);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      }
+
+      .card-img {
+        transition: transform 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+      }
+
+      .project-card:hover .card-img {
+        transform: scale(1.08);
+      }
+
+      /* Feedback visual para cópia */
+      .copy-feedback {
+        animation: bounce 0.5s ease;
+      }
+
+      /* Loader System */
+      #loader {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        background: var(--bg-pure);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        transition: opacity 0.8s cubic-bezier(0.23, 1, 0.32, 1), visibility 0.8s;
+      }
+      #loader.hidden {
+        opacity: 0;
+        visibility: hidden;
+      }
+      .loader-bar {
+        width: 150px;
+        height: 2px;
+        background: rgba(255, 255, 255, 0.05);
+        margin-top: 24px;
+        position: relative;
+        overflow: hidden;
+      }
+      .loader-progress {
+        position: absolute;
+        height: 100%;
+        width: 40%;
+        background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
+        animation: loading-slide 1.5s infinite ease-in-out;
+      }
+      @keyframes loading-slide {
+        0% { transform: translateX(-100%); }
+        100% { transform: translateX(250%); }
+      }
     </style>
   </head>
   <body class="selection:bg-yellow-400 selection:text-black">
+    <!-- Overlay de Carregamento -->
+    <div id="loader">
+      <div class="mono text-xs font-black text-yellow-400 tracking-[0.4em] animate-pulse">HOSCH.CORE_V1_INIT</div>
+      <div class="loader-bar">
+        <div class="loader-progress"></div>
+      </div>
+    </div>
+
     <main
       id="app"
       class="max-w-6xl mx-auto px-6 py-10 min-h-screen flex flex-col"
@@ -115,6 +188,7 @@
           levelInterGreen: "🟢 Intermediate",
           levelStrong: "🟡 Advanced Intermediate",
           levelWorld: "🌍 Intermediate",
+          copySuccess: "Copied!",
         },
         pt: {
           contactBtn: "Contato",
@@ -139,6 +213,7 @@
           levelInterGreen: "🟢 Intermediário",
           levelStrong: "🟡 Intermediário Avançado",
           levelWorld: "🌍 Intermediário",
+          copySuccess: "Copiado!",
         },
         fr: {
           contactBtn: "Contact",
@@ -163,10 +238,12 @@
           levelInterGreen: "🟢 Intermédiaire",
           levelStrong: "🟡 Intermédiaire Avancé",
           levelWorld: "🌍 Intermédiaire",
+          copySuccess: "Copié!",
         },
       };
 
       let currentLang = "en";
+      let isInitialLoad = true;
 
       const config = {
         profile: {
@@ -185,13 +262,13 @@
             l: "levelInterBlue",
             c: "text-blue-500 border-blue-600/30",
           },
+          { n: "Git / GitHub", l: "levelStrong", c: "text-orange-400 border-orange-500/30" },
           {
             n: "C#",
             l: "levelInterGreen",
             c: "text-green-500 border-green-500/30",
           },
-          {
-            n: "Unity",
+          { n: "Unity",
             l: "levelInterGreen",
             c: "text-green-400 border-green-400/30",
           },
@@ -438,7 +515,7 @@
         const app = document.getElementById("app");
         const t = translations[currentLang];
         app.innerHTML =
-          !hash || hash === "home"
+          !hash || hash === "home" || hash === "contact"
             ? renderHome(t)
             : renderProjectDetail(
                 config.projects.find((p) => p.id === hash) ||
@@ -447,6 +524,13 @@
               );
         lucide.createIcons();
         initScrollReveal();
+
+        if (isInitialLoad) {
+          setTimeout(() => {
+            document.getElementById("loader").classList.add("hidden");
+            isInitialLoad = false;
+          }, 1200); // Tempo para o usuário absorver a intro
+        }
         window.scrollTo({ top: 0, behavior: "smooth" });
       };
 
@@ -534,7 +618,7 @@
                           <h3 class="text-5xl md:text-7xl font-black text-white mb-10 uppercase tracking-tighter">Spawn <span class="text-blue-600">Point.</span></h3>
                           <div class="flex flex-wrap justify-center gap-6">
                             <a href="${config.profile.email}" target="_blank" rel="noopener noreferrer" class="bg-blue-600 text-white px-12 py-5 rounded-full font-black uppercase hover:scale-110 transition shadow-xl flex items-center gap-3"><i data-lucide="mail"></i> E-mail</a>
-                              <a href="${config.profile.discord}" target="_blank" class="bg-[#5865F2] text-white px-12 py-5 rounded-full font-black uppercase hover:scale-110 transition shadow-xl flex items-center gap-3">Discord</a>
+                              <button onclick="copyDiscord(this)" class="bg-[#5865F2] text-white px-12 py-5 rounded-full font-black uppercase hover:scale-110 transition shadow-xl flex items-center gap-3"><i data-lucide="message-square"></i> Discord</button>
                               <a href="${config.profile.github}" target="_blank" class="glass text-white px-12 py-5 rounded-full font-black uppercase hover:bg-white hover:text-black transition">GitHub</a>
                               <a href="${config.profile.linkedin}" target="_blank" class="glass text-white px-12 py-5 rounded-full font-black uppercase hover:bg-white hover:text-black transition">LinkedIn</a>
                           </div>
@@ -587,6 +671,15 @@
           { threshold: 0.1 },
         );
         reveals.forEach((el) => observer.observe(el));
+      };
+
+      const copyDiscord = (btn) => {
+        navigator.clipboard.writeText(config.profile.discordTag);
+        const originalText = btn.innerHTML;
+        btn.innerHTML = `<i data-lucide="check"></i> ${translations[currentLang].copySuccess}`;
+        btn.classList.add('copy-feedback');
+        lucide.createIcons();
+        setTimeout(() => { btn.innerHTML = originalText; btn.classList.remove('copy-feedback'); lucide.createIcons(); }, 2000);
       };
 
       window.addEventListener("hashchange", render);
