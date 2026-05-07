@@ -4,6 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Hosch Alef | Game Programmer & Systems Designer</title>
+    <meta name="description" content="Portfolio of Hosch Alef, a Game Programmer specializing in scalable systems, C++, and Unreal Engine." />
+    <meta name="keywords" content="Game Development, Programmer, Unreal Engine, C++, Gameplay Architect" />
+    <!-- Open Graph / Social Media -->
+    <meta property="og:title" content="Hosch Alef | Game Programmer" />
+    <meta property="og:description" content="Specializing in scalable systems and high-performance gameplay architecture." />
+    <meta property="og:image" content="images/photo_portifolio.png" />
+    <meta property="og:type" content="website" />
     <link rel="icon" href="images/favicon.png" />
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -343,6 +350,25 @@
             },
           },
           {
+            id: "space-shooter",
+            title: "Retro Space Shooter",
+            role: "Solo Developer",
+            type: "Custom Engine / Pure C++",
+            images: ["images/spaceshooter.png"],
+            tech: ["C++", "SDL2", "Low-Level"],
+            links: { github: "#", demo: "#" },
+            desc: {
+              en: "Pure C++ & SDL2 shooter designed for CRT TVs and retro hardware feel.",
+              pt: "Shooter em C++ puro e SDL2 projetado para TVs de tubo (CRT) e hardware retrô.",
+              fr: "Shooter en C++ pur et SDL2 conçu pour les téléviseurs CRT et le matériel rétro.",
+            },
+            fullDesc: {
+              en: "A deep dive into low-level game development using C++ and SDL2. The project focuses on recreating the authentic arcade feel, specifically optimized for CRT displays and legacy hardware constraints.",
+              pt: "Um mergulho profundo no desenvolvimento de baixo nível usando C++ e SDL2. O projeto foca em recriar a sensação autêntica de arcade, otimizado especificamente para telas CRT (tubo) e restrições de hardware antigo.",
+              fr: "Une plongée dans le développement de bas niveau avec C++ et SDL2. Le projet se concentre sur la recréation de l'expérience arcade authentique, optimisée pour les écrans CRT.",
+            },
+          },
+          {
             id: "unreal-mechanics",
             title: "Unreal Engine Mechanics Challenge",
             role: "Gameplay Programmer",
@@ -551,7 +577,7 @@
 
                   <header class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center mb-32 reveal">
                       <div class="md:col-span-4 flex justify-center">
-                          <img src="${config.profile.photo}" class="profile-photo w-64 h-64 object-cover rounded-3xl">
+                          <img src="${config.profile.photo}" alt="${config.profile.name}" class="profile-photo w-64 h-64 object-cover rounded-3xl">
                       </div>
                       <div class="md:col-span-8 text-center md:text-left">
                           <h1 class="text-7xl md:text-[8.5rem] uppercase mb-4 leading-none tracking-tighter">
@@ -600,7 +626,7 @@
                           ${config.projects
                             .map(
                               (p) => `
-                              <article onclick="window.location.hash='${p.id}'" class="project-card rounded-[2.5rem] reveal ${p.featured ? "md:col-span-2" : ""}">
+                              <article onclick="window.location.hash='${p.id}'" class="project-card rounded-[2.5rem] reveal ${p.featured ? "md:col-span-2" : ""}" aria-label="${p.title}">
                                   <img src="${p.images[0]}" class="card-img ${p.featured ? "h-96" : "h-72"} w-full object-cover">
                                   <div class="p-10">
                                       <span class="mono text-[10px] text-yellow-400 font-black uppercase tracking-widest">${p.type}</span>
@@ -643,7 +669,7 @@
                           <div class="text-zinc-400 text-xl leading-relaxed mb-16">${p.fullDesc[currentLang]}</div>
                           <div class="space-y-12">
                               ${p.videos ? p.videos.map((v) => `<video class="rounded-3xl w-full border-2 border-white/5" autoplay loop muted playsinline><source src="${v}" type="video/mp4"></video>`).join("") : ""}
-                              ${p.images.map((img) => `<img src="${img}" class="rounded-3xl w-full border-2 border-white/5 shadow-2xl">`).join("")}
+                              ${p.images.map((img) => `<img src="${img}" alt="${p.title}" loading="lazy" class="rounded-3xl w-full border-2 border-white/5 shadow-2xl">`).join("")}
                           </div>
                       </div>
                       <aside class="lg:col-span-4">
