@@ -1,0 +1,618 @@
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;500;700;900&display=swap");
+
+:root {
+  --bg-pure: #030303;
+  --accent-primary: #10b981;   /* Emerald */
+  --accent-secondary: #8b5cf6; /* Violet */
+  --accent-tertiary: #f59e0b;  /* Amber */
+  --glass-bg: rgba(7, 7, 10, 0.92);
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  background-color: var(--bg-pure);
+  color: #e2e8f0;
+  /* Fundo com efeito de profundidade e cores harmônicas */
+  background-image:
+    radial-gradient(
+      circle at 0% 0%,
+      rgba(139, 92, 246, 0.12) 0%,
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at 100% 100%,
+      rgba(245, 158, 11, 0.08) 0%,
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at 50% 50%,
+      rgba(16, 185, 129, 0.03) 0%,
+      transparent 50%
+    );
+  background-attachment: fixed;
+  -webkit-font-smoothing: antialiased;
+}
+
+.mono {
+  font-family: "JetBrains Mono", monospace;
+}
+
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Efeito de luz que segue o mouse */
+.glass-interactive::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255,255,255,0.06) 0%, transparent 80%);
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+
+.glass-interactive:hover::before {
+  opacity: 1;
+}
+
+/* Título Principal com Gradiente Vivo */
+.gradient-text {
+  background: linear-gradient(
+    to right,
+    var(--accent-secondary),
+    var(--accent-tertiary),
+    var(--accent-primary)
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 900;
+}
+
+/* Botões e Destaques */
+.lang-btn.active {
+  background: var(--accent-primary);
+  color: black;
+  box-shadow: 0 0 20px rgba(34, 211, 238, 0.3);
+}
+
+.profile-photo {
+  border: 4px solid var(--accent-tertiary); /* Borda um pouco mais grossa */
+  box-shadow: 0 0 60px rgba(245, 158, 11, 0.3); /* Sombra ajustada para âmbar */
+  animation: float 6s ease-in-out infinite;
+  transform: none !important; /* Não girar */
+}
+
+/* Scrollbar temática */
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(var(--accent-secondary), var(--accent-tertiary));
+  border-radius: 5px;
+}
+::-webkit-scrollbar {
+  width: 8px; /* Adicionado para completar o estilo da barra de rolagem */
+  background: rgba(255, 255, 255, 0.05); /* Adicionado para completar o estilo da barra de rolagem */
+}
+
+/* Animações de Entrada (Scroll Reveal) */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform, opacity;
+}
+
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Staggered Delay Utilities */
+.stagger-1 { transition-delay: 0.1s; }
+.stagger-2 { transition-delay: 0.2s; }
+.stagger-3 { transition-delay: 0.3s; }
+.stagger-4 { transition-delay: 0.4s; }
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+}
+
+/* Efeito de Reatividade nos Cards de Projeto */
+.project-card {
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+  cursor: pointer;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.project-card:hover {
+  transform: translateY(-15px) scale(1.01);
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--accent-primary);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+.card-img {
+  transition: transform 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.project-card:hover .card-img {
+  transform: scale(1.08);
+}
+
+/* Feedback visual para cópia */
+.copy-feedback {
+  animation: bounce 0.5s ease;
+}
+
+/* Loader System */
+#loader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: var(--bg-pure);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.8s cubic-bezier(0.23, 1, 0.32, 1), visibility 0.8s;
+}
+#loader.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+.loader-bar {
+  width: 150px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.05);
+  margin-top: 24px;
+  position: relative;
+  overflow: hidden;
+}
+.loader-progress {
+  position: absolute;
+  height: 100%;
+  width: 40%;
+  background: linear-gradient(90deg, var(--accent-secondary), var(--accent-tertiary));
+  animation: loading-slide 1.5s infinite ease-in-out;
+}
+@keyframes loading-slide {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(250%); }
+}
+
+/* Overlay para o tour */
+body.tour-active::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.75); /* Overlay mais escuro */
+  backdrop-filter: blur(4px); /* Efeito de blur sutil */
+  z-index: 9998; /* Abaixo da foto em destaque e do balão do tour */
+  transition: opacity 0.4s ease;
+}
+
+/* Estilo da foto de perfil em modo "falando" */
+.profile-photo.profile-photo-speaking {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1.6); /* Maior e centralizada */
+  z-index: 9999; /* Acima do overlay */
+  animation: none; /* Desativa a animação de flutuação */
+  cursor: default; /* Não é mais clicável para iniciar o tour */
+  transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1); /* Transição mais suave */
+  border-color: var(--accent-primary); /* Borda destacada */
+  box-shadow: 0 0 80px rgba(16, 185, 129, 0.5); /* Sombra mais forte */
+}
+
+/* Ajusta o z-index do balão do tour para ficar acima de tudo */
+#tour-bubble {
+  /* ... estilos existentes ... */
+  z-index: 10000; /* O mais alto z-index */
+  border-color: var(--accent-primary); /* Cor da borda combinando com o destaque */
+}
+
+/* Sistema de Diálogo do Tour */
+#tour-bubble {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 320px;
+  background: var(--glass-bg);
+  border: 2px solid var(--accent-primary);
+  padding: 1.5rem;
+  border-radius: 1.5rem;
+  z-index: 10000;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+  backdrop-filter: blur(12px);
+  display: none;
+  animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.highlight-target {
+  outline: 4px solid var(--accent-primary);
+  outline-offset: 8px;
+  transition: outline 0.3s ease;
+}
+
+/* ===== SPEECH BUBBLE & CHARACTER INTERACTIONS ===== */
+
+/* Speech Bubble - Fala do Personagem */
+.speech-bubble {
+  position: relative;
+  animation: bubbleAppear 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.speech-bubble::after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  border-top: 10px solid var(--glass-bg);
+}
+
+/* Tail effect */
+.speech-bubble::before {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 8px solid rgba(16, 185, 129, 0.5);
+  z-index: -1;
+}
+
+@keyframes bubbleAppear {
+  0% {
+    opacity: 0;
+    transform: scale(0.8) translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Photo Container with Interactive States */
+#tour-start-container {
+  position: relative;
+}
+
+/* Glow and Hover Effects for Photo */
+#profile-img {
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 10;
+}
+
+#profile-img:hover {
+  filter: drop-shadow(0 0 20px rgba(16, 185, 129, 0.6));
+}
+
+/* Character Speaking Animation */
+@keyframes characterBounce {
+  0%, 100% {
+    transform: scale(1) translateY(0);
+  }
+  50% {
+    transform: scale(1.02) translateY(-8px);
+  }
+}
+
+#profile-img.speaking {
+  animation: characterBounce 0.6s ease-in-out infinite;
+}
+
+/* Enhanced Float Animation */
+@keyframes enhancedFloat {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-25px) scale(1.01);
+  }
+}
+
+.profile-photo.enhanced-float {
+  animation: enhancedFloat 7s ease-in-out infinite;
+}
+
+/* Pulse effect for interactive prompt */
+@keyframes textPulse {
+  0%, 100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Character Idle Animation */
+@keyframes photoIdle {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  25% {
+    transform: translateY(-8px);
+  }
+  75% {
+    transform: translateY(-8px);
+  }
+}
+
+.profile-photo.idle {
+  animation: photoIdle 4s ease-in-out infinite;
+}
+
+/* Attention grabber animation */
+@keyframes attention {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.profile-photo.attention-grabber {
+  animation: attention 0.5s ease-in-out;
+}
+
+/* Tooltip animation for instructions */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Mobile-responsive adjustments */
+@media (max-width: 768px) {
+  #profile-img {
+    width: 240px !important;
+    height: 240px !important;
+  }
+  
+  .speech-bubble {
+    font-size: 0.875rem;
+  }
+  
+  #tour-bubble {
+    bottom: 1rem;
+    right: 1rem;
+    width: 280px;
+  }
+}
+
+/* ===== CHARACTER MASCOT - WALKING AROUND THE SITE ===== */
+
+.character-mascot {
+  position: fixed;
+  width: 120px;
+  height: 120px;
+  pointer-events: none;
+  z-index: 5000;
+  bottom: 50px;
+  left: 50px;
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Mascote inicialmente escondido */
+.character-mascot.mascot-hidden {
+  display: none;
+  opacity: 0;
+}
+
+.mascot-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(16, 185, 129, 0.4);
+  border: 3px solid var(--accent-primary);
+  animation: mascotWalk 1.2s ease-in-out infinite;
+  filter: drop-shadow(0 0 10px rgba(16, 185, 129, 0.3));
+}
+
+.mascot-shadow {
+  position: absolute;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  height: 10px;
+  background: radial-gradient(ellipse at center, rgba(16, 185, 129, 0.3), transparent);
+  border-radius: 50%;
+  animation: shadowPulse 1.2s ease-in-out infinite;
+}
+
+@keyframes mascotWalk {
+  0%, 100% {
+    transform: translateY(0) scaleX(1);
+  }
+  25% {
+    transform: translateY(-8px) scaleX(0.98);
+  }
+  50% {
+    transform: translateY(0) scaleX(1);
+  }
+  75% {
+    transform: translateY(-8px) scaleX(0.98);
+  }
+}
+
+@keyframes shadowPulse {
+  0%, 100% {
+    opacity: 0.3;
+    transform: translateX(-50%) scaleX(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: translateX(-50%) scaleX(0.8);
+  }
+}
+
+@keyframes mascotJump {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-40px);
+  }
+}
+
+@keyframes mascotHide {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+}
+
+@keyframes mascotShow {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Mascote em diferentes estados */
+.character-mascot.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.character-mascot.excited {
+  animation: mascotJump 0.6s ease-out;
+}
+
+.character-mascot.appear {
+  animation: mascotShow 0.5s ease-out;
+}
+
+.character-mascot.disappear {
+  animation: mascotHide 0.5s ease-out;
+}
+
+/* Mascote flipado quando vai para direita */
+.character-mascot.flip {
+  transform: scaleX(-1);
+}
+
+/* Desktop only */
+@media (min-width: 769px) {
+  .character-mascot {
+    display: block;
+  }
+}
+
+/* Mobile - mascote menor e diferente posição */
+@media (max-width: 768px) {
+  .character-mascot {
+    width: 80px;
+    height: 80px;
+    bottom: 20px;
+    right: 20px;
+    left: auto;
+  }
+  
+  .mascot-image {
+    border-radius: 15px;
+    border-width: 2px;
+  }
+}
+
+/* Header reorganizado quando mascote é ativado */
+header.mascot-activated-header {
+  grid-template-columns: 1fr !important;
+  animation: headerReorganize 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+header.mascot-activated-header > div:last-child {
+  grid-column: 1 / -1 !important;
+  text-align: center !important;
+  animation: contentShift 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Animação de reorganização do header */
+@keyframes headerReorganize {
+  0% {
+    grid-template-columns: inherit;
+    gap: 3rem;
+  }
+  50% {
+    gap: 1rem;
+    opacity: 0.95;
+  }
+  100% {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+}
+
+/* Animação de movimento do conteúdo */
+@keyframes contentShift {
+  0% {
+    opacity: 0.5;
+    transform: translateX(-30px);
+  }
+  50% {
+    transform: translateX(30px) scaleX(0.95);
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Animação da página ao reorganizar */
+@keyframes pageRearrange {
+  0% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(0.98);
+  }
+  75% {
+    transform: scale(0.98);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+main.mascot-mode {
+  animation: pageRearrange 0.8s ease-out;
+}

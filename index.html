@@ -12,158 +12,27 @@
     <meta property="og:image" content="images/photo_portifolio.png" />
     <meta property="og:type" content="website" />
     <link rel="icon" href="images/favicon.png" />
+    <link rel="stylesheet" href="style.css" />
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <style>
-      @import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;500;700;900&display=swap");
-
-      :root {
-        --bg-pure: #030303;
-        --accent-yellow: #facc15;
-        --accent-blue: #3b82f6;
-        --accent-purple: #a855f7;
-        --glass-bg: rgba(10, 10, 12, 0.85);
-      }
-
-      body {
-        font-family: "Inter", sans-serif;
-        background-color: var(--bg-pure);
-        color: #e2e8f0;
-        /* Fundo com efeito de profundidade e cores harmônicas */
-        background-image:
-          radial-gradient(
-            circle at 0% 0%,
-            rgba(59, 130, 246, 0.15) 0%,
-            transparent 35%
-          ),
-          radial-gradient(
-            circle at 100% 100%,
-            rgba(168, 85, 247, 0.15) 0%,
-            transparent 35%
-          ),
-          radial-gradient(
-            circle at 50% 50%,
-            rgba(250, 204, 21, 0.03) 0%,
-            transparent 50%
-          );
-        background-attachment: fixed;
-        -webkit-font-smoothing: antialiased;
-      }
-
-      .mono {
-        font-family: "JetBrains Mono", monospace;
-      }
-
-      .glass {
-        background: var(--glass-bg);
-        backdrop-filter: blur(24px);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-      }
-
-      /* Título Principal com Gradiente Vivo */
-      .gradient-text {
-        background: linear-gradient(
-          to right,
-          var(--accent-blue),
-          var(--accent-purple),
-          var(--accent-yellow)
-        );
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        font-weight: 900;
-      }
-
-      /* Botões e Destaques */
-      .lang-btn.active {
-        background: var(--accent-yellow);
-        color: black;
-        box-shadow: 0 0 20px rgba(250, 204, 21, 0.3);
-      }
-
-      .profile-photo {
-        border: 3px solid var(--accent-purple);
-        box-shadow: 0 0 50px rgba(168, 85, 247, 0.2);
-      }
-
-      /* Scrollbar temática */
-      ::-webkit-scrollbar-thumb {
-        background: linear-gradient(var(--accent-blue), var(--accent-purple));
-        border-radius: 5px;
-      }
-
-      /* Efeito de Reatividade nos Cards de Projeto */
-      .project-card {
-        transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-        cursor: pointer;
-        overflow: hidden;
-        background: rgba(255, 255, 255, 0.02);
-        border: 1px solid rgba(255, 255, 255, 0.05);
-      }
-
-      .project-card:hover {
-        transform: translateY(-15px) scale(1.01);
-        background: rgba(255, 255, 255, 0.05);
-        border-color: var(--accent-yellow);
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-      }
-
-      .card-img {
-        transition: transform 0.7s cubic-bezier(0.23, 1, 0.32, 1);
-      }
-
-      .project-card:hover .card-img {
-        transform: scale(1.08);
-      }
-
-      /* Feedback visual para cópia */
-      .copy-feedback {
-        animation: bounce 0.5s ease;
-      }
-
-      /* Loader System */
-      #loader {
-        position: fixed;
-        inset: 0;
-        z-index: 9999;
-        background: var(--bg-pure);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        transition: opacity 0.8s cubic-bezier(0.23, 1, 0.32, 1), visibility 0.8s;
-      }
-      #loader.hidden {
-        opacity: 0;
-        visibility: hidden;
-      }
-      .loader-bar {
-        width: 150px;
-        height: 2px;
-        background: rgba(255, 255, 255, 0.05);
-        margin-top: 24px;
-        position: relative;
-        overflow: hidden;
-      }
-      .loader-progress {
-        position: absolute;
-        height: 100%;
-        width: 40%;
-        background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
-        animation: loading-slide 1.5s infinite ease-in-out;
-      }
-      @keyframes loading-slide {
-        0% { transform: translateX(-100%); }
-        100% { transform: translateX(250%); }
-      }
-    </style>
+    <script defer src="script.js"></script>
   </head>
-  <body class="selection:bg-yellow-400 selection:text-black">
+  <body class="selection:bg-emerald-500/30 selection:text-white">
     <!-- Overlay de Carregamento -->
     <div id="loader">
-      <div class="mono text-xs font-black text-yellow-400 tracking-[0.4em] animate-pulse">HOSCH.CORE_V1_INIT</div>
+      <div class="mono text-xs font-black text-emerald-400 tracking-[0.4em] animate-pulse">HOSCH.CORE_V1_INIT</div>
       <div class="loader-bar">
         <div class="loader-progress"></div>
       </div>
+    </div>
+
+    <!-- Balão de Diálogo do Tour -->
+    <div id="tour-bubble"></div>
+
+    <!-- Mascote que anda pelo site -->
+    <div id="character-mascot" class="character-mascot mascot-hidden">
+      <img id="mascot-img" src="images/photo_portifolio.png" alt="Hosch" class="mascot-image">
+      <div class="mascot-shadow"></div>
     </div>
 
     <main
@@ -197,6 +66,19 @@
           levelStrong: "🟡 Advanced Intermediate",
           levelWorld: "🌍 Intermediate",
           copySuccess: "Copied!",
+          conceptTitle: "The Concept",
+          howTitle: "Technical Implementation",
+          strengthsTitle: "Strengths",
+          weaknessesTitle: "Points for Improvement",
+          tour: {
+            step0: "Hi! I'm Hosch. Welcome to my portfolio! Let me show you around. Click 'Next' to start!",
+            step1: "Here's my Technical Stack. I focus on high-performance C++ and Unreal Engine.",
+            step2: "In my Profile, I share my philosophy: code should be as fluid as the gameplay it supports.",
+            step3: "Check out my projects! Each one was a unique technical challenge I've tackled.",
+            step4: "Need to build something? Let's connect here at the Spawn Point!",
+            next: "Next",
+            finish: "Got it!"
+          }
         },
         pt: {
           contactBtn: "Contato",
@@ -222,6 +104,19 @@
           levelStrong: "🟡 Intermediário Avançado",
           levelWorld: "🌍 Intermediário",
           copySuccess: "Copiado!",
+          conceptTitle: "O Conceito",
+          howTitle: "Implementação Técnica",
+          strengthsTitle: "Pontos Fortes",
+          weaknessesTitle: "Pontos a Melhorar",
+          tour: {
+            step0: "Olá! Eu sou o Hosch. Bem-vindo ao meu portfólio! Deixa eu te mostrar o site. Clique em 'Próximo'!",
+            step1: "Esta é minha Stack Técnica. Foco total em C++ de alta performance e Unreal Engine.",
+            step2: "No meu Perfil, compartilho minha filosofia: o código deve ser tão fluido quanto o gameplay.",
+            step3: "Veja meus projetos! Cada um foi um desafio técnico que superei.",
+            step4: "Precisa de um programador? Vamos conversar aqui no Spawn Point!",
+            next: "Próximo",
+            finish: "Entendido!"
+          }
         },
         fr: {
           contactBtn: "Contact",
@@ -247,11 +142,69 @@
           levelStrong: "🟡 Intermédiaire Avancé",
           levelWorld: "🌍 Intermédiaire",
           copySuccess: "Copié!",
+          conceptTitle: "Le Concept",
+          howTitle: "Implémentation Technique",
+          strengthsTitle: "Points Forts",
+          weaknessesTitle: "Points à Améliorer",
+          tour: {
+            step0: "Salut! Je suis Hosch. Bienvenue sur mon portfolio! Laisse-moi te guider. Cliquez sur 'Suivant'!",
+            step1: "Voici ma Stack Technique. Je me concentre sur le C++ haute performance et Unreal Engine.",
+            step2: "Dans mon Profil, je partage ma philosophie : le code doit être aussi fluide que le gameplay.",
+            step3: "Découvrez mes projets! Chacun a été un défi technique unique.",
+            step4: "Besoin d'un programmeur? Discutons ici au Spawn Point!",
+            next: "Suivant",
+            finish: "Compris!"
+          }
         },
       };
 
       let currentLang = "en";
       let isInitialLoad = true;
+      let characterGreeted = false;
+      let characterMessages = {
+        en: {
+          greeting: "Hey there! 👋 I'm Hosch, welcome to my portfolio!",
+          hover: "Click me to explore my work! 🚀",
+          tech: "Love this tech stack? Click to learn more!",
+          project: "Check out what I've built! 💻",
+          contact: "Let's build something amazing together! 🔗",
+          random: [
+            "Scalable systems are my jam! 💪",
+            "C++ and Unreal Engine are my playgrounds 🎮",
+            "Every line of code should be as smooth as the gameplay 🎯",
+            "Event-based systems? That's my passion! ⚡",
+            "Want to discuss architecture patterns? 🏗️"
+          ]
+        },
+        pt: {
+          greeting: "Oi! 👋 Eu sou o Hosch, bem-vindo ao meu portfólio!",
+          hover: "Clique em mim para explorar meu trabalho! 🚀",
+          tech: "Gosta dessa stack? Clique para saber mais!",
+          project: "Veja o que eu construí! 💻",
+          contact: "Vamos construir algo incrível juntos! 🔗",
+          random: [
+            "Sistemas escaláveis são minha paixão! 💪",
+            "C++ e Unreal Engine são meus playgrounds 🎮",
+            "Cada linha de código deve ser tão fluida quanto o gameplay 🎯",
+            "Sistemas baseados em eventos? Essa é minha especialidade! ⚡",
+            "Quer discutir padrões de arquitetura? 🏗️"
+          ]
+        },
+        fr: {
+          greeting: "Salut! 👋 Je suis Hosch, bienvenue sur mon portfolio!",
+          hover: "Cliquez sur moi pour explorer mon travail! 🚀",
+          tech: "Vous aimez cette stack? Cliquez pour en savoir plus!",
+          project: "Voyez ce que j'ai construit! 💻",
+          contact: "Construisons quelque chose d'incroyable ensemble! 🔗",
+          random: [
+            "Les systèmes évolutifs, c'est ma passion! 💪",
+            "C++ et Unreal Engine sont mes terrains de jeu 🎮",
+            "Chaque ligne de code doit être aussi fluide que le gameplay 🎯",
+            "Les systèmes basés sur les événements? C'est ma spécialité! ⚡",
+            "Vous voulez discuter de modèles d'architecture? 🏗️"
+          ]
+        }
+      };
 
       const config = {
         profile: {
@@ -264,31 +217,31 @@
           discordTag: "lobo_spartans",
         },
         skills: [
-          { n: "C++", l: "levelInter", c: "text-blue-400 border-blue-500/30" },
+          { n: "C++", l: "levelInter", c: "text-violet-400 border-violet-500/30" },
           {
             n: "Unreal Engine",
             l: "levelInterBlue",
-            c: "text-blue-500 border-blue-600/30",
+            c: "text-violet-500 border-violet-600/30",
           },
-          { n: "Git / GitHub", l: "levelStrong", c: "text-orange-400 border-orange-500/30" },
+          { n: "Git / GitHub", l: "levelStrong", c: "text-amber-500 border-amber-500/30" },
           {
             n: "C#",
             l: "levelInterGreen",
-            c: "text-green-500 border-green-500/30",
+            c: "text-emerald-500 border-emerald-600/30",
           },
           { n: "Unity",
             l: "levelInterGreen",
-            c: "text-green-400 border-green-400/30",
+            c: "text-emerald-400 border-emerald-500/30",
           },
           {
             n: "Python",
             l: "levelStrong",
-            c: "text-yellow-400 border-yellow-400/30",
+            c: "text-teal-400 border-teal-500/30",
           },
           {
             n: "JavaScript",
             l: "levelWorld",
-            c: "text-yellow-500 border-yellow-500/30",
+            c: "text-teal-500 border-teal-600/30",
           },
         ],
 
@@ -324,6 +277,26 @@
                         <br><br><strong>Grid System:</strong> Gestion de grille, validation de mouvement et mapping logique.
                         <br><strong>Turn Manager:</strong> Contrôle du flux de combat, files d'attente d'initiative et gestion d'états.`,
             },
+            concept: {
+              en: "Create a scalable foundation for tactical games where logic is independent of visual representation.",
+              pt: "Criar uma base escalável para jogos táticos onde a lógica é independente da representação visual.",
+              fr: "Créer une base évolutive pour les jeux tactiques où la logique est indépendante da représentation visuelle."
+            },
+            howItWasMade: {
+              en: "Developed using C++ Classes for core logic and Blueprints for data configuration. Utilized A* for pathfinding and a State Machine for turn phases.",
+              pt: "Desenvolvido usando classes C++ para a lógica central e Blueprints para configuração de dados. Utilizei A* para pathfinding e uma Máquina de Estados para as fases do turno.",
+              fr: "Développé en utilisant des classes C++ pour la logique centrale et des Blueprints pour la configuration. Utilisation d'A* pour le pathfinding."
+            },
+            strengths: {
+              en: "Highly decoupled architecture; efficient grid calculations; easy to add new unit types.",
+              pt: "Arquitetura altamente desacoplada; cálculos de grid eficientes; facilidade para adicionar novos tipos de unidades.",
+              fr: "Architecture fortement découplée; calculs de grille efficaces; facilité d'ajout de nouvelles unités."
+            },
+            weaknesses: {
+              en: "Initial setup complexity; lacks a robust save/load system for mid-combat states.",
+              pt: "Complexidade inicial de setup; ausência de um sistema robusto de save/load para estados durante o combate.",
+              fr: "Complexité de la configuration initiale; manque d'un système de sauvegarde robuste."
+            }
           },
           {
             id: "garage-war",
@@ -348,6 +321,22 @@
               pt: "Gestão de multi-input para 4 jogadores e validação de tarefas em tempo real.",
               fr: "Gestion multi-entrées pour 4 joueurs et validation des tâches en temps réel.",
             },
+            concept: {
+              en: "A high-energy party game focusing on teamwork and frantic car tuning.",
+              pt: "Um party game de alta energia focado em trabalho em equipe e tuning frenético de carros."
+            },
+            howItWasMade: {
+              en: "Developed in Unity using C#. Implemented a robust multi-input system for 4 players and a state-based task validator.",
+              pt: "Desenvolvido em Unity usando C#. Implementei um sistema de multi-input para 4 jogadores e um validador de tarefas baseado em estados."
+            },
+            strengths: {
+              en: "Excellent local co-op feel and responsive task feedback.",
+              pt: "Excelente sensação de co-op local e feedback de tarefas responsivo."
+            },
+            weaknesses: {
+              en: "The logic for player interactions could be further decoupled for network play.",
+              pt: "A lógica de interação entre jogadores poderia ser mais desacoplada para jogo em rede."
+            }
           },
           {
             id: "space-shooter",
@@ -367,6 +356,22 @@
               pt: "Um mergulho profundo no desenvolvimento de baixo nível usando C++ e SDL2. O projeto foca em recriar a sensação autêntica de arcade, otimizado especificamente para telas CRT (tubo) e restrições de hardware antigo.",
               fr: "Une plongée dans le développement de bas niveau avec C++ et SDL2. Le projet se concentre sur la recréation de l'expérience arcade authentique, optimisée pour les écrans CRT.",
             },
+            concept: {
+              en: "An authentic arcade experience designed specifically for CRT monitors and low-latency response.",
+              pt: "Uma experiência de arcade autêntica projetada especificamente para monitores CRT e resposta de baixa latência."
+            },
+            howItWasMade: {
+              en: "Built using pure C++ and SDL2. Focused on custom sprite batching and low-level input polling to bypass engine overhead.",
+              pt: "Construído usando C++ puro e SDL2. Focado em batching de sprites customizado e polling de input de baixo nível para evitar o overhead de engines prontas."
+            },
+            strengths: {
+              en: "Extremely lightweight executable and precise, frame-perfect input handling.",
+              pt: "Executável extremamente leve e manipulação de input precisa (frame-perfect)."
+            },
+            weaknesses: {
+              en: "Lack of a higher-level entity component system made complex enemy patterns harder to maintain.",
+              pt: "A falta de um sistema de componentes de entidade de alto nível tornou padrões de inimigos complexos mais difíceis de manter."
+            }
           },
           {
             id: "unreal-mechanics",
@@ -391,6 +396,22 @@
               pt: "Recriação de sistemas complexos via Visual Scripting:<br><br>1. <strong>Bullet Drop:</strong> Balística com compensação de gravidade.<br>2. <strong>Sistema V.A.T.S.:</strong> Seleção dinâmica de alvos e dilatação temporal.<br>3. <strong>Sistema de Possessão:</strong> Troca de personagens e controle de IA.",
               fr: "Recréation de systèmes complexes via Visual Scripting.",
             },
+            concept: {
+              en: "A technical study focused on reproducing complex AAA mechanics using only visual scripting.",
+              pt: "Um estudo técnico focado em reproduzir mecânicas AAA complexas usando apenas visual scripting."
+            },
+            howItWasMade: {
+              en: "Leveraged Unreal's Blueprint system for VATS time-management and vector math for projectile ballistics.",
+              pt: "Utilizei o sistema de Blueprints da Unreal para o gerenciamento de tempo do VATS e matemática vetorial para a balística de projéteis."
+            },
+            strengths: {
+              en: "Demonstrates deep mastery of Unreal's visual logic and gameplay APIs.",
+              pt: "Demonstra maestria profunda em lógica visual e APIs de gameplay da Unreal."
+            },
+            weaknesses: {
+              en: "Blueprint graphs for ballistics can become disorganized without strict math function encapsulation.",
+              pt: "Grafos de Blueprint para balística podem se tornar desorganizados sem uma encapsulação rígida de funções matemáticas."
+            }
           },
           {
             id: "elevator-talks",
@@ -416,6 +437,22 @@
               pt: "Mecânicas de tensão social utilizando sistemas de eventos aleatórios ponderados.",
               fr: "Mécaniques de tension sociale.",
             },
+            concept: {
+              en: "Exploration of social tension and claustrophobia through random NPC interactions.",
+              pt: "Exploração de tensão social e claustrofobia através de interações aleatórias com NPCs."
+            },
+            howItWasMade: {
+              en: "Used Unity and C#. Implemented a weighted random system to drive dynamic dialogue and social 'events'.",
+              pt: "Usei Unity e C#. Implementei um sistema randômico ponderado para gerir diálogos dinâmicos e 'eventos' sociais."
+            },
+            strengths: {
+              en: "Strong atmospheric consistency and unique logic for dialogue flow.",
+              pt: "Consistência atmosférica forte e lógica única para o fluxo de diálogo."
+            },
+            weaknesses: {
+              en: "The narrative branching is limited by the short development time of the game jam.",
+              pt: "As ramificações narrativas são limitadas pelo curto tempo de desenvolvimento da game jam."
+            }
           },
           {
             id: "datacrash",
@@ -438,6 +475,22 @@
               pt: "Desenvolvimento rápido de MVP com alto polimento no loop principal.",
               fr: "Développement rapide de MVP.",
             },
+            concept: {
+              en: "A survival game focusing on tight resource management and quick decision making.",
+              pt: "Um jogo de sobrevivência focado em gerenciamento de recursos rígido e tomada de decisão rápida."
+            },
+            howItWasMade: {
+              en: "Rapidly prototyped in Unity. Focused on a polished core game loop and efficient UI data binding.",
+              pt: "Prototipado rapidamente em Unity. Focado em um loop de jogo polido e data binding de UI eficiente."
+            },
+            strengths: {
+              en: "High level of polish achieved in a 72-hour window.",
+              pt: "Alto nível de polimento alcançado em uma janela de 72 horas."
+            },
+            weaknesses: {
+              en: "Some minor edge-case bugs in the resource harvesting system due to limited testing.",
+              pt: "Alguns bugs de casos isolados no sistema de colheita de recursos devido ao tempo limitado de testes."
+            }
           },
           {
             id: "pirate-aim",
@@ -465,6 +518,22 @@
               pt: "Projeto em equipe focado em sincronização técnica.",
               fr: "Projet d'équipe axé sur la synchronisation technique.",
             },
+            concept: {
+              en: "A collaborative project focusing on rapid-fire microgames and varied input styles.",
+              pt: "Um projeto colaborativo focado em microgames rápidos e estilos de input variados."
+            },
+            howItWasMade: {
+              en: "Collaborative development in Unity. Managed technical sync using Git and a modular manager for game states.",
+              pt: "Desenvolvimento colaborativo em Unity. Gerenciei a sincronização técnica usando Git e um manager modular para estados de jogo."
+            },
+            strengths: {
+              en: "Solid team synchronization and successful modular integration of code.",
+              pt: "Sincronização sólida da equipe e integração modular de código bem-sucedida."
+            },
+            weaknesses: {
+              en: "Inconsistent difficulty curve between different microgames.",
+              pt: "Curva de dificuldade inconsistente entre os diferentes microgames."
+            }
           },
           {
             id: "shadow-of-orum",
@@ -484,6 +553,22 @@
               pt: "Combate souls-like. Destaques incluem um Event Bus System e State Machines de IA.",
               fr: "Combat souls-like. Points forts : Event Bus System et State Machines IA.",
             },
+            concept: {
+              en: "An Action-RPG that bridges mythology with complex, high-stakes combat systems.",
+              pt: "Um Action-RPG que une mitologia com sistemas de combate complexos e de alto risco."
+            },
+            howItWasMade: {
+              en: "Architected in Unreal C++ using an Event Bus system for decoupled communication and FSMs for AI.",
+              pt: "Arquitetado em Unreal C++ usando um sistema de Event Bus para comunicação desacoplada e FSMs para IA."
+            },
+            strengths: {
+              en: "Scalable and robust software architecture for complex RPG systems.",
+              pt: "Arquitetura de software robusta e escalável para sistemas complexos de RPG."
+            },
+            weaknesses: {
+              en: "Combat feedback (juice) still requires more animation layer refinement.",
+              pt: "O feedback de combate (juice) ainda requer mais refinamento nas camadas de animação."
+            }
           },
           {
             id: "shogi-system",
@@ -506,6 +591,22 @@
               pt: "Lógica determinística e validação de estados para regras complexas.",
               fr: "Logique déterministe et validation d'états.",
             },
+            concept: {
+              en: "A faithful digital recreation of Shogi, focusing on rule accuracy and board state management.",
+              pt: "Uma recriação digital fiel de Shogi, focando na precisão das regras e gestão do estado do tabuleiro."
+            },
+            howItWasMade: {
+              en: "Implemented deterministic move validation logic in Unreal Engine, ensuring zero desync between states.",
+              pt: "Implementei lógica de validação de movimentos determinística na Unreal Engine, garantindo zero desync entre estados."
+            },
+            strengths: {
+              en: "Accurate implementation of complex board game rules and win conditions.",
+              pt: "Implementação precisa de regras complexas de jogos de tabuleiro e condições de vitória."
+            },
+            weaknesses: {
+              en: "The move preview UI could be more intuitive for players unfamiliar with Shogi.",
+              pt: "A UI de preview de movimentos poderia ser mais intuitiva para jogadores não familiarizados com Shogi."
+            }
           },
           {
             id: "dialogue-system",
@@ -528,12 +629,29 @@
               pt: "Sistema que utiliza JSON/CSV para diálogos não-lineares.",
               fr: "Système utilisant JSON/CSV.",
             },
+            concept: {
+              en: "A developer tool designed to empower narrative designers with a flexible, data-driven workflow.",
+              pt: "Uma ferramenta de desenvolvedor projetada para capacitar designers narrativos com um fluxo orientado a dados."
+            },
+            howItWasMade: {
+              en: "Created a custom JSON parser feeding into a branching graph system in Blueprints for ease of use.",
+              pt: "Criei um parser de JSON customizado que alimenta um sistema de grafo ramificado em Blueprints para facilidade de uso."
+            },
+            strengths: {
+              en: "Highly reusable tool that speeds up narrative implementation across multiple projects.",
+              pt: "Ferramenta altamente reutilizável que acelera a implementação narrativa em múltiplos projetos."
+            },
+            weaknesses: {
+              en: "Visualizing extremely deep nested choices becomes difficult in the current node graph.",
+              pt: "Visualizar escolhas aninhadas extremamente profundas torna-se difícil no grafo de nós atual."
+            }
           },
         ],
       };
 
       const setLanguage = (lang) => {
         currentLang = lang;
+        characterGreeted = false;
         render();
       };
 
@@ -551,52 +669,88 @@
               );
         lucide.createIcons();
         initScrollReveal();
+        initGlassGlow();
+        initCharacterInteractions();
 
         if (isInitialLoad) {
           setTimeout(() => {
             document.getElementById("loader").classList.add("hidden");
+            characterGreeted = false;
+            setTimeout(() => {
+              showCharacterMessage(characterMessages[currentLang].greeting);
+            }, 800);
             isInitialLoad = false;
-          }, 1200); // Tempo para o usuário absorver a intro
+          }, 1200);
         }
+
+        // Adicionar event listener para ativar mascote
+        const profileImg = document.getElementById("profile-img");
+        if (profileImg) {
+          profileImg.addEventListener("click", activateMascot);
+        }
+
         window.scrollTo({ top: 0, behavior: "smooth" });
       };
 
       const renderHome = (t) => `
               <div class="page-transition">
                   <nav class="flex justify-between items-center glass p-4 px-8 rounded-full mb-20 reveal">
-                      <div class="mono text-xs font-black text-yellow-400">HOSCH.CORE_V1</div>
+                      <div class="mono text-xs font-black text-emerald-400">HOSCH.CORE_V1</div>
                       <div class="flex gap-6 items-center">
                           <div class="flex gap-1 bg-white/5 p-1 rounded-xl border border-white/10">
                               <button onclick="setLanguage('en')" class="lang-btn ${currentLang === "en" ? "active" : "text-zinc-500"}">EN</button>
                               <button onclick="setLanguage('fr')" class="lang-btn ${currentLang === "fr" ? "active" : "text-zinc-500"}">FR</button>
                               <button onclick="setLanguage('pt')" class="lang-btn ${currentLang === "pt" ? "active" : "text-zinc-500"}">PT</button>
                           </div>
-                          <a href="#contact" class="bg-blue-600 hover:bg-yellow-400 hover:text-black text-white px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest transition-all shadow-lg">${t.contactBtn}</a>
+                          <a href="#contact" class="bg-violet-600 hover:bg-emerald-400 hover:text-black text-white px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest transition-all shadow-lg">${t.contactBtn}</a>
                       </div>
                   </nav>
 
-                  <header class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center mb-32 reveal">
-                      <div class="md:col-span-4 flex justify-center">
-                          <img src="${config.profile.photo}" alt="${config.profile.name}" class="profile-photo w-64 h-64 object-cover rounded-3xl">
-                      </div>
-                      <div class="md:col-span-8 text-center md:text-left">
+                  <header class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center mb-32 reveal${mascotState.isActive ? " mascot-activated-header" : ""}">
+                      ${!mascotState.isActive ? `<div id="tour-start-container" class="md:col-span-5 flex flex-col items-center justify-center relative">
+                          <!-- Character Photo with Speech Bubble -->
+                          <div class="relative w-full flex flex-col items-center">
+                              <!-- Speech Bubble above photo -->
+                              <div id="character-bubble" class="speech-bubble glass mb-6 px-8 py-5 rounded-2xl border border-emerald-400/50 w-full max-w-xs shadow-2xl opacity-0 transform -translate-y-4 transition-all duration-500 pointer-events-none">
+                                  <div class="absolute -bottom-3 left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-l-transparent border-r-transparent border-t-emerald-400/50"></div>
+                                  <p id="bubble-text" class="text-white text-sm font-semibold leading-relaxed">Bem-vindo! 👋</p>
+                              </div>
+                              
+                              <!-- Profile Photo with glow effect -->
+                              <div class="relative group">
+                                  <div class="absolute -inset-1 bg-gradient-to-r from-emerald-500 to-violet-600 rounded-3xl blur-2xl opacity-0 group-hover:opacity-50 transition-all duration-500"></div>
+                                  <img 
+                                      id="profile-img" 
+                                      onclick="startTour()" 
+                                      src="${config.profile.photo}" 
+                                      alt="${config.profile.name}" 
+                                      class="profile-photo float-animation w-72 h-72 object-cover rounded-3xl cursor-pointer hover:scale-105 transition-transform relative z-10 ring-4 ring-emerald-400/20 hover:ring-emerald-400/60" 
+                                      title="Clique para um tour!">
+                                  <div class="absolute inset-0 rounded-3xl bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300"></div>
+                              </div>
+
+                              <!-- Interactive prompt below -->
+                              <p class="mt-6 text-xs mono text-emerald-400 animate-pulse tracking-widest uppercase font-black">➜ Click para ativar o mascote!</p>
+                          </div>
+                      </div>` : ""}
+                      <div class="md:col-span-${mascotState.isActive ? "12" : "7"} text-center ${mascotState.isActive ? "" : "md:text-left"}">
                           <h1 class="text-7xl md:text-[8.5rem] uppercase mb-4 leading-none tracking-tighter">
                               <span class="gradient-text">HOSCH</span><br>
                               <span class="gradient-text">ALEF</span>
                           </h1>
-                          <p class="text-xl text-zinc-400 italic border-l-4 border-yellow-400 pl-6 max-w-2xl">${t.bio}</p>
+                          <p class="text-xl text-zinc-400 italic border-l-4 border-emerald-400 pl-6 max-w-2xl${mascotState.isActive ? " text-center border-l-0 pl-0" : ""}">${t.bio}</p>
                       </div>
                   </header>
 
-                  <section class="mb-32 reveal">
-          <h2 class="mono text-xs font-black text-blue-500 uppercase tracking-[0.4em] mb-10 flex items-center gap-4">
-            <span class="h-px w-10 bg-blue-500"></span> ${t.techTitle}
+                  <section id="tour-stack" class="mb-32 reveal">
+          <h2 class="mono text-xs font-black text-violet-500 uppercase tracking-[0.4em] mb-10 flex items-center gap-4">
+            <span class="h-px w-10 bg-violet-500"></span> ${t.techTitle}
           </h2>
           <div class="grid grid-cols-2 md:grid-cols-6 gap-4">
               ${config.skills
                 .map(
-                  (s) => `
-                  <div class="glass border ${s.c} p-6 rounded-2xl group hover:bg-white/5 transition-all">
+                  (s, i) => `
+                  <div class="glass reveal stagger-${(i % 4) + 1} border ${s.c} p-6 rounded-2xl group hover:bg-white/5 transition-all">
                       <p class="font-black text-sm uppercase">${s.n}</p>
                       <p class="mono text-[10px] opacity-60 mt-1">${t[s.l]}</p>
                   </div>
@@ -607,29 +761,29 @@
       </section>
 
                   <section class="mb-32">
-                      <div class="glass p-12 md:p-16 rounded-[3rem] border-white/5 relative overflow-hidden">
-                          <div class="absolute -top-24 -right-24 w-64 h-64 bg-blue-600/10 blur-[100px]"></div>
-                          <h2 class="mono text-blue-500 text-xs font-black uppercase tracking-[0.4em] mb-4">${t.aboutTitle}</h2>
+                      <div id="tour-profile" class="glass glass-interactive reveal p-12 md:p-16 rounded-[3rem] border-white/5 relative overflow-hidden">
+                          <div class="absolute -top-24 -right-24 w-64 h-64 bg-violet-600/10 blur-[100px]"></div>
+                          <h2 class="mono text-violet-500 text-xs font-black uppercase tracking-[0.4em] mb-4">${t.aboutTitle}</h2>
                           <h3 class="text-4xl md:text-5xl font-black text-white uppercase mb-8 tracking-tighter">${t.aboutRole}</h3>
                           <p class="text-xl md:text-2xl text-zinc-400 leading-relaxed max-w-4xl mb-12">${t.aboutText}</p>
-                          <a href="CV/Hosch_Alef_CV2.pdf" target="_blank" class="inline-flex items-center gap-4 bg-yellow-400 text-black px-10 py-5 rounded-full font-black uppercase text-xs tracking-widest hover:scale-105 transition-all shadow-2xl">
+                          <a href="CV/Hosch_Alef_CV2.pdf" target="_blank" class="inline-flex items-center gap-4 bg-emerald-400 text-black px-10 py-5 rounded-full font-black uppercase text-xs tracking-widest hover:scale-105 transition-all shadow-2xl">
                               <i data-lucide="file-text"></i> ${t.downloadCV}
                           </a>
                       </div>
                   </section>
 
-                  <section class="mb-32">
-                      <h2 class="mono text-xs font-black text-purple-500 uppercase tracking-[0.4em] mb-10 flex items-center gap-4">
-                        <span class="h-px w-10 bg-purple-500"></span> ${t.projectTitle}
+                  <section id="tour-projects" class="mb-32">
+                      <h2 class="mono text-xs font-black text-amber-500 uppercase tracking-[0.4em] mb-10 flex items-center gap-4">
+                        <span class="h-px w-10 bg-amber-500"></span> ${t.projectTitle}
                       </h2>
                       <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
                           ${config.projects
                             .map(
                               (p) => `
-                              <article onclick="window.location.hash='${p.id}'" class="project-card rounded-[2.5rem] reveal ${p.featured ? "md:col-span-2" : ""}" aria-label="${p.title}">
+                              <article onclick="window.location.hash='${p.id}'" class="project-card glass-interactive rounded-[2.5rem] reveal ${p.featured ? "md:col-span-2" : ""}" aria-label="${p.title}">
                                   <img src="${p.images[0]}" class="card-img ${p.featured ? "h-96" : "h-72"} w-full object-cover">
                                   <div class="p-10">
-                                      <span class="mono text-[10px] text-yellow-400 font-black uppercase tracking-widest">${p.type}</span>
+                                      <span class="mono text-[10px] text-emerald-400 font-black uppercase tracking-widest">${p.type}</span>
                                       <h3 class="text-4xl font-black text-white mt-2 uppercase tracking-tighter">${p.title}</h3>
                                       <p class="text-zinc-400 mt-4 leading-relaxed">${p.desc[currentLang]}</p>
                                   </div>
@@ -641,10 +795,10 @@
                   </section>
 
                   <section id="contact" class="mb-32 reveal">
-                      <div class="glass p-16 rounded-[4rem] text-center border-yellow-400/20">
-                          <h3 class="text-5xl md:text-7xl font-black text-white mb-10 uppercase tracking-tighter">Spawn <span class="text-blue-600">Point.</span></h3>
+                      <div class="glass p-16 rounded-[4rem] text-center border-emerald-400/20">
+                          <h3 class="text-5xl md:text-7xl font-black text-white mb-10 uppercase tracking-tighter">Spawn <span class="text-violet-600">Point.</span></h3>
                           <div class="flex flex-wrap justify-center gap-6">
-                            <a href="${config.profile.email}" target="_blank" rel="noopener noreferrer" class="bg-blue-600 text-white px-12 py-5 rounded-full font-black uppercase hover:scale-110 transition shadow-xl flex items-center gap-3"><i data-lucide="mail"></i> E-mail</a>
+                            <a href="${config.profile.email}" target="_blank" rel="noopener noreferrer" class="bg-violet-600 text-white px-12 py-5 rounded-full font-black uppercase hover:scale-110 transition shadow-xl flex items-center gap-3"><i data-lucide="mail"></i> E-mail</a>
                               <button onclick="copyDiscord(this)" class="bg-[#5865F2] text-white px-12 py-5 rounded-full font-black uppercase hover:scale-110 transition shadow-xl flex items-center gap-3"><i data-lucide="message-square"></i> Discord</button>
                               <a href="${config.profile.github}" target="_blank" class="glass text-white px-12 py-5 rounded-full font-black uppercase hover:bg-white hover:text-black transition">GitHub</a>
                               <a href="${config.profile.linkedin}" target="_blank" class="glass text-white px-12 py-5 rounded-full font-black uppercase hover:bg-white hover:text-black transition">LinkedIn</a>
@@ -660,13 +814,36 @@
 
       const renderProjectDetail = (p, t) => `
               <div class="page-transition">
-                  <button onclick="window.location.hash='home'" class="flex items-center gap-3 text-yellow-400 hover:text-white transition mono text-xs font-black uppercase mb-16">
+                  <button onclick="window.location.hash='home'" class="flex items-center gap-3 text-emerald-400 hover:text-white transition mono text-xs font-black uppercase mb-16">
                       <i data-lucide="arrow-left"></i> ${t.backBtn}
                   </button>
                   <div class="grid grid-cols-1 lg:grid-cols-12 gap-16">
                       <div class="lg:col-span-8">
                           <h1 class="text-6xl md:text-8xl font-black text-white uppercase leading-none mb-10 tracking-tighter">${p.title}</h1>
-                          <div class="text-zinc-400 text-xl leading-relaxed mb-16">${p.fullDesc[currentLang]}</div>
+                          
+                          <div class="space-y-12 mb-16">
+                              <section>
+                                  <h2 class="mono text-amber-500 text-xs font-black uppercase tracking-widest mb-4">${t.conceptTitle}</h2>
+                                  <p class="text-zinc-300 text-xl leading-relaxed">${p.concept ? p.concept[currentLang] : p.desc[currentLang]}</p>
+                              </section>
+
+                              <section>
+                                  <h2 class="mono text-emerald-500 text-xs font-black uppercase tracking-widest mb-4">${t.howTitle}</h2>
+                                  <div class="text-zinc-400 text-lg leading-relaxed">${p.howItWasMade ? p.howItWasMade[currentLang] : p.fullDesc[currentLang]}</div>
+                              </section>
+
+                              <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                  <div class="p-6 rounded-2xl bg-emerald-500/5 border border-emerald-500/20">
+                                      <h2 class="mono text-emerald-500 text-[10px] font-black uppercase mb-3">${t.strengthsTitle}</h2>
+                                      <p class="text-zinc-400 text-sm italic">${p.strengths ? p.strengths[currentLang] : '---'}</p>
+                                  </div>
+                                  <div class="p-6 rounded-2xl bg-red-500/5 border border-red-500/20">
+                                      <h2 class="mono text-red-500 text-[10px] font-black uppercase mb-3">${t.weaknessesTitle}</h2>
+                                      <p class="text-zinc-400 text-sm italic">${p.weaknesses ? p.weaknesses[currentLang] : '---'}</p>
+                                  </div>
+                              </div>
+                          </div>
+
                           <div class="space-y-12">
                               ${p.videos ? p.videos.map((v) => `<video class="rounded-3xl w-full border-2 border-white/5" autoplay loop muted playsinline><source src="${v}" type="video/mp4"></video>`).join("") : ""}
                               ${p.images.map((img) => `<img src="${img}" alt="${p.title}" loading="lazy" class="rounded-3xl w-full border-2 border-white/5 shadow-2xl">`).join("")}
@@ -674,13 +851,13 @@
                       </div>
                       <aside class="lg:col-span-4">
                           <div class="glass p-10 rounded-[2.5rem] sticky top-10 border-blue-500/20">
-                              <h3 class="mono text-blue-500 text-xs font-black uppercase tracking-widest mb-10 border-b border-white/5 pb-4">${t.techSheet}</h3>
+                              <h3 class="mono text-violet-500 text-xs font-black uppercase tracking-widest mb-10 border-b border-white/5 pb-4">${t.techSheet}</h3>
                               <div class="space-y-8">
                                   <div><p class="text-[10px] text-zinc-600 uppercase font-black mb-2">${t.mainRole}</p><p class="text-white font-black uppercase">${p.role}</p></div>
-                                  <div><p class="text-[10px] text-zinc-600 uppercase font-black mb-3">Stack</p><div class="flex flex-wrap gap-2">${p.tech.map((tech) => `<span class="mono text-[9px] bg-yellow-400 text-black px-3 py-1 rounded-md font-black uppercase">${tech}</span>`).join("")}</div></div>
-                                  <div><p class="text-[10px] text-zinc-600 uppercase font-black mb-2">Comms</p><a href="${config.profile.discord}" target="_blank" class="text-purple-500 font-black uppercase text-xs mono hover:underline">${config.profile.discordTag}</a></div>
+                                  <div><p class="text-[10px] text-zinc-600 uppercase font-black mb-3">Stack</p><div class="flex flex-wrap gap-2">${p.tech.map((tech) => `<span class="mono text-[9px] bg-emerald-400 text-black px-3 py-1 rounded-md font-black uppercase">${tech}</span>`).join("")}</div></div>
+                                  <div><p class="text-[10px] text-zinc-600 uppercase font-black mb-2">Comms</p><a href="${config.profile.discord}" target="_blank" class="text-amber-500 font-black uppercase text-xs mono hover:underline">${config.profile.discordTag}</a></div>
                               </div>
-                              ${p.links.demo !== "#" ? `<a href="${p.links.demo}" target="_blank" class="mt-12 w-full bg-blue-600 text-white py-5 rounded-2xl font-black uppercase flex justify-center items-center gap-3 hover:bg-yellow-400 hover:text-black transition-all">${t.viewProject} <i data-lucide="zap"></i></a>` : ""}
+                              ${p.links.demo !== "#" ? `<a href="${p.links.demo}" target="_blank" class="mt-12 w-full bg-violet-600 text-white py-5 rounded-2xl font-black uppercase flex justify-center items-center gap-3 hover:bg-emerald-400 hover:text-black transition-all">${t.viewProject} <i data-lucide="zap"></i></a>` : ""}
                           </div>
                       </aside>
                   </div>
@@ -698,6 +875,382 @@
           { threshold: 0.1 },
         );
         reveals.forEach((el) => observer.observe(el));
+      };
+
+      // CHARACTER INTERACTIONS - Torna a foto interativa e falante
+      const showCharacterMessage = (message) => {
+        const bubble = document.getElementById("character-bubble");
+        const bubbleText = document.getElementById("bubble-text");
+        const profileImg = document.getElementById("profile-img");
+        
+        if (!bubble || !bubbleText) return;
+        
+        bubbleText.textContent = message;
+        bubble.style.opacity = "1";
+        bubble.style.transform = "translateY(0)";
+        
+        if (profileImg) {
+          profileImg.classList.add("speaking");
+          profileImg.classList.remove("idle");
+        }
+      };
+
+      const hideCharacterMessage = () => {
+        const bubble = document.getElementById("character-bubble");
+        const profileImg = document.getElementById("profile-img");
+        
+        if (bubble) {
+          bubble.style.opacity = "0";
+          bubble.style.transform = "translateY(-10px)";
+        }
+        
+        if (profileImg) {
+          profileImg.classList.remove("speaking");
+          profileImg.classList.add("idle");
+        }
+      };
+
+      const initCharacterInteractions = () => {
+        const profileImg = document.getElementById("profile-img");
+        const techSection = document.getElementById("tour-stack");
+        const profileSection = document.getElementById("tour-profile");
+        const projectsSection = document.getElementById("tour-projects");
+        const contactSection = document.getElementById("contact");
+        
+        if (profileImg) {
+          // Mensagem de hover
+          profileImg.addEventListener("mouseenter", () => {
+            if (!characterGreeted) {
+              showCharacterMessage(characterMessages[currentLang].greeting);
+              characterGreeted = true;
+            }
+          });
+          
+          profileImg.addEventListener("mouseleave", () => {
+            hideCharacterMessage();
+          });
+
+          // Mensagens ao clicar em seções
+          if (techSection) {
+            techSection.addEventListener("mouseenter", () => {
+              const messages = characterMessages[currentLang];
+              showCharacterMessage(messages.tech);
+            });
+            techSection.addEventListener("mouseleave", hideCharacterMessage);
+          }
+
+          if (profileSection) {
+            profileSection.addEventListener("mouseenter", () => {
+              const messages = characterMessages[currentLang];
+              showCharacterMessage(messages.hover);
+            });
+            profileSection.addEventListener("mouseleave", hideCharacterMessage);
+          }
+
+          if (projectsSection) {
+            projectsSection.addEventListener("mouseenter", () => {
+              const messages = characterMessages[currentLang];
+              showCharacterMessage(messages.project);
+            });
+            projectsSection.addEventListener("mouseleave", hideCharacterMessage);
+          }
+
+          if (contactSection) {
+            contactSection.addEventListener("mouseenter", () => {
+              const messages = characterMessages[currentLang];
+              showCharacterMessage(messages.contact);
+            });
+            contactSection.addEventListener("mouseleave", hideCharacterMessage);
+          }
+        }
+
+        // Mensagens aleatórias ao carregar
+        setTimeout(() => {
+          if (!characterGreeted && profileImg) {
+            const messages = characterMessages[currentLang];
+            const randomMsg = messages.random[Math.floor(Math.random() * messages.random.length)];
+            showCharacterMessage(randomMsg);
+          }
+        }, 4000);
+      };
+
+      // ===== MASCOT WALKING SYSTEM =====
+      let mascotState = {
+        x: 50,
+        y: window.innerHeight - 170,
+        targetX: 50,
+        targetY: window.innerHeight - 170,
+        isFlipped: false,
+        currentSection: null,
+        isActive: false,
+      };
+
+      const activateMascot = () => {
+        if (mascotState.isActive) return; // Previne ativação dupla
+        
+        mascotState.isActive = true;
+
+        const mascot = document.getElementById("character-mascot");
+        const profileContainer = document.getElementById("tour-start-container");
+        const characterBubble = document.getElementById("character-bubble");
+        const profileImg = document.getElementById("profile-img");
+        const app = document.getElementById("app");
+
+        // Adicionar classe de animação ao main
+        if (app) {
+          app.classList.add("mascot-mode");
+        }
+
+        // Esconder photo container e balão
+        if (profileContainer) {
+          profileContainer.style.transition = "all 0.5s ease-out";
+          profileContainer.style.opacity = "0";
+          profileContainer.style.transform = "scale(0.8)";
+          setTimeout(() => {
+            profileContainer.style.display = "none";
+          }, 500);
+        }
+
+        if (characterBubble) {
+          characterBubble.style.display = "none";
+        }
+
+        // Remover event listener do clique
+        if (profileImg) {
+          profileImg.removeEventListener("click", activateMascot);
+        }
+
+        // Ativar mascote
+        if (mascot) {
+          mascot.classList.remove("mascot-hidden");
+          mascot.classList.add("appear");
+          
+          setTimeout(() => {
+            mascot.classList.remove("appear");
+            // Reorganizar o layout do header para ficar cheio
+            const header = document.querySelector("header");
+            if (header) {
+              header.classList.add("mascot-activated-header");
+            }
+          }, 500);
+        }
+
+        // Iniciar mascote andando
+        initMascotWalking();
+
+        // Mostrar mensagem de ativação
+        showCharacterMessage(characterMessages[currentLang].greeting);
+        setTimeout(() => hideCharacterMessage(), 2000);
+      };
+
+      const initMascotWalking = () => {
+        const mascot = document.getElementById("character-mascot");
+        if (!mascot) return;
+
+        // Atualizar posição baseado no scroll
+        window.addEventListener("scroll", updateMascotPosition);
+        window.addEventListener("mousemove", updateMascotReaction);
+        
+        // Fazer mascote se mover continuamente
+        animateMascot();
+      };
+
+      const updateMascotPosition = () => {
+        const mascot = document.getElementById("character-mascot");
+        if (!mascot) return;
+
+        const scrollProgress = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
+        
+        // Calcular posição X baseado no scroll (esquerda -> direita -> esquerda)
+        let targetX;
+        if (scrollProgress < 0.33) {
+          // Primeira seção: esquerda
+          targetX = 50 + (scrollProgress * 150);
+        } else if (scrollProgress < 0.66) {
+          // Seção do meio: direita
+          targetX = window.innerWidth - 170 - ((scrollProgress - 0.33) * 150);
+        } else {
+          // Última seção: volta para esquerda
+          targetX = 50 + ((scrollProgress - 0.66) * 150);
+        }
+
+        // Calcular posição Y (sobe quando scrolla)
+        const targetY = Math.max(100, window.innerHeight - 170 - (scrollProgress * 300));
+
+        // Determinar direção (flip)
+        const newFlipped = targetX > mascotState.x;
+        if (newFlipped !== mascotState.isFlipped) {
+          mascotState.isFlipped = newFlipped;
+          mascot.classList.toggle("flip", newFlipped);
+        }
+
+        mascotState.targetX = targetX;
+        mascotState.targetY = targetY;
+
+        // Detectar seção atual e fazer mascote reagir
+        detectCurrentSection();
+      };
+
+      const updateMascotReaction = (e) => {
+        const mascot = document.getElementById("character-mascot");
+        if (!mascot) return;
+
+        const mouseX = e.clientX;
+        const mouseY = e.clientY;
+
+        // Se o mouse está perto do mascote, ele pula
+        const mascotX = mascotState.x + 60;
+        const mascotY = mascotState.y + 60;
+        
+        const distance = Math.sqrt(
+          Math.pow(mouseX - mascotX, 2) + Math.pow(mouseY - mascotY, 2)
+        );
+
+        if (distance < 150) {
+          // Mouse está perto - mascote pula
+          mascot.classList.add("excited");
+          setTimeout(() => {
+            mascot.classList.remove("excited");
+          }, 600);
+        }
+      };
+
+      const detectCurrentSection = () => {
+        const scrollProgress = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
+        let newSection = "home";
+
+        if (scrollProgress > 0.25) newSection = "tech";
+        if (scrollProgress > 0.4) newSection = "profile";
+        if (scrollProgress > 0.65) newSection = "projects";
+        if (scrollProgress > 0.85) newSection = "contact";
+
+        if (newSection !== mascotState.currentSection) {
+          mascotState.currentSection = newSection;
+          triggerMascotReaction(newSection);
+        }
+      };
+
+      const triggerMascotReaction = (section) => {
+        const mascot = document.getElementById("character-mascot");
+        if (!mascot) return;
+
+        const reactions = {
+          en: {
+            tech: "Love the stack! 🔥",
+            profile: "That's me! 😎",
+            projects: "My best work! 💪",
+            contact: "Let's talk! 🤝"
+          },
+          pt: {
+            tech: "Amo essa stack! 🔥",
+            profile: "Esse sou eu! 😎",
+            projects: "Meus melhores projetos! 💪",
+            contact: "Vamos conversar! 🤝"
+          },
+          fr: {
+            tech: "J'adore cette stack! 🔥",
+            profile: "C'est moi! 😎",
+            projects: "Mon meilleur travail! 💪",
+            contact: "Parlons! 🤝"
+          }
+        };
+
+        // Fazer mascote pular quando entra numa nova seção
+        mascot.classList.remove("excited");
+        void mascot.offsetWidth; // Trigger reflow
+        mascot.classList.add("excited");
+
+        // Mostrar mensagem
+        if (section !== "home") {
+          const message = reactions[currentLang][section] || "Bem-vindo!";
+          showCharacterMessage(message);
+          setTimeout(() => {
+            hideCharacterMessage();
+          }, 2500);
+        }
+      };
+
+      const animateMascot = () => {
+        const mascot = document.getElementById("character-mascot");
+        if (!mascot) return;
+
+        // Suavemente mover mascote para posição alvo
+        mascotState.x += (mascotState.targetX - mascotState.x) * 0.1;
+        mascotState.y += (mascotState.targetY - mascotState.y) * 0.1;
+
+        mascot.style.left = mascotState.x + "px";
+        mascot.style.bottom = (window.innerHeight - mascotState.y) + "px";
+
+        requestAnimationFrame(animateMascot);
+      };
+
+      let currentTourStep = 0;
+      const startTour = () => {
+        const hash = window.location.hash.replace("#", "");
+        if (hash && hash !== 'home' && hash !== 'contact') {
+          window.location.hash = 'home';
+          setTimeout(executeTour, 500);
+        } else {
+          executeTour();
+        }
+      };
+
+      const executeTour = () => {
+        currentTourStep = 0;
+        document.getElementById('tour-bubble').style.display = 'block';
+        showTourStep();
+      };
+
+      const showTourStep = () => {
+        const t = translations[currentLang].tour;
+        const bubble = document.getElementById('tour-bubble');
+        const steps = [
+          { id: 'tour-start', text: t.step0 },
+          { id: 'tour-stack', text: t.step1 },
+          { id: 'tour-profile', text: t.step2 },
+          { id: 'tour-projects', text: t.step3 },
+          { id: 'contact', text: t.step4 }
+        ];
+
+        const step = steps[currentTourStep];
+        const target = document.getElementById(step.id);
+        
+        // Limpar destaques anteriores
+        document.querySelectorAll('.highlight-target').forEach(el => el.classList.remove('highlight-target'));
+        
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          target.classList.add('highlight-target');
+        }
+
+        const isLast = currentTourStep === steps.length - 1;
+
+        bubble.innerHTML = `
+          <div class="mono text-[10px] text-emerald-400 mb-2 uppercase tracking-widest">HOSCH.GUIDE_V1</div>
+          <p class="text-white text-sm leading-relaxed mb-4">${step.text}</p>
+          <button onclick="${isLast ? 'endTour()' : 'nextTourStep()'}" class="w-full bg-emerald-500 text-black py-2 rounded-lg font-black uppercase text-[10px] tracking-widest hover:bg-white transition-colors">
+            ${isLast ? t.finish : t.next}
+          </button>
+        `;
+      };
+
+      const nextTourStep = () => { currentTourStep++; showTourStep(); };
+      const endTour = () => {
+        document.getElementById('tour-bubble').style.display = 'none';
+        document.querySelectorAll('.highlight-target').forEach(el => el.classList.remove('highlight-target'));
+      };
+
+      const initGlassGlow = () => {
+        const cards = document.querySelectorAll(".glass-interactive");
+        cards.forEach((card) => {
+          card.addEventListener("mousemove", (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = ((e.clientX - rect.left) / card.clientWidth) * 100;
+            const y = ((e.clientY - rect.top) / card.clientHeight) * 100;
+            card.style.setProperty("--mouse-x", `${x}%`);
+            card.style.setProperty("--mouse-y", `${y}%`);
+          });
+        });
       };
 
       const copyDiscord = (btn) => {
