@@ -27,11 +27,10 @@
     </div>
 
     <!-- Balão de Diálogo do Tour -->
-    <div id="tour-bubble"></div>
+    <div id="tour-bubble" aria-live="polite"></div>
 
-    <!-- Mascote que anda pelo site -->
-    <div id="character-mascot" class="character-mascot mascot-hidden">
-      <img id="mascot-img" src="images/photo_portifolio.png" alt="Hosch" class="mascot-image">
+    <div id="character-mascot" class="character-mascot mascot-hidden" style="top: 0; left: 0;">
+      <img id="mascot-img" src="images/photo_portifolio.png" alt="Mascote Hosch" class="mascot-image">
       <div class="mascot-shadow"></div>
     </div>
 
@@ -41,6 +40,17 @@
     ></main>
 
     <script>
+      // INICIALIZAÇÃO DE ESTADO E CONFIGURAÇÃO (Movido para o topo)
+      let mascotState = {
+        x: 50,
+        y: window.innerHeight - 170,
+        targetX: 50,
+        targetY: window.innerHeight - 170,
+        isFlipped: false,
+        currentSection: null,
+        isActive: false,
+      };
+
       const translations = {
         en: {
           contactBtn: "Contact",
@@ -250,6 +260,54 @@
 
         projects: [
           {
+            id: "psychasteniac",
+            title: "Psychasteniac",
+            role: "Gameplay & Systems Programmer",
+            type: "Psychological Horror / Narrative",
+            youtubeId: "aqRrje7DAw8",
+            techWins: { 
+              pt: ["Menu de configurações funcional (Vídeo/Áudio/Input)", "Geometria não-euclidiana", "Sistema de Level Streaming"], 
+              en: ["Full Settings Menu (Video/Audio/Input)", "Non-euclidean geometry", "Level Streaming System"],
+              fr: ["Menu de paramètres complet (Vidéo/Audio/Input)", "Géométrie non euclidienne", "Système de Level Streaming"]
+            },
+            images: [
+              "images/psychasteniac_01.png",
+              "images/psychasteniac_02.png",
+              "images/psychasteniac_03.png",
+              "images/psychasteniac_04.png",
+              "images/psychasteniac_05.png",
+              "images/psychasteniac_06.png",
+            ],
+            tech: ["Unity", "C#", "Level Streaming"],
+            featured: true,
+            links: { github: "#", demo: "https://decloedt-sarah.itch.io/psychasteniac" },
+            desc: {
+              en: "A psychological horror experience focused on shifting environments and distorted perception.",
+              pt: "Uma experiência de terror psicológico focada em ambientes mutáveis e percepção distorcida.",
+              fr: "Une expérience d'horreur psychologique axée sur des environnements changeants et une perception déformée.",
+            },
+            concept: {
+              en: "Challenge the player's sanity through non-euclidean geometry and events triggered by the player's gaze.",
+              pt: "Desafiar a sanidade do jogador através de geometria não-euclidiana e eventos disparados pelo olhar do jogador.",
+              fr: "Défier la santé mentale du joueur grâce à la géométrie non euclidienne et aux événements déclenchés par le regard du joueur."
+            },
+            howItWasMade: {
+              en: "Developed in Unity. I implemented a 'Perception Trigger' system in C# for 'impossible' transitions. Additionally, this was my first successful implementation of a complete functional menu system, featuring video, audio, controls, and brightness settings.",
+              pt: "Desenvolvido na Unity. Implementei um sistema de 'Perception Trigger' em C# para transições 'impossíveis'. Além disso, foi minha primeira tentativa (muito bem-sucedida) de criar um menu funcional completo com configurações de vídeo, áudio, controles e brilho.",
+              fr: "Développé avec Unity. J'ai implémenté un système de 'Perception Trigger' en C# pour des transitions 'impossibles'. Ce fut également ma première tentative réussie de créer un menu complet (vidéo, audio, contrôles, luminosité)."
+            },
+            strengths: {
+              en: "Seamless environmental transitions and high psychological tension through technical tricks.",
+              pt: "Transições de ambiente imperceptíveis e alta tensão psicológica através de truques técnicos.",
+              fr: "Transitions environnementales fluides et haute tension psychologique grâce à des astuces techniques."
+            },
+            weaknesses: {
+              en: "Memory management for level streaming requires careful optimization to avoid stutters during fast movements.",
+              pt: "O gerenciamento de memória para level streaming requer otimização cuidadosa para evitar travamentos durante movimentos rápidos.",
+              fr: "La gestion de la mémoire pour le streaming de niveau nécessite une optimisation minutieuse."
+            }
+          },
+          {
             id: "tactical-rpg",
             title: "Tactical Turn-Based RPG Architecture",
             role: "Lead Systems Programmer",
@@ -259,6 +317,11 @@
               "images/taticalRPG_2.png",
               "images/taticalRPG_3.png",
             ],
+            techWins: {
+              pt: ["Sistema de Grid baseado em Matriz", "Pathfinding A* customizado", "Máquina de Estados para Turnos"],
+              en: ["Matrix-based Grid System", "Custom A* Pathfinding", "Turn State Machine"],
+              fr: ["Système de Grille Matricielle", "Pathfinding A* personnalisé", "Machine à États de Tours"]
+            },
             tech: ["Unreal Engine", "C++", "Architecture"],
             links: { github: "#", demo: "#" },
             featured: true,
@@ -311,8 +374,13 @@
               "images/garage_war_02.png",
               "images/garage_war_03.png",
             ],
+            techWins: {
+              pt: ["Suporte a 4 jogadores simultâneos", "Validador de tarefas baseado em estados", "Input Handling de baixa latência"],
+              en: ["4-player simultaneous support", "State-based task validator", "Low-latency Input Handling"],
+              fr: ["Support 4 joueurs simultanés", "Validateur de tâches basé sur les états", "Gestion des entrées"]
+            },
             tech: ["Unity", "C#", "Multiplayer"],
-            featured: true,
+          
             links: { github: "#", demo: "https://loboodst.itch.io/garagewar" },
             desc: {
               en: "Overcooked-inspired car tuning party game.",
@@ -347,6 +415,11 @@
             role: "Solo Developer",
             type: "Custom Engine / Pure C++",
             images: ["images/spaceshooter.png"],
+            techWins: {
+              pt: ["Renderização via SDL2 puro", "Otimização para telas CRT", "Polling de input frame-perfect"],
+              en: ["Pure SDL2 Rendering", "CRT Display Optimization", "Frame-perfect input polling"],
+              fr: ["Rendu SDL2 pur", "Optimisation pour écrans CRT", "Polling d'entrée frame-perfect"]
+            },
             tech: ["C++", "SDL2", "Low-Level"],
             links: { github: "#", demo: "#" },
             desc: {
@@ -387,6 +460,11 @@
               "videos/vats_system.mp4",
               "videos/possession_system.mp4",
             ],
+            techWins: {
+              pt: ["Sistema VATS (Dilatação de tempo)", "Balística de projéteis realística", "Sistema de possessão modular"],
+              en: ["VATS System (Time dilation)", "Realistic projectile ballistics", "Modular possession system"],
+              fr: ["Système VATS", "Balistique des projectiles", "Système de possession modulaire"]
+            },
             tech: ["Unreal Engine", "Blueprints", "Game Design"],
             links: { github: "#", demo: "#" },
             desc: {
@@ -425,6 +503,11 @@
               "images/elevator_talks_01.png",
               "images/elevator_talks_02.png",
             ],
+            techWins: {
+              pt: ["Sistema de eventos randômicos ponderados", "Fluxo de diálogo dinâmico", "Gerenciador de tensão social"],
+              en: ["Weighted random event system", "Dynamic dialogue flow", "Social tension manager"],
+              fr: ["Système d'événements aléatoires", "Flux de dialogue dynamique", "Gestionnaire de tension"]
+            },
             tech: ["Unity", "C#", "Logic"],
             links: {
               github: "#",
@@ -455,198 +538,6 @@
             weaknesses: {
               en: "The narrative branching is limited by the short development time of the game jam.",
               pt: "As ramificações narrativas são limitadas pelo curto tempo de desenvolvimento da game jam."
-            }
-          },
-          {
-            id: "datacrash",
-            title: "DataCrash",
-            role: "Lead Programmer",
-            type: "Game Jam Project",
-            images: ["images/datacrash_page.png"],
-            tech: ["Unity", "C#", "Prototype"],
-            links: {
-              github: "https://github.com/LOB-workshop",
-              demo: "https://loboodst.itch.io/datacrash",
-            },
-            desc: {
-              en: "72-hour survival game challenge.",
-              pt: "Jogo de sobrevivência criado em 72 horas.",
-              fr: "Jeu de survie créé en 72 heures.",
-            },
-            fullDesc: {
-              en: "Rapid MVP development with high polish on the core loop.",
-              pt: "Desenvolvimento rápido de MVP com alto polimento no loop principal.",
-              fr: "Développement rapide de MVP.",
-            },
-            concept: {
-              en: "A survival game focusing on tight resource management and quick decision making.",
-              pt: "Um jogo de sobrevivência focado em gerenciamento de recursos rígido e tomada de decisão rápida."
-            },
-            howItWasMade: {
-              en: "Rapidly prototyped in Unity. Focused on a polished core game loop and efficient UI data binding.",
-              pt: "Prototipado rapidamente em Unity. Focado em um loop de jogo polido e data binding de UI eficiente."
-            },
-            strengths: {
-              en: "High level of polish achieved in a 72-hour window.",
-              pt: "Alto nível de polimento alcançado em uma janela de 72 horas."
-            },
-            weaknesses: {
-              en: "Some minor edge-case bugs in the resource harvesting system due to limited testing.",
-              pt: "Alguns bugs de casos isolados no sistema de colheita de recursos devido ao tempo limitado de testes."
-            }
-          },
-          {
-            id: "pirate-aim",
-            title: "Pirate Aim",
-            role: "Programmer",
-            type: "Team Project",
-            images: [
-              "images/pirate_aim_01.jpg",
-              "images/pirate_aim_02.jpg",
-              "images/pirate_aim_03.jpg",
-              "images/pirate_aim_04.jpg",
-            ],
-            tech: ["C#", "Unity", "Git"],
-            links: {
-              github: "#",
-              demo: "https://drive.google.com/file/d/1yGat7C6ub7AYErfETQ637Ha_l83bpV5c/view",
-            },
-            desc: {
-              en: "WarioWare style microgame collection.",
-              pt: "Coleção de microgames estilo WarioWare.",
-              fr: "Collection de micro-jeux style WarioWare.",
-            },
-            fullDesc: {
-              en: "Team-based project focused on technical synchronization.",
-              pt: "Projeto em equipe focado em sincronização técnica.",
-              fr: "Projet d'équipe axé sur la synchronisation technique.",
-            },
-            concept: {
-              en: "A collaborative project focusing on rapid-fire microgames and varied input styles.",
-              pt: "Um projeto colaborativo focado em microgames rápidos e estilos de input variados."
-            },
-            howItWasMade: {
-              en: "Collaborative development in Unity. Managed technical sync using Git and a modular manager for game states.",
-              pt: "Desenvolvimento colaborativo em Unity. Gerenciei a sincronização técnica usando Git e um manager modular para estados de jogo."
-            },
-            strengths: {
-              en: "Solid team synchronization and successful modular integration of code.",
-              pt: "Sincronização sólida da equipe e integração modular de código bem-sucedida."
-            },
-            weaknesses: {
-              en: "Inconsistent difficulty curve between different microgames.",
-              pt: "Curva de dificuldade inconsistente entre os diferentes microgames."
-            }
-          },
-          {
-            id: "shadow-of-orum",
-            title: "Shadow of Orum",
-            role: "Solo Developer",
-            type: "Action-RPG",
-            images: ["images/ProjectShadowOfOrum.png"],
-            tech: ["Unreal Engine", "C++", "Systems Architecture"],
-            links: { github: "#", demo: "#" },
-            desc: {
-              en: "Action-RPG based on Afro-Brazilian mythology.",
-              pt: "RPG de ação baseado na mitologia Afro-Brasileira.",
-              fr: "RPG d'action basé sur la mythologie afro-brésilienne.",
-            },
-            fullDesc: {
-              en: "Souls-like combat. Highlights include an Event Bus System and AI State Machines.",
-              pt: "Combate souls-like. Destaques incluem um Event Bus System e State Machines de IA.",
-              fr: "Combat souls-like. Points forts : Event Bus System et State Machines IA.",
-            },
-            concept: {
-              en: "An Action-RPG that bridges mythology with complex, high-stakes combat systems.",
-              pt: "Um Action-RPG que une mitologia com sistemas de combate complexos e de alto risco."
-            },
-            howItWasMade: {
-              en: "Architected in Unreal C++ using an Event Bus system for decoupled communication and FSMs for AI.",
-              pt: "Arquitetado em Unreal C++ usando um sistema de Event Bus para comunicação desacoplada e FSMs para IA."
-            },
-            strengths: {
-              en: "Scalable and robust software architecture for complex RPG systems.",
-              pt: "Arquitetura de software robusta e escalável para sistemas complexos de RPG."
-            },
-            weaknesses: {
-              en: "Combat feedback (juice) still requires more animation layer refinement.",
-              pt: "O feedback de combate (juice) ainda requer mais refinamento nas camadas de animação."
-            }
-          },
-          {
-            id: "shogi-system",
-            title: "Tsukimaru Shogi",
-            role: "Systems Programmer",
-            type: "Logic / Strategy",
-            images: [
-              "images/tsukimaru_shogi_01.jpg",
-              "images/tsukimaru_shogi_02.jpg",
-            ],
-            tech: ["Unreal Engine", "Math", "Logic"],
-            links: { github: "#", demo: "#" },
-            desc: {
-              en: "3D implementation of Japanese Chess.",
-              pt: "Implementação 3D de Shogi.",
-              fr: "Mise en œuvre 3D du Shogi.",
-            },
-            fullDesc: {
-              en: "Deterministic logic and state validation for complex rules.",
-              pt: "Lógica determinística e validação de estados para regras complexas.",
-              fr: "Logique déterministe et validation d'états.",
-            },
-            concept: {
-              en: "A faithful digital recreation of Shogi, focusing on rule accuracy and board state management.",
-              pt: "Uma recriação digital fiel de Shogi, focando na precisão das regras e gestão do estado do tabuleiro."
-            },
-            howItWasMade: {
-              en: "Implemented deterministic move validation logic in Unreal Engine, ensuring zero desync between states.",
-              pt: "Implementei lógica de validação de movimentos determinística na Unreal Engine, garantindo zero desync entre estados."
-            },
-            strengths: {
-              en: "Accurate implementation of complex board game rules and win conditions.",
-              pt: "Implementação precisa de regras complexas de jogos de tabuleiro e condições de vitória."
-            },
-            weaknesses: {
-              en: "The move preview UI could be more intuitive for players unfamiliar with Shogi.",
-              pt: "A UI de preview de movimentos poderia ser mais intuitiva para jogadores não familiarizados com Shogi."
-            }
-          },
-          {
-            id: "dialogue-system",
-            title: "Dialogue System",
-            role: "Gameplay Programmer",
-            type: "Narrative Systems",
-            images: [
-              "images/tsukimaru_dialogue_01.jpg",
-              "images/tsukimaru_dialogue_02.jpg",
-            ],
-            tech: ["Blueprints", "Data Driven"],
-            links: { github: "#", demo: "#" },
-            desc: {
-              en: "Modular Data-Driven narrative tool.",
-              pt: "Ferramenta modular Data-Driven para narrativas.",
-              fr: "Outil narratif modulaire Data-Driven.",
-            },
-            fullDesc: {
-              en: "System using JSON/CSV for non-linear branching dialogues.",
-              pt: "Sistema que utiliza JSON/CSV para diálogos não-lineares.",
-              fr: "Système utilisant JSON/CSV.",
-            },
-            concept: {
-              en: "A developer tool designed to empower narrative designers with a flexible, data-driven workflow.",
-              pt: "Uma ferramenta de desenvolvedor projetada para capacitar designers narrativos com um fluxo orientado a dados."
-            },
-            howItWasMade: {
-              en: "Created a custom JSON parser feeding into a branching graph system in Blueprints for ease of use.",
-              pt: "Criei um parser de JSON customizado que alimenta um sistema de grafo ramificado em Blueprints para facilidade de uso."
-            },
-            strengths: {
-              en: "Highly reusable tool that speeds up narrative implementation across multiple projects.",
-              pt: "Ferramenta altamente reutilizável que acelera a implementação narrativa em múltiplos projetos."
-            },
-            weaknesses: {
-              en: "Visualizing extremely deep nested choices becomes difficult in the current node graph.",
-              pt: "Visualizar escolhas aninhadas extremamente profundas torna-se difícil no grafo de nós atual."
             }
           },
         ],
@@ -724,7 +615,10 @@
                                   <div class="absolute -inset-1 bg-gradient-to-r from-emerald-500 to-violet-600 rounded-3xl blur-2xl opacity-0 group-hover:opacity-50 transition-all duration-500"></div>
                                   <img 
                                       id="profile-img" 
+                                      role="button"
+                                      tabindex="0"
                                       onclick="startTour()" 
+                                      onkeydown="if(event.key==='Enter'||event.key===' ') startTour()"
                                       src="${config.profile.photo}" 
                                       alt="${config.profile.name}" 
                                       class="profile-photo float-animation w-72 h-72 object-cover rounded-3xl cursor-pointer hover:scale-105 transition-transform relative z-10 ring-4 ring-emerald-400/20 hover:ring-emerald-400/60" 
@@ -848,7 +742,17 @@
                           </div>
 
                           <div class="space-y-12">
+                              ${p.youtubeId ? `<div class="aspect-video rounded-3xl overflow-hidden border-2 border-white/5 shadow-2xl"><iframe class="w-full h-full" src="https://www.youtube.com/embed/${p.youtubeId}" title="${p.title} Technical Showcase" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>` : ""}
                               ${p.videos ? p.videos.map((v) => `<video class="rounded-3xl w-full border-2 border-white/5" autoplay loop muted playsinline><source src="${v}" type="video/mp4"></video>`).join("") : ""}
+                              
+                              ${p.techWins ? `
+                                <div class="glass p-8 rounded-3xl border-emerald-500/20 bg-emerald-500/5">
+                                    <h3 class="mono text-emerald-400 text-xs font-black uppercase tracking-widest mb-6 flex items-center gap-3"><i data-lucide="award"></i> Technical Wins</h3>
+                                    <ul class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        ${p.techWins[currentLang].map(win => `<li class="flex items-start gap-3 text-zinc-300 text-sm"><i data-lucide="check-circle-2" class="text-emerald-500 w-4 h-4 mt-0.5"></i> ${win}</li>`).join('')}
+                                    </ul>
+                                </div>` : ""}
+
                               ${p.images.map((img) => `<img src="${img}" alt="${p.title}" loading="lazy" class="rounded-3xl w-full border-2 border-white/5 shadow-2xl">`).join("")}
                           </div>
                       </div>
@@ -975,17 +879,6 @@
             showCharacterMessage(randomMsg);
           }
         }, 4000);
-      };
-
-      // ===== MASCOT WALKING SYSTEM =====
-      let mascotState = {
-        x: 50,
-        y: window.innerHeight - 170,
-        targetX: 50,
-        targetY: window.innerHeight - 170,
-        isFlipped: false,
-        currentSection: null,
-        isActive: false,
       };
 
       const activateMascot = () => {
@@ -1181,9 +1074,8 @@
         mascotState.x += (mascotState.targetX - mascotState.x) * 0.1;
         mascotState.y += (mascotState.targetY - mascotState.y) * 0.1;
 
-        mascot.style.left = mascotState.x + "px";
-        mascot.style.bottom = (window.innerHeight - mascotState.y) + "px";
-
+        mascot.style.transform = `translate(${mascotState.x}px, ${mascotState.y - window.innerHeight + 120}px)`;
+        
         requestAnimationFrame(animateMascot);
       };
 

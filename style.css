@@ -69,6 +69,7 @@ body {
     var(--accent-primary)
   );
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   font-weight: 900;
 }
@@ -416,9 +417,8 @@ body.tour-active::before {
   height: 120px;
   pointer-events: none;
   z-index: 5000;
-  bottom: 50px;
-  left: 50px;
-  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: transform 0.1s linear; /* Suavidade via JS */
+  will-change: transform;
 }
 
 /* Mascote inicialmente escondido */
