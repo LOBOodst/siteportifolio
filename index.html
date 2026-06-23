@@ -12,9 +12,9 @@
     <meta property="og:image" content="images/photo_portifolio.png" />
     <meta property="og:type" content="website" />
     <link rel="icon" href="images/favicon.png" />
+    <link rel="stylesheet" href="output.css" />
     <link rel="stylesheet" href="style.css" />
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
     <script defer src="script.js"></script>
   </head>
   <body class="selection:bg-emerald-500/30 selection:text-white">
@@ -89,7 +89,15 @@
             step4: "Need to build something? Let's connect here at the Spawn Point!",
             next: "Next",
             finish: "Got it!"
-          }
+          },
+          techWinsTitle: "Technical Wins",
+          stackLabel: "Stack",
+          commsLabel: "Comms",
+          pillars: [
+            { title: "Player-Centric Logic", text: "Code written to maximize 'game feel' and player response." },
+            { title: "Systemic Alignment", text: "Complete alignment between design mechanics and systems architecture." },
+            { title: "Designer Empowerment", text: "Creation of tools and workflows that allow rapid iteration for designers." }
+          ]
         },
         pt: {
           contactBtn: "Contato",
@@ -128,7 +136,15 @@
             step4: "Precisa de um programador? Vamos conversar aqui no Spawn Point!",
             next: "Próximo",
             finish: "Entendido!"
-          }
+          },
+          techWinsTitle: "Vitórias Técnicas",
+          stackLabel: "Tecnologias",
+          commsLabel: "Contato",
+          pillars: [
+            { title: "Lógica Centrada no Jogador", text: "Código escrito para maximizar o 'game feel' e a resposta do jogador." },
+            { title: "Alinhamento Sistêmico", text: "Alinhamento total entre as mecânicas de design e a arquitetura de sistemas." },
+            { title: "Empoderamento de Designers", text: "Criação de ferramentas e workflows que permitem iteração rápida para os designers." }
+          ]
         },
         fr: {
           contactBtn: "Contact",
@@ -167,7 +183,15 @@
             step4: "Besoin d'un programmeur? Discutons ici au Spawn Point!",
             next: "Suivant",
             finish: "Compris!"
-          }
+          },
+          techWinsTitle: "Victoires Techniques",
+          stackLabel: "Technologies",
+          commsLabel: "Contact",
+          pillars: [
+            { title: "Logique Centrée sur le Joueur", text: "Code écrit pour maximiser le 'game feel' et la réponse du joueur." },
+            { title: "Alignement Systémique", text: "Alignement complet entre les mécaniques de conception et l'architecture des systèmes." },
+            { title: "Autonomisation des Designers", text: "Création d'outils et de workflows qui permettent une itération rapide pour les designers." }
+          ]
         },
       };
 
@@ -262,8 +286,8 @@
           {
             id: "psychasteniac",
             title: "Psychasteniac",
-            role: "Gameplay & Systems Programmer",
-            type: "Psychological Horror / Narrative",
+            role: { en: "Gameplay & Systems Programmer", pt: "Programador de Gameplay e Sistemas", fr: "Programmeur de Gameplay et Systèmes" },
+            type: { en: "Psychological Horror / Narrative", pt: "Terror Psicológico / Narrativa", fr: "Horreur Psychologique / Narration" },
             youtubeId: "aqRrje7DAw8",
             techWins: { 
               pt: ["Framework de Menu Modular (Vídeo/Áudio/Input)", "Geometria não-euclidiana via Shaders", "Sistema de Level Streaming Dinâmico"], 
@@ -310,8 +334,8 @@
           {
             id: "tactical-rpg",
             title: "Tactical Turn-Based RPG Architecture",
-            role: "Lead Systems Programmer",
-            type: "Featured / Technical Project",
+            role: { en: "Lead Systems Programmer", pt: "Programador Líder de Sistemas", fr: "Programmeur Principal de Systèmes" },
+            type: { en: "Featured / Technical Project", pt: "Destaque / Projeto Técnico", fr: "En Vedette / Projet Technique" },
             images: [
               "images/taticalRPG_1.png",
               "images/taticalRPG_2.png",
@@ -367,8 +391,8 @@
           {
             id: "garage-war",
             title: "Garage War",
-            role: "Gameplay Programmer",
-            type: "Local Co-op / Party Game",
+            role: { en: "Gameplay Programmer", pt: "Programador de Gameplay", fr: "Programmeur de Gameplay" },
+            type: { en: "Local Co-op / Party Game", pt: "Co-op Local / Party Game", fr: "Co-op Local / Jeu de Fête" },
             images: [
               "images/garage_war_01.png",
               "images/garage_war_02.png",
@@ -412,8 +436,8 @@
           {
             id: "space-shooter",
             title: "Retro Space Shooter",
-            role: "Solo Developer",
-            type: "Custom Engine / Pure C++",
+            role: { en: "Solo Developer", pt: "Desenvolvedor Solo", fr: "Développeur Solo" },
+            type: { en: "Custom Engine / Pure C++", pt: "Engine Customizada / C++ Puro", fr: "Moteur Personnalisé / C++ Pur" },
             images: ["images/spaceshooter.png"],
             techWins: {
               pt: ["Renderização via SDL2 puro", "Otimização para telas CRT", "Polling de input frame-perfect"],
@@ -452,8 +476,8 @@
           {
             id: "unreal-mechanics",
             title: "Unreal Engine Mechanics Challenge",
-            role: "Gameplay Programmer",
-            type: "Featured / Mechanics Study",
+            role: { en: "Gameplay Programmer", pt: "Programador de Gameplay", fr: "Programmeur de Gameplay" },
+            type: { en: "Featured / Mechanics Study", pt: "Destaque / Estudo de Mecânicas", fr: "En Vedette / Étude de Mécaniques" },
             images: ["images/unrealmecanins.png"],
             videos: [
               "videos/bullet_drop.mp4",
@@ -497,8 +521,8 @@
           {
             id: "elevator-talks",
             title: "Elevator Talks",
-            role: "Gameplay Programmer",
-            type: "Game Jam / Narrative",
+            role: { en: "Gameplay Programmer", pt: "Programador de Gameplay", fr: "Programmeur de Gameplay" },
+            type: { en: "Game Jam / Narrative", pt: "Game Jam / Narrativa", fr: "Game Jam / Narration" },
             images: [
               "images/elevator_talks_01.png",
               "images/elevator_talks_02.png",
@@ -630,7 +654,7 @@
                               <p class="mt-6 text-xs mono text-emerald-400 animate-pulse tracking-widest uppercase font-black">${t.mascotPrompt}</p>
                           </div>
                       </div>` : ""}
-                      <div class="md:col-span-${mascotState.isActive ? "12" : "7"} text-center ${mascotState.isActive ? "" : "md:text-left"}">
+                      <div class="${mascotState.isActive ? "md:col-span-12" : "md:col-span-7"} text-center ${mascotState.isActive ? "" : "md:text-left"}">
                           <h1 class="text-5xl sm:text-7xl md:text-[8.5rem] uppercase mb-4 leading-none tracking-tighter">
                               <span class="gradient-text">HOSCH</span><br>
                               <span class="gradient-text">ALEF</span>
@@ -659,16 +683,16 @@
                       <!-- Novos Pilares de Desenvolvimento -->
                       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 reveal stagger-2">
                           <div class="p-6 border-l-2 border-emerald-500/30 bg-emerald-500/5 glass-interactive">
-                              <h4 class="mono text-emerald-400 text-[10px] font-black uppercase mb-2">Player-Centric Logic</h4>
-                              <p class="text-zinc-400 text-xs leading-relaxed italic">Código escrito para maximizar o 'game feel' e a resposta do jogador.</p>
+                              <h4 class="mono text-emerald-400 text-[10px] font-black uppercase mb-2">${t.pillars[0].title}</h4>
+                              <p class="text-zinc-400 text-xs leading-relaxed italic">${t.pillars[0].text}</p>
                           </div>
                           <div class="p-6 border-l-2 border-violet-500/30 bg-violet-500/5 glass-interactive">
-                              <h4 class="mono text-violet-400 text-[10px] font-black uppercase mb-2">Systemic Alignment</h4>
-                              <p class="text-zinc-400 text-xs leading-relaxed italic">Alinhamento total entre as mecânicas de design e a arquitetura de sistemas.</p>
+                              <h4 class="mono text-violet-400 text-[10px] font-black uppercase mb-2">${t.pillars[1].title}</h4>
+                              <p class="text-zinc-400 text-xs leading-relaxed italic">${t.pillars[1].text}</p>
                           </div>
                           <div class="p-6 border-l-2 border-amber-500/30 bg-amber-500/5 glass-interactive">
-                              <h4 class="mono text-amber-400 text-[10px] font-black uppercase mb-2">Designer Empowerment</h4>
-                              <p class="text-zinc-400 text-xs leading-relaxed italic">Criação de ferramentas e workflows que permitem iteração rápida para os designers.</p>
+                              <h4 class="mono text-amber-400 text-[10px] font-black uppercase mb-2">${t.pillars[2].title}</h4>
+                              <p class="text-zinc-400 text-xs leading-relaxed italic">${t.pillars[2].text}</p>
                           </div>
                       </div>
                   </section>
@@ -696,7 +720,7 @@
                               <article onclick="window.location.hash='${p.id}'" class="project-card glass-interactive rounded-[2.5rem] reveal ${p.featured ? "md:col-span-2" : ""}" aria-label="${p.title}">
                                   <img src="${p.images[0]}" class="card-img ${p.featured ? "h-96" : "h-72"} w-full object-cover">
                                   <div class="p-10">
-                                      <span class="mono text-[10px] text-emerald-400 font-black uppercase tracking-widest">${p.type}</span>
+                                      <span class="mono text-[10px] text-emerald-400 font-black uppercase tracking-widest">${p.type[currentLang]}</span>
                                       <h3 class="text-4xl font-black text-white mt-2 uppercase tracking-tighter">${p.title}</h3>
                                       <p class="text-zinc-400 mt-4 leading-relaxed">${p.desc[currentLang]}</p>
                                   </div>
@@ -763,7 +787,7 @@
                               
                               ${p.techWins ? `
                                 <div class="glass p-8 rounded-3xl border-emerald-500/20 bg-emerald-500/5">
-                                    <h3 class="mono text-emerald-400 text-xs font-black uppercase tracking-widest mb-6 flex items-center gap-3"><i data-lucide="award"></i> Technical Wins</h3>
+                                    <h3 class="mono text-emerald-400 text-xs font-black uppercase tracking-widest mb-6 flex items-center gap-3"><i data-lucide="award"></i> ${t.techWinsTitle}</h3>
                                     <ul class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         ${p.techWins[currentLang].map(win => `<li class="flex items-start gap-3 text-zinc-300 text-sm"><i data-lucide="check-circle-2" class="text-emerald-500 w-4 h-4 mt-0.5"></i> ${win}</li>`).join('')}
                                     </ul>
@@ -776,9 +800,9 @@
                           <div class="glass p-10 rounded-[2.5rem] sticky top-10 border-blue-500/20">
                               <h3 class="mono text-violet-500 text-xs font-black uppercase tracking-widest mb-10 border-b border-white/5 pb-4">${t.techSheet}</h3>
                               <div class="space-y-8">
-                                  <div><p class="text-[10px] text-zinc-600 uppercase font-black mb-2">${t.mainRole}</p><p class="text-white font-black uppercase">${p.role}</p></div>
-                                  <div><p class="text-[10px] text-zinc-600 uppercase font-black mb-3">Stack</p><div class="flex flex-wrap gap-2">${p.tech.map((tech) => `<span class="mono text-[9px] bg-emerald-400 text-black px-3 py-1 rounded-md font-black uppercase">${tech}</span>`).join("")}</div></div>
-                                  <div><p class="text-[10px] text-zinc-600 uppercase font-black mb-2">Comms</p><a href="${config.profile.discord}" target="_blank" class="text-amber-500 font-black uppercase text-xs mono hover:underline">${config.profile.discordTag}</a></div>
+                                  <div><p class="text-[10px] text-zinc-600 uppercase font-black mb-2">${t.mainRole}</p><p class="text-white font-black uppercase">${p.role[currentLang]}</p></div>
+                                  <div><p class="text-[10px] text-zinc-600 uppercase font-black mb-3">${t.stackLabel}</p><div class="flex flex-wrap gap-2">${p.tech.map((tech) => `<span class="mono text-[9px] bg-emerald-400 text-black px-3 py-1 rounded-md font-black uppercase">${tech}</span>`).join("")}</div></div>
+                                  <div><p class="text-[10px] text-zinc-600 uppercase font-black mb-2">${t.commsLabel}</p><a href="${config.profile.discord}" target="_blank" class="text-amber-500 font-black uppercase text-xs mono hover:underline">${config.profile.discordTag}</a></div>
                               </div>
                               ${p.links.demo !== "#" ? `<a href="${p.links.demo}" target="_blank" class="mt-12 w-full bg-violet-600 text-white py-5 rounded-2xl font-black uppercase flex justify-center items-center gap-3 hover:bg-emerald-400 hover:text-black transition-all">${t.viewProject} <i data-lucide="zap"></i></a>` : ""}
                           </div>
