@@ -14,15 +14,53 @@
     <link rel="icon" href="images/favicon.png" />
     <link rel="stylesheet" href="output.css" />
     <link rel="stylesheet" href="style.css" />
+    
+    <!-- Three.js Import Map -->
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "./three.js-master/build/three.module.js",
+                "three/addons/": "./three.js-master/examples/jsm/"
+            }
+        }
+    </script>
+
+    <!-- Animation Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"></script>
+    <!-- Motion.dev (Vanilla JS) -->
+    <script src="https://cdn.jsdelivr.net/npm/motion@11.11.13/dist/motion.js"></script>
+
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    
+    <!-- Highlight.js for Code Snippets -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/cpp.min.js"></script>
+
     <script defer src="script.js"></script>
+    <script type="module" src="birds.js"></script>
   </head>
-  <body class="selection:bg-emerald-500/30 selection:text-white">
+  <body class="selection:bg-cyan-500/30 selection:text-white">
+
+    <!-- System Real-time HUD -->
+    <div id="system-hud" class="fixed bottom-4 left-4 z-50 pointer-events-none mix-blend-difference mono text-[10px] text-cyan-400 opacity-70 flex flex-col gap-1 tracking-widest uppercase">
+      <div class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span> SYS.ONLINE</div>
+      <div id="hud-time">T: 00:00:00</div>
+      <div id="hud-uptime">UP: 00s</div>
+      <div id="hud-mouse">POS: X000 Y000</div>
+    </div>
+
+    <!-- 3D Background Canvas -->
+    <canvas id="bg-canvas"></canvas>
     <!-- Overlay de Carregamento -->
     <div id="loader">
-      <div class="mono text-xs font-black text-emerald-400 tracking-[0.4em] animate-pulse">HOSCH.CORE_V1_INIT</div>
-      <div class="loader-bar">
-        <div class="loader-progress"></div>
+      <div class="loader-content">
+        <div class="mono text-xs font-black text-cyan-400 tracking-[0.4em] loader-text">HOSCH.CORE_V1_INIT</div>
+        <div class="loader-bar">
+          <div class="loader-progress"></div>
+        </div>
       </div>
     </div>
 
@@ -36,7 +74,7 @@
 
     <main
       id="app"
-      class="max-w-6xl mx-auto px-6 py-10 min-h-screen flex flex-col"
+      class="w-full max-w-[1600px] mx-auto px-6 md:px-12 lg:px-20 py-10 min-h-screen flex flex-col"
     ></main>
 
     <script>
@@ -254,21 +292,21 @@
           discordTag: "lobo_spartans",
         },
         skills: [
-          { n: "C++", l: "levelInter", c: "text-violet-400 border-violet-500/30" },
+          { n: "C++", l: "levelInter", c: "text-blue-400 border-blue-500/30" },
           {
             n: "Unreal Engine",
             l: "levelInterBlue",
-            c: "text-violet-500 border-violet-600/30",
+            c: "text-blue-500 border-blue-600/30",
           },
-          { n: "Git / GitHub", l: "levelStrong", c: "text-amber-500 border-amber-500/30" },
+          { n: "Git / GitHub", l: "levelStrong", c: "text-red-500 border-red-500/30" },
           {
             n: "C#",
             l: "levelInterGreen",
-            c: "text-emerald-500 border-emerald-600/30",
+            c: "text-cyan-500 border-cyan-600/30",
           },
           { n: "Unity",
             l: "levelInterGreen",
-            c: "text-emerald-400 border-emerald-500/30",
+            c: "text-cyan-400 border-cyan-500/30",
           },
           {
             n: "Python",
@@ -573,54 +611,116 @@
         render();
       };
 
+      let isTransitioning = false;
+
       const render = () => {
+        if (isTransitioning) return;
+        isTransitioning = true;
+
         const hash = window.location.hash.replace("#", "");
         const app = document.getElementById("app");
         const t = translations[currentLang];
-        app.innerHTML =
-          !hash || hash === "home" || hash === "contact"
-            ? renderHome(t)
-            : renderProjectDetail(
-                config.projects.find((p) => p.id === hash) ||
-                  config.projects[0],
-                t,
-              );
-        lucide.createIcons();
-        initScrollReveal();
-        initGlassGlow();
-        initCharacterInteractions();
+
+        // Animate OUT (Scale Down / Recede)
+        gsap.to(app, {
+            scale: 0.95,
+            opacity: 0,
+            duration: 0.4,
+            ease: "power2.inOut",
+            onComplete: () => {
+                // Swap content while hidden
+                app.innerHTML =
+                  !hash || hash === "home" || hash === "contact"
+                    ? renderHome(t)
+                    : renderProjectDetail(
+                        config.projects.find((p) => p.id === hash) ||
+                          config.projects[0],
+                        t,
+                      );
+                
+                
+                lucide.createIcons();
+                initGSAPAnimations();
+                initGlassGlow();
+                initCharacterInteractions();
+                
+                if (!isInitialLoad) {
+                    initMotionHover();
+                }
+
+                // Apply scramble to main titles on new pages
+                const titles = document.querySelectorAll('.gradient-text, h2');
+                titles.forEach(t => {
+                    if (typeof scrambleText === 'function') {
+                        scrambleText(t);
+                        t.addEventListener('mouseenter', () => scrambleText(t));
+                    }
+                });
+
+                const profileImg = document.getElementById("profile-img");
+                if (profileImg) profileImg.addEventListener("click", activateMascot);
+
+                window.scrollTo({ top: 0, behavior: "instant" });
+
+                // Set initial state for Animate IN (Scale Up / Emerge)
+                gsap.set(app, { scale: 1.05, opacity: 0 });
+
+                // Animate IN
+                gsap.to(app, {
+                    scale: 1,
+                    opacity: 1,
+                    duration: 0.6,
+                    ease: "power3.out",
+                    onComplete: () => {
+                        isTransitioning = false;
+                    }
+                });
+            }
+        });
 
         if (isInitialLoad) {
-          setTimeout(() => {
-            document.getElementById("loader").classList.add("hidden");
-            characterGreeted = false;
-            setTimeout(() => {
-              showCharacterMessage(characterMessages[currentLang].greeting);
-            }, 800);
-            isInitialLoad = false;
-          }, 1200);
-        }
+            initAnimeLoader(() => {
+                characterGreeted = false;
+                setTimeout(() => {
+                    showCharacterMessage(characterMessages[currentLang].greeting);
+                }, 800);
+                isInitialLoad = false;
+                if (window.initGPGPUBirds) {
+                    window.initGPGPUBirds();
+                }
+                initMotionHover();
+                setupGSAPMascot();
+                
+                // Start Living Portfolio Features
+                if (typeof initLivingPortfolio === 'function') {
+                    initLivingPortfolio();
+                }
 
-        // Adicionar event listener para ativar mascote
-        const profileImg = document.getElementById("profile-img");
-        if (profileImg) {
-          profileImg.addEventListener("click", activateMascot);
+                // Apply scramble to main titles
+                const titles = document.querySelectorAll('.gradient-text, h2');
+                titles.forEach(t => {
+                    if (typeof scrambleText === 'function') {
+                        scrambleText(t);
+                        t.addEventListener('mouseenter', () => scrambleText(t));
+                    }
+                });
+            });
+        } else if (isInitialLoad) { // fallback
+            isTransitioning = false;
         }
-
-        window.scrollTo({ top: 0, behavior: "smooth" });
       };
 
       const renderHome = (t) => `
               <div class="page-transition">
-                  <nav class="flex flex-col sm:flex-row justify-between items-center glass p-4 px-6 sm:px-8 rounded-3xl sm:rounded-full mb-12 sm:mb-20 reveal gap-4">
-                      <div class="mono text-xs font-black text-emerald-400">HOSCH.CORE_V1</div>
+                  <nav class="flex flex-col sm:flex-row justify-between items-center glass p-4 px-6 sm:px-8 rounded-none sm:rounded-none mb-12 sm:mb-20 reveal gap-4">
+                      <div class="mono text-xs font-black text-cyan-400">HOSCH.CORE_V1</div>
                       <div class="flex gap-6 items-center">
-                          <div class="flex gap-1 bg-white/5 p-1 rounded-xl border border-white/10">
+                          <div class="flex gap-1 bg-white/5 p-1 rounded-none border border-white/10">
                               <button onclick="setLanguage('en')" class="lang-btn ${currentLang === "en" ? "active" : "text-zinc-500"}">EN</button>
                               <button onclick="setLanguage('fr')" class="lang-btn ${currentLang === "fr" ? "active" : "text-zinc-500"}">FR</button>
                               <button onclick="setLanguage('pt')" class="lang-btn ${currentLang === "pt" ? "active" : "text-zinc-500"}">PT</button>
                           </div>
-                          <a href="#contact" class="bg-violet-600 hover:bg-emerald-400 hover:text-black text-white px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest transition-all shadow-lg">${t.contactBtn}</a>
+                          <a href="#contact" class="bg-blue-600 hover:bg-cyan-400 hover:text-black text-white px-6 py-2 rounded-none text-[10px] font-black uppercase tracking-widest transition-all shadow-lg">${t.contactBtn}</a>
                       </div>
                   </nav>
 
@@ -629,14 +729,14 @@
                           <!-- Character Photo with Speech Bubble -->
                           <div class="relative w-full flex flex-col items-center">
                               <!-- Speech Bubble above photo -->
-                              <div id="character-bubble" class="speech-bubble glass mb-6 px-8 py-5 rounded-2xl border border-emerald-400/50 w-full max-w-xs shadow-2xl opacity-0 transform -translate-y-4 transition-all duration-500 pointer-events-none">
-                                  <div class="absolute -bottom-3 left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-l-transparent border-r-transparent border-t-emerald-400/50"></div>
+                              <div id="character-bubble" class="speech-bubble glass mb-6 px-8 py-5 rounded-none border border-cyan-400/50 w-full max-w-xs shadow-2xl opacity-0 transform -translate-y-4 transition-all duration-500 pointer-events-none">
+                                  <div class="absolute -bottom-3 left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-l-transparent border-r-transparent border-t-cyan-400/50"></div>
                                   <p id="bubble-text" class="text-white text-sm font-semibold leading-relaxed">Bem-vindo! 👋</p>
                               </div>
                               
                               <!-- Profile Photo with glow effect -->
                               <div class="relative group">
-                                  <div class="absolute -inset-1 bg-gradient-to-r from-emerald-500 to-violet-600 rounded-3xl blur-2xl opacity-0 group-hover:opacity-50 transition-all duration-500"></div>
+                                  <div class="absolute -inset-1 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-none blur-2xl opacity-0 group-hover:opacity-50 transition-all duration-500"></div>
                                   <img 
                                       id="profile-img" 
                                       role="button"
@@ -645,13 +745,13 @@
                                       onkeydown="if(event.key==='Enter'||event.key===' ') startTour()"
                                       src="${config.profile.photo}" 
                                       alt="${config.profile.name}" 
-                                      class="profile-photo float-animation w-72 h-72 object-cover rounded-3xl cursor-pointer hover:scale-105 transition-transform relative z-10 ring-4 ring-emerald-400/20 hover:ring-emerald-400/60" 
+                                      class="profile-photo float-animation w-72 h-72 object-cover rounded-none cursor-pointer hover:scale-105 transition-transform relative z-10 ring-4 ring-cyan-400/20 hover:ring-cyan-400/60" 
                                       title="Clique para um tour!">
-                                  <div class="absolute inset-0 rounded-3xl bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300"></div>
+                                  <div class="absolute inset-0 rounded-none bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300"></div>
                               </div>
 
                               <!-- Interactive prompt below -->
-                              <p class="mt-6 text-xs mono text-emerald-400 animate-pulse tracking-widest uppercase font-black">${t.mascotPrompt}</p>
+                              <p class="mt-6 text-xs mono text-cyan-400 animate-pulse tracking-widest uppercase font-black">${t.mascotPrompt}</p>
                           </div>
                       </div>` : ""}
                       <div class="${mascotState.isActive ? "md:col-span-12" : "md:col-span-7"} text-center ${mascotState.isActive ? "" : "md:text-left"}">
@@ -659,68 +759,260 @@
                               <span class="gradient-text">HOSCH</span><br>
                               <span class="gradient-text">ALEF</span>
                           </h1>
-                          <p class="text-xl text-zinc-400 italic border-l-4 border-emerald-400 pl-6 max-w-2xl${mascotState.isActive ? " text-center border-l-0 pl-0" : ""}">${t.bio}</p>
+                          <p class="text-xl text-zinc-400 italic border-l-4 border-cyan-400 pl-6 max-w-2xl${mascotState.isActive ? " text-center border-l-0 pl-0" : ""}">${t.bio}</p>
                       </div>
                   </header>
 
                   <section id="tour-stack" class="mb-32 reveal">
-                      <h2 class="mono text-xs font-black text-violet-500 uppercase tracking-[0.4em] mb-10 flex items-center gap-4">
-                        <span class="h-px w-10 bg-violet-500"></span> ${t.techTitle}
+                      <h2 class="mono text-xs font-black text-blue-500 uppercase tracking-[0.4em] mb-10 flex items-center gap-4">
+                        <span class="h-px w-10 bg-blue-500"></span> ${t.techTitle}
                       </h2>
-                      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-7 gap-4 mb-12">
-                          ${config.skills
-                            .map(
-                              (s, i) => `
-                              <div class="glass reveal stagger-${(i % 4) + 1} border ${s.c} p-6 rounded-2xl group hover:bg-white/5 transition-all">
-                                  <p class="font-black text-sm uppercase">${s.n}</p>
-                                  <p class="mono text-[10px] opacity-60 mt-1">${t[s.l]}</p>
+                      <!-- Skill Tree (Árvore de Habilidades Focada & Pertinente) -->
+                      <div class="skill-tree-container mb-24 relative overflow-x-auto pb-8 pt-4">
+                          <div class="min-w-[900px] flex flex-col gap-12">
+                              
+                              <!-- C++ / Systems Architecture Branch -->
+                              <div class="flex items-center justify-center gap-6">
+                                  <div class="skill-node bg-white/5 backdrop-blur-md border border-blue-500/50 p-6 w-56 text-center relative z-10">
+                                      <p class="font-black text-xl text-blue-400">C++ / Native</p>
+                                      <p class="mono text-[9px] opacity-60 mt-1 uppercase">Engineering & Gameplay</p>
+                                  </div>
+                                  
+                                  <div class="w-12 h-[2px] bg-blue-900/50 relative"></div>
+
+                                  <div class="flex flex-col gap-6 relative">
+                                      <div class="absolute -left-6 top-[25%] bottom-[25%] w-[2px] h-[50%] bg-blue-900/50"></div>
+                                      
+                                      <!-- Unreal Path -->
+                                      <div class="flex items-center gap-6 relative">
+                                          <div class="absolute -left-6 top-1/2 w-6 h-[2px] bg-blue-900/50"></div>
+                                          <div class="skill-node bg-white/5 backdrop-blur-md border border-blue-600/30 p-4 w-48 text-center">
+                                              <p class="font-black text-sm text-blue-500">Unreal Engine C++</p>
+                                              <p class="mono text-[9px] opacity-60 mt-1 uppercase">Turn-Based & AI</p>
+                                          </div>
+                                          <div class="w-8 h-[2px] bg-blue-900/50 relative"></div>
+                                          <div class="flex flex-col gap-2 relative">
+                                              <div class="absolute -left-6 top-[25%] bottom-[25%] w-[2px] bg-blue-900/50"></div>
+                                              
+                                              <div class="relative">
+                                                  <div class="absolute -left-6 top-1/2 w-6 h-[2px] bg-blue-900/50"></div>
+                                                  <div class="skill-node bg-white/5 backdrop-blur-md border border-blue-800/30 p-2 px-4 text-center">
+                                                      <p class="font-black text-[11px] text-blue-300">A* Pathfinding & Grid Math</p>
+                                                  </div>
+                                              </div>
+                                              <div class="relative">
+                                                  <div class="absolute -left-6 top-1/2 w-6 h-[2px] bg-blue-900/50"></div>
+                                                  <div class="skill-node bg-white/5 backdrop-blur-md border border-blue-800/30 p-2 px-4 text-center">
+                                                      <p class="font-black text-[11px] text-blue-300">Turn Managers & C++ HUDs</p>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
+
+                                      <!-- Graphics / Low-Level Path -->
+                                      <div class="flex items-center gap-6 relative">
+                                          <div class="absolute -left-6 top-1/2 w-6 h-[2px] bg-blue-900/50"></div>
+                                          <div class="skill-node bg-white/5 backdrop-blur-md border border-indigo-600/30 p-4 w-48 text-center">
+                                              <p class="font-black text-sm text-indigo-500">Custom Engine Dev</p>
+                                              <p class="mono text-[9px] opacity-60 mt-1 uppercase">Architecture & Low-Level</p>
+                                          </div>
+                                          <div class="w-8 h-[2px] bg-indigo-900/50 relative"></div>
+                                          <div class="flex flex-col gap-2 relative">
+                                              <div class="absolute -left-6 top-[25%] bottom-[25%] w-[2px] bg-indigo-900/50"></div>
+                                              
+                                              <div class="relative">
+                                                  <div class="absolute -left-6 top-1/2 w-6 h-[2px] bg-indigo-900/50"></div>
+                                                  <div class="skill-node bg-white/5 backdrop-blur-md border border-indigo-800/30 p-2 px-4 text-center">
+                                                      <p class="font-black text-[11px] text-indigo-300">Game Loop & Hardware Input</p>
+                                                  </div>
+                                              </div>
+                                              <div class="relative">
+                                                  <div class="absolute -left-6 top-1/2 w-6 h-[2px] bg-indigo-900/50"></div>
+                                                  <div class="skill-node bg-white/5 backdrop-blur-md border border-indigo-800/30 p-2 px-4 text-center">
+                                                      <p class="font-black text-[11px] text-indigo-300">SDL2 & Linear Algebra (GLM)</p>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
                               </div>
-                          `,
-                            )
-                            .join("")}
+
+                              <!-- C# / Unity Branch -->
+                              <div class="flex items-center justify-center gap-6">
+                                  <div class="skill-node bg-white/5 backdrop-blur-md border border-cyan-600/50 p-6 w-56 text-center relative z-10">
+                                      <p class="font-black text-xl text-cyan-500">C# / Unity</p>
+                                      <p class="mono text-[9px] opacity-60 mt-1 uppercase">Systems & Design Patterns</p>
+                                  </div>
+                                  
+                                  <div class="w-12 h-[2px] bg-cyan-900/50 relative"></div>
+
+                                  <div class="flex flex-col gap-6 relative">
+                                      <div class="absolute -left-6 top-[25%] bottom-[25%] w-[2px] h-[50%] bg-cyan-900/50"></div>
+                                      
+                                      <!-- Gameplay Path -->
+                                      <div class="flex items-center gap-6 relative">
+                                          <div class="absolute -left-6 top-1/2 w-6 h-[2px] bg-cyan-900/50"></div>
+                                          <div class="skill-node bg-white/5 backdrop-blur-md border border-cyan-500/30 p-4 w-48 text-center">
+                                              <p class="font-black text-sm text-cyan-400">Optimization</p>
+                                              <p class="mono text-[9px] opacity-60 mt-1 uppercase">Memory & Performance</p>
+                                          </div>
+                                          <div class="w-8 h-[2px] bg-cyan-900/50 relative"></div>
+                                          <div class="flex flex-col gap-2 relative">
+                                              <div class="absolute -left-6 top-[25%] bottom-[25%] w-[2px] bg-cyan-900/50"></div>
+                                              
+                                              <div class="relative">
+                                                  <div class="absolute -left-6 top-1/2 w-6 h-[2px] bg-cyan-900/50"></div>
+                                                  <div class="skill-node bg-white/5 backdrop-blur-md border border-cyan-800/30 p-2 px-4 text-center">
+                                                      <p class="font-black text-[11px] text-cyan-300">Asynchronous Level Streaming</p>
+                                                  </div>
+                                              </div>
+                                              <div class="relative">
+                                                  <div class="absolute -left-6 top-1/2 w-6 h-[2px] bg-cyan-900/50"></div>
+                                                  <div class="skill-node bg-white/5 backdrop-blur-md border border-cyan-800/30 p-2 px-4 text-center">
+                                                      <p class="font-black text-[11px] text-cyan-300">State Management</p>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
+
+                                      <!-- Architecture Path -->
+                                      <div class="flex items-center gap-6 relative">
+                                          <div class="absolute -left-6 top-1/2 w-6 h-[2px] bg-cyan-900/50"></div>
+                                          <div class="skill-node bg-white/5 backdrop-blur-md border border-teal-600/30 p-4 w-48 text-center">
+                                              <p class="font-black text-sm text-teal-400">Software Architecture</p>
+                                              <p class="mono text-[9px] opacity-60 mt-1 uppercase">Documentation</p>
+                                          </div>
+                                          <div class="w-8 h-[2px] bg-teal-900/50 relative"></div>
+                                          <div class="flex flex-col gap-2 relative">
+                                              <div class="absolute -left-6 top-[25%] bottom-[25%] w-[2px] bg-teal-900/50"></div>
+                                              
+                                              <div class="relative">
+                                                  <div class="absolute -left-6 top-1/2 w-6 h-[2px] bg-teal-900/50"></div>
+                                                  <div class="skill-node bg-white/5 backdrop-blur-md border border-teal-800/30 p-2 px-4 text-center">
+                                                      <p class="font-black text-[11px] text-teal-300">UML & Class Blueprints</p>
+                                                  </div>
+                                              </div>
+                                              <div class="relative">
+                                                  <div class="absolute -left-6 top-1/2 w-6 h-[2px] bg-teal-900/50"></div>
+                                                  <div class="skill-node bg-white/5 backdrop-blur-md border border-teal-800/30 p-2 px-4 text-center">
+                                                      <p class="font-black text-[11px] text-teal-300">Component-Based Design</p>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                              
+                              <!-- Backend & Network Branch -->
+                              <div class="flex items-center justify-center gap-6">
+                                  <div class="skill-node bg-white/5 backdrop-blur-md border border-purple-500/50 p-6 w-56 text-center relative z-10">
+                                      <p class="font-black text-xl text-purple-400">Backend & Tools</p>
+                                      <p class="mono text-[9px] opacity-60 mt-1 uppercase">Network & Pipeline</p>
+                                  </div>
+                                  
+                                  <div class="w-12 h-[2px] bg-purple-900/50 relative"></div>
+
+                                  <div class="flex flex-col gap-6 relative">
+                                      <div class="absolute -left-6 top-[25%] bottom-[25%] w-[2px] h-[50%] bg-purple-900/50"></div>
+                                      
+                                      <!-- Multiplayer / Network Path -->
+                                      <div class="flex items-center gap-6 relative">
+                                          <div class="absolute -left-6 top-1/2 w-6 h-[2px] bg-purple-900/50"></div>
+                                          <div class="skill-node bg-white/5 backdrop-blur-md border border-purple-500/30 p-4 w-48 text-center">
+                                              <p class="font-black text-sm text-purple-400">Node.js Server</p>
+                                              <p class="mono text-[9px] opacity-60 mt-1 uppercase">REST APIs & Auth</p>
+                                          </div>
+                                          <div class="w-8 h-[2px] bg-purple-900/50 relative"></div>
+                                          <div class="flex flex-col gap-2 relative">
+                                              <div class="absolute -left-6 top-[25%] bottom-[25%] w-[2px] bg-purple-900/50"></div>
+                                              
+                                              <div class="relative">
+                                                  <div class="absolute -left-6 top-1/2 w-6 h-[2px] bg-purple-900/50"></div>
+                                                  <div class="skill-node bg-white/5 backdrop-blur-md border border-purple-800/30 p-2 px-4 text-center">
+                                                      <p class="font-black text-[11px] text-purple-300">JWT Authentication</p>
+                                                  </div>
+                                              </div>
+                                              <div class="relative">
+                                                  <div class="absolute -left-6 top-1/2 w-6 h-[2px] bg-purple-900/50"></div>
+                                                  <div class="skill-node bg-white/5 backdrop-blur-md border border-purple-800/30 p-2 px-4 text-center">
+                                                      <p class="font-black text-[11px] text-purple-300">Unreal Engine Networking</p>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
+
+                                      <!-- Tools Path -->
+                                      <div class="flex items-center gap-6 relative">
+                                          <div class="absolute -left-6 top-1/2 w-6 h-[2px] bg-purple-900/50"></div>
+                                          <div class="skill-node bg-white/5 backdrop-blur-md border border-fuchsia-600/30 p-4 w-48 text-center">
+                                              <p class="font-black text-sm text-fuchsia-400">Pipeline & Ops</p>
+                                              <p class="mono text-[9px] opacity-60 mt-1 uppercase">Workflow Automation</p>
+                                          </div>
+                                          <div class="w-8 h-[2px] bg-fuchsia-900/50 relative"></div>
+                                          <div class="flex flex-col gap-2 relative">
+                                              <div class="absolute -left-6 top-[25%] bottom-[25%] w-[2px] bg-fuchsia-900/50"></div>
+                                              
+                                              <div class="relative">
+                                                  <div class="absolute -left-6 top-1/2 w-6 h-[2px] bg-fuchsia-900/50"></div>
+                                                  <div class="skill-node bg-white/5 backdrop-blur-md border border-fuchsia-800/30 p-2 px-4 text-center">
+                                                      <p class="font-black text-[11px] text-fuchsia-300">Python Scripting</p>
+                                                  </div>
+                                              </div>
+                                              <div class="relative">
+                                                  <div class="absolute -left-6 top-1/2 w-6 h-[2px] bg-fuchsia-900/50"></div>
+                                                  <div class="skill-node bg-white/5 backdrop-blur-md border border-fuchsia-800/30 p-2 px-4 text-center">
+                                                      <p class="font-black text-[11px] text-fuchsia-300">Git / Version Control</p>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+
+                          </div>
                       </div>
                       
                       <!-- Novos Pilares de Desenvolvimento -->
-                      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 reveal stagger-2">
-                          <div class="p-6 border-l-2 border-emerald-500/30 bg-emerald-500/5 glass-interactive">
-                              <h4 class="mono text-emerald-400 text-[10px] font-black uppercase mb-2">${t.pillars[0].title}</h4>
+                      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 reveal stagger-2 mb-20">
+                          <div class="p-6 border-l-2 border-cyan-500/30 bg-cyan-500/5 glass-interactive">
+                              <h4 class="mono text-cyan-400 text-[10px] font-black uppercase mb-2">${t.pillars[0].title}</h4>
                               <p class="text-zinc-400 text-xs leading-relaxed italic">${t.pillars[0].text}</p>
                           </div>
-                          <div class="p-6 border-l-2 border-violet-500/30 bg-violet-500/5 glass-interactive">
-                              <h4 class="mono text-violet-400 text-[10px] font-black uppercase mb-2">${t.pillars[1].title}</h4>
+                          <div class="p-6 border-l-2 border-blue-500/30 bg-blue-500/5 glass-interactive">
+                              <h4 class="mono text-blue-400 text-[10px] font-black uppercase mb-2">${t.pillars[1].title}</h4>
                               <p class="text-zinc-400 text-xs leading-relaxed italic">${t.pillars[1].text}</p>
                           </div>
-                          <div class="p-6 border-l-2 border-amber-500/30 bg-amber-500/5 glass-interactive">
-                              <h4 class="mono text-amber-400 text-[10px] font-black uppercase mb-2">${t.pillars[2].title}</h4>
+                          <div class="p-6 border-l-2 border-red-500/30 bg-red-500/5 glass-interactive">
+                              <h4 class="mono text-red-400 text-[10px] font-black uppercase mb-2">${t.pillars[2].title}</h4>
                               <p class="text-zinc-400 text-xs leading-relaxed italic">${t.pillars[2].text}</p>
                           </div>
                       </div>
                   </section>
 
                   <section class="mb-32">
-                      <div id="tour-profile" class="glass glass-interactive reveal p-8 sm:p-12 md:p-16 rounded-[2.5rem] sm:rounded-[3rem] border-white/5 relative overflow-hidden">
-                          <div class="absolute -top-24 -right-24 w-64 h-64 bg-violet-600/10 blur-[100px]"></div>
-                          <h2 class="mono text-violet-500 text-xs font-black uppercase tracking-[0.4em] mb-4">${t.aboutTitle}</h2>
+                      <div id="tour-profile" class="glass glass-interactive reveal p-8 sm:p-12 md:p-16 rounded-none sm:rounded-none border-white/5 relative overflow-hidden">
+                          <div class="absolute -top-24 -right-24 w-64 h-64 bg-blue-600/10 blur-[100px]"></div>
+                          <h2 class="mono text-blue-500 text-xs font-black uppercase tracking-[0.4em] mb-4">${t.aboutTitle}</h2>
                           <h3 class="text-3xl sm:text-4xl md:text-5xl font-black text-white uppercase mb-8 tracking-tighter">${t.aboutRole}</h3>
                           <p class="text-lg sm:text-xl md:text-2xl text-zinc-400 leading-relaxed max-w-4xl mb-12">${t.aboutText}</p>
-                          <a href="CV/Hosch_Alef_CV2.pdf" target="_blank" class="inline-flex items-center gap-4 bg-emerald-400 text-black px-10 py-5 rounded-full font-black uppercase text-xs tracking-widest hover:scale-105 transition-all shadow-2xl">
+                          <a href="CV/Hosch_Alef_CV2.pdf" target="_blank" class="inline-flex items-center gap-4 bg-cyan-400 text-black px-10 py-5 rounded-none font-black uppercase text-xs tracking-widest hover:scale-105 transition-all shadow-2xl">
                               <i data-lucide="file-text"></i> ${t.downloadCV}
                           </a>
                       </div>
                   </section>
 
                   <section id="tour-projects" class="mb-32">
-                      <h2 class="mono text-xs font-black text-amber-500 uppercase tracking-[0.4em] mb-10 flex items-center gap-4">
-                        <span class="h-px w-10 bg-amber-500"></span> ${t.projectTitle}
+                      <h2 class="mono text-xs font-black text-red-500 uppercase tracking-[0.4em] mb-10 flex items-center gap-4">
+                        <span class="h-px w-10 bg-red-500"></span> ${t.projectTitle}
                       </h2>
                       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-10">
                           ${config.projects
                             .map(
                               (p) => `
-                              <article onclick="window.location.hash='${p.id}'" class="project-card glass-interactive rounded-[2.5rem] reveal ${p.featured ? "md:col-span-2" : ""}" aria-label="${p.title}">
+                              <article onclick="window.location.hash='${p.id}'" class="project-card glass-interactive rounded-none reveal ${p.featured ? "md:col-span-2" : ""}" aria-label="${p.title}">
                                   <img src="${p.images[0]}" class="card-img ${p.featured ? "h-96" : "h-72"} w-full object-cover">
                                   <div class="p-10">
-                                      <span class="mono text-[10px] text-emerald-400 font-black uppercase tracking-widest">${p.type[currentLang]}</span>
+                                      <span class="mono text-[10px] text-cyan-400 font-black uppercase tracking-widest">${p.type[currentLang]}</span>
                                       <h3 class="text-4xl font-black text-white mt-2 uppercase tracking-tighter">${p.title}</h3>
                                       <p class="text-zinc-400 mt-4 leading-relaxed">${p.desc[currentLang]}</p>
                                   </div>
@@ -732,13 +1024,13 @@
                   </section>
 
                   <section id="contact" class="mb-32 reveal">
-                      <div class="glass p-8 sm:p-16 rounded-[2.5rem] sm:rounded-[4rem] text-center border-emerald-400/20">
-                          <h3 class="text-4xl sm:text-5xl md:text-7xl font-black text-white mb-10 uppercase tracking-tighter">Spawn <span class="text-violet-600">Point.</span></h3>
+                      <div class="glass p-8 sm:p-16 rounded-none sm:rounded-none text-center border-cyan-400/20">
+                          <h3 class="text-4xl sm:text-5xl md:text-7xl font-black text-white mb-10 uppercase tracking-tighter">Spawn <span class="text-blue-600">Point.</span></h3>
                           <div class="flex flex-wrap justify-center gap-6">
-                            <a href="${config.profile.email}" target="_blank" rel="noopener noreferrer" class="bg-violet-600 text-white px-12 py-5 rounded-full font-black uppercase hover:scale-110 transition shadow-xl flex items-center gap-3"><i data-lucide="mail"></i> E-mail</a>
-                              <button onclick="copyDiscord(this)" class="bg-[#5865F2] text-white px-12 py-5 rounded-full font-black uppercase hover:scale-110 transition shadow-xl flex items-center gap-3"><i data-lucide="message-square"></i> Discord</button>
-                              <a href="${config.profile.github}" target="_blank" class="glass text-white px-12 py-5 rounded-full font-black uppercase hover:bg-white hover:text-black transition">GitHub</a>
-                              <a href="${config.profile.linkedin}" target="_blank" class="glass text-white px-12 py-5 rounded-full font-black uppercase hover:bg-white hover:text-black transition">LinkedIn</a>
+                            <a href="${config.profile.email}" target="_blank" rel="noopener noreferrer" class="bg-blue-600 text-white px-12 py-5 rounded-none font-black uppercase hover:scale-110 transition shadow-xl flex items-center gap-3"><i data-lucide="mail"></i> E-mail</a>
+                              <button onclick="copyDiscord(this)" class="bg-[#5865F2] text-white px-12 py-5 rounded-none font-black uppercase hover:scale-110 transition shadow-xl flex items-center gap-3"><i data-lucide="message-square"></i> Discord</button>
+                              <a href="${config.profile.github}" target="_blank" class="glass text-white px-12 py-5 rounded-none font-black uppercase hover:bg-white hover:text-black transition">GitHub</a>
+                              <a href="${config.profile.linkedin}" target="_blank" class="glass text-white px-12 py-5 rounded-none font-black uppercase hover:bg-white hover:text-black transition">LinkedIn</a>
                           </div>
                       </div>
                   </section>
@@ -751,7 +1043,7 @@
 
       const renderProjectDetail = (p, t) => `
               <div class="page-transition">
-                  <button onclick="window.location.hash='home'" class="flex items-center gap-3 text-emerald-400 hover:text-white transition mono text-xs font-black uppercase mb-16">
+                  <button onclick="window.location.hash='home'" class="flex items-center gap-3 text-cyan-400 hover:text-white transition mono text-xs font-black uppercase mb-16">
                       <i data-lucide="arrow-left"></i> ${t.backBtn}
                   </button>
                   <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16">
@@ -760,21 +1052,21 @@
                           
                           <div class="space-y-12 mb-16">
                               <section>
-                                  <h2 class="mono text-amber-500 text-xs font-black uppercase tracking-widest mb-4">${t.conceptTitle}</h2>
+                                  <h2 class="mono text-red-500 text-xs font-black uppercase tracking-widest mb-4">${t.conceptTitle}</h2>
                                   <p class="text-zinc-300 text-xl leading-relaxed">${p.concept ? p.concept[currentLang] : p.desc[currentLang]}</p>
                               </section>
 
                               <section>
-                                  <h2 class="mono text-emerald-500 text-xs font-black uppercase tracking-widest mb-4">${t.howTitle}</h2>
+                                  <h2 class="mono text-cyan-500 text-xs font-black uppercase tracking-widest mb-4">${t.howTitle}</h2>
                                   <div class="text-zinc-400 text-lg leading-relaxed">${p.howItWasMade ? p.howItWasMade[currentLang] : p.fullDesc[currentLang]}</div>
                               </section>
 
                               <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                  <div class="p-6 rounded-2xl bg-emerald-500/5 border border-emerald-500/20">
-                                      <h2 class="mono text-emerald-500 text-[10px] font-black uppercase mb-3">${t.strengthsTitle}</h2>
+                                  <div class="p-6 rounded-none bg-cyan-500/5 border border-cyan-500/20">
+                                      <h2 class="mono text-cyan-500 text-[10px] font-black uppercase mb-3">${t.strengthsTitle}</h2>
                                       <p class="text-zinc-400 text-sm italic">${p.strengths ? p.strengths[currentLang] : '---'}</p>
                                   </div>
-                                  <div class="p-6 rounded-2xl bg-red-500/5 border border-red-500/20">
+                                  <div class="p-6 rounded-none bg-red-500/5 border border-red-500/20">
                                       <h2 class="mono text-red-500 text-[10px] font-black uppercase mb-3">${t.weaknessesTitle}</h2>
                                       <p class="text-zinc-400 text-sm italic">${p.weaknesses ? p.weaknesses[currentLang] : '---'}</p>
                                   </div>
@@ -782,80 +1074,38 @@
                           </div>
 
                           <div class="space-y-12">
-                              ${p.youtubeId ? `<div class="aspect-video rounded-3xl overflow-hidden border-2 border-white/5 shadow-2xl"><iframe class="w-full h-full" src="https://www.youtube.com/embed/${p.youtubeId}" title="${p.title} Technical Showcase" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>` : ""}
-                              ${p.videos ? p.videos.map((v) => `<video class="rounded-3xl w-full border-2 border-white/5" autoplay loop muted playsinline><source src="${v}" type="video/mp4"></video>`).join("") : ""}
+                              ${p.youtubeId ? `<div class="aspect-video rounded-none overflow-hidden border-2 border-white/5 shadow-2xl"><iframe class="w-full h-full" src="https://www.youtube.com/embed/${p.youtubeId}" title="${p.title} Technical Showcase" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>` : ""}
+                              ${p.videos ? p.videos.map((v) => `<video class="rounded-none w-full border-2 border-white/5" autoplay loop muted playsinline><source src="${v}" type="video/mp4"></video>`).join("") : ""}
                               
                               ${p.techWins ? `
-                                <div class="glass p-8 rounded-3xl border-emerald-500/20 bg-emerald-500/5">
-                                    <h3 class="mono text-emerald-400 text-xs font-black uppercase tracking-widest mb-6 flex items-center gap-3"><i data-lucide="award"></i> ${t.techWinsTitle}</h3>
+                                <div class="glass p-8 rounded-none border-cyan-500/20 bg-cyan-500/5">
+                                    <h3 class="mono text-cyan-400 text-xs font-black uppercase tracking-widest mb-6 flex items-center gap-3"><i data-lucide="award"></i> ${t.techWinsTitle}</h3>
                                     <ul class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        ${p.techWins[currentLang].map(win => `<li class="flex items-start gap-3 text-zinc-300 text-sm"><i data-lucide="check-circle-2" class="text-emerald-500 w-4 h-4 mt-0.5"></i> ${win}</li>`).join('')}
+                                        ${p.techWins[currentLang].map(win => `<li class="flex items-start gap-3 text-zinc-300 text-sm"><i data-lucide="check-circle-2" class="text-cyan-500 w-4 h-4 mt-0.5"></i> ${win}</li>`).join('')}
                                     </ul>
                                 </div>` : ""}
 
-                              ${p.images.map((img) => `<img src="${img}" alt="${p.title}" loading="lazy" class="rounded-3xl w-full border-2 border-white/5 shadow-2xl">`).join("")}
+                              ${p.images.map((img) => `<img src="${img}" alt="${p.title}" loading="lazy" class="rounded-none w-full border-2 border-white/5 shadow-2xl">`).join("")}
                           </div>
                       </div>
                       <aside class="lg:col-span-4">
-                          <div class="glass p-10 rounded-[2.5rem] sticky top-10 border-blue-500/20">
-                              <h3 class="mono text-violet-500 text-xs font-black uppercase tracking-widest mb-10 border-b border-white/5 pb-4">${t.techSheet}</h3>
+                          <div class="glass p-10 rounded-none sticky top-10 border-blue-500/20">
+                              <h3 class="mono text-blue-500 text-xs font-black uppercase tracking-widest mb-10 border-b border-white/5 pb-4">${t.techSheet}</h3>
                               <div class="space-y-8">
                                   <div><p class="text-[10px] text-zinc-600 uppercase font-black mb-2">${t.mainRole}</p><p class="text-white font-black uppercase">${p.role[currentLang]}</p></div>
-                                  <div><p class="text-[10px] text-zinc-600 uppercase font-black mb-3">${t.stackLabel}</p><div class="flex flex-wrap gap-2">${p.tech.map((tech) => `<span class="mono text-[9px] bg-emerald-400 text-black px-3 py-1 rounded-md font-black uppercase">${tech}</span>`).join("")}</div></div>
-                                  <div><p class="text-[10px] text-zinc-600 uppercase font-black mb-2">${t.commsLabel}</p><a href="${config.profile.discord}" target="_blank" class="text-amber-500 font-black uppercase text-xs mono hover:underline">${config.profile.discordTag}</a></div>
+                                  <div><p class="text-[10px] text-zinc-600 uppercase font-black mb-3">${t.stackLabel}</p><div class="flex flex-wrap gap-2">${p.tech.map((tech) => `<span class="mono text-[9px] bg-cyan-400 text-black px-3 py-1 rounded-none font-black uppercase">${tech}</span>`).join("")}</div></div>
+                                  <div><p class="text-[10px] text-zinc-600 uppercase font-black mb-2">${t.commsLabel}</p><a href="${config.profile.discord}" target="_blank" class="text-red-500 font-black uppercase text-xs mono hover:underline">${config.profile.discordTag}</a></div>
                               </div>
-                              ${p.links.demo !== "#" ? `<a href="${p.links.demo}" target="_blank" class="mt-12 w-full bg-violet-600 text-white py-5 rounded-2xl font-black uppercase flex justify-center items-center gap-3 hover:bg-emerald-400 hover:text-black transition-all">${t.viewProject} <i data-lucide="zap"></i></a>` : ""}
+                              ${p.links.demo !== "#" ? `<a href="${p.links.demo}" target="_blank" class="mt-12 w-full bg-blue-600 text-white py-5 rounded-none font-black uppercase flex justify-center items-center gap-3 hover:bg-cyan-400 hover:text-black transition-all">${t.viewProject} <i data-lucide="zap"></i></a>` : ""}
                           </div>
                       </aside>
                   </div>
               </div>
             `;
 
-      const initScrollReveal = () => {
-        const reveals = document.querySelectorAll(".reveal");
-        const observer = new IntersectionObserver(
-          (entries) => {
-            entries.forEach((entry) => {
-              if (entry.isIntersecting) entry.target.classList.add("active");
-            });
-          },
-          { threshold: 0.1 },
-        );
-        reveals.forEach((el) => observer.observe(el));
-      };
+      // initScrollReveal removed (handled by GSAP)
 
-      // CHARACTER INTERACTIONS - Torna a foto interativa e falante
-      const showCharacterMessage = (message) => {
-        const bubble = document.getElementById("character-bubble");
-        const bubbleText = document.getElementById("bubble-text");
-        const profileImg = document.getElementById("profile-img");
-        
-        if (!bubble || !bubbleText) return;
-        
-        bubbleText.textContent = message;
-        bubble.style.opacity = "1";
-        bubble.style.transform = "translateY(0)";
-        
-        if (profileImg) {
-          profileImg.classList.add("speaking");
-          profileImg.classList.remove("idle");
-        }
-      };
-
-      const hideCharacterMessage = () => {
-        const bubble = document.getElementById("character-bubble");
-        const profileImg = document.getElementById("profile-img");
-        
-        if (bubble) {
-          bubble.style.opacity = "0";
-          bubble.style.transform = "translateY(-10px)";
-        }
-        
-        if (profileImg) {
-          profileImg.classList.remove("speaking");
-          profileImg.classList.add("idle");
-        }
-      };
+      // character messages moved to script.js
 
       const initCharacterInteractions = () => {
         const profileImg = document.getElementById("profile-img");
@@ -972,230 +1222,17 @@
         }
 
         // Iniciar mascote andando
-        initMascotWalking();
+        setupGSAPMascot();
 
         // Mostrar mensagem de ativação
         showCharacterMessage(characterMessages[currentLang].greeting);
         setTimeout(() => hideCharacterMessage(), 2000);
       };
 
-      const initMascotWalking = () => {
-        const mascot = document.getElementById("character-mascot");
-        if (!mascot) return;
+      // old mascot functions removed, executed in script.js
 
-        // Atualizar posição baseado no scroll
-        window.addEventListener("scroll", updateMascotPosition);
-        window.addEventListener("mousemove", updateMascotReaction);
-        
-        // Fazer mascote se mover continuamente
-        animateMascot();
-      };
-
-      const updateMascotPosition = () => {
-        const mascot = document.getElementById("character-mascot");
-        if (!mascot) return;
-
-        const scrollProgress = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
-        
-        // Calcular posição X baseado no scroll (esquerda -> direita -> esquerda)
-        let targetX;
-        if (scrollProgress < 0.33) {
-          // Primeira seção: esquerda
-          targetX = 20 + (scrollProgress * 100);
-        } else if (scrollProgress < 0.66) {
-          // Seção do meio: direita
-          targetX = window.innerWidth - (window.innerWidth < 768 ? 90 : 170) - ((scrollProgress - 0.33) * 100);
-        } else {
-          // Última seção: volta para esquerda
-          targetX = 20 + ((scrollProgress - 0.66) * 100);
-        }
-
-        // Calcular posição Y (sobe quando scrolla)
-        const targetY = Math.max(100, window.innerHeight - 170 - (scrollProgress * 300));
-
-        // Determinar direção (flip)
-        const newFlipped = targetX > mascotState.x;
-        if (newFlipped !== mascotState.isFlipped) {
-          mascotState.isFlipped = newFlipped;
-          mascot.classList.toggle("flip", newFlipped);
-        }
-
-        mascotState.targetX = targetX;
-        mascotState.targetY = targetY;
-
-        // Detectar seção atual e fazer mascote reagir
-        detectCurrentSection();
-      };
-
-      const updateMascotReaction = (e) => {
-        const mascot = document.getElementById("character-mascot");
-        if (!mascot) return;
-
-        const mouseX = e.clientX;
-        const mouseY = e.clientY;
-
-        // Se o mouse está perto do mascote, ele pula
-        const mascotX = mascotState.x + 60;
-        const mascotY = mascotState.y + 60;
-        
-        const distance = Math.sqrt(
-          Math.pow(mouseX - mascotX, 2) + Math.pow(mouseY - mascotY, 2)
-        );
-
-        if (distance < 150) {
-          // Mouse está perto - mascote pula
-          mascot.classList.add("excited");
-          setTimeout(() => {
-            mascot.classList.remove("excited");
-          }, 600);
-        }
-      };
-
-      const detectCurrentSection = () => {
-        const scrollProgress = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
-        let newSection = "home";
-
-        if (scrollProgress > 0.25) newSection = "tech";
-        if (scrollProgress > 0.4) newSection = "profile";
-        if (scrollProgress > 0.65) newSection = "projects";
-        if (scrollProgress > 0.85) newSection = "contact";
-
-        if (newSection !== mascotState.currentSection) {
-          mascotState.currentSection = newSection;
-          triggerMascotReaction(newSection);
-        }
-      };
-
-      const triggerMascotReaction = (section) => {
-        const mascot = document.getElementById("character-mascot");
-        if (!mascot) return;
-
-        const reactions = {
-          en: {
-            tech: "Love the stack! 🔥",
-            profile: "That's me! 😎",
-            projects: "My best work! 💪",
-            contact: "Let's talk! 🤝"
-          },
-          pt: {
-            tech: "Amo essa stack! 🔥",
-            profile: "Esse sou eu! 😎",
-            projects: "Meus melhores projetos! 💪",
-            contact: "Vamos conversar! 🤝"
-          },
-          fr: {
-            tech: "J'adore cette stack! 🔥",
-            profile: "C'est moi! 😎",
-            projects: "Mon meilleur travail! 💪",
-            contact: "Parlons! 🤝"
-          }
-        };
-
-        // Fazer mascote pular quando entra numa nova seção
-        mascot.classList.remove("excited");
-        void mascot.offsetWidth; // Trigger reflow
-        mascot.classList.add("excited");
-
-        // Mostrar mensagem
-        if (section !== "home") {
-          const message = reactions[currentLang][section] || "Bem-vindo!";
-          showCharacterMessage(message);
-          setTimeout(() => {
-            hideCharacterMessage();
-          }, 2500);
-        }
-      };
-
-      const animateMascot = () => {
-        const mascot = document.getElementById("character-mascot");
-        if (!mascot) return;
-
-        // Suavemente mover mascote para posição alvo
-        mascotState.x += (mascotState.targetX - mascotState.x) * 0.1;
-        mascotState.y += (mascotState.targetY - mascotState.y) * 0.1;
-
-        mascot.style.transform = `translate(${mascotState.x}px, ${mascotState.y - window.innerHeight + 120}px)`;
-        
-        requestAnimationFrame(animateMascot);
-      };
-
-      let currentTourStep = 0;
-      const startTour = () => {
-        const hash = window.location.hash.replace("#", "");
-        if (hash && hash !== 'home' && hash !== 'contact') {
-          window.location.hash = 'home';
-          setTimeout(executeTour, 500);
-        } else {
-          executeTour();
-        }
-      };
-
-      const executeTour = () => {
-        currentTourStep = 0;
-        document.getElementById('tour-bubble').style.display = 'block';
-        showTourStep();
-      };
-
-      const showTourStep = () => {
-        const t = translations[currentLang].tour;
-        const bubble = document.getElementById('tour-bubble');
-        const steps = [
-          { id: 'tour-start', text: t.step0 },
-          { id: 'tour-stack', text: t.step1 },
-          { id: 'tour-profile', text: t.step2 },
-          { id: 'tour-projects', text: t.step3 },
-          { id: 'contact', text: t.step4 }
-        ];
-
-        const step = steps[currentTourStep];
-        const target = document.getElementById(step.id);
-        
-        // Limpar destaques anteriores
-        document.querySelectorAll('.highlight-target').forEach(el => el.classList.remove('highlight-target'));
-        
-        if (target) {
-          target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          target.classList.add('highlight-target');
-        }
-
-        const isLast = currentTourStep === steps.length - 1;
-
-        bubble.innerHTML = `
-          <div class="mono text-[10px] text-emerald-400 mb-2 uppercase tracking-widest">HOSCH.GUIDE_V1</div>
-          <p class="text-white text-sm leading-relaxed mb-4">${step.text}</p>
-          <button onclick="${isLast ? 'endTour()' : 'nextTourStep()'}" class="w-full bg-emerald-500 text-black py-2 rounded-lg font-black uppercase text-[10px] tracking-widest hover:bg-white transition-colors">
-            ${isLast ? t.finish : t.next}
-          </button>
-        `;
-      };
-
-      const nextTourStep = () => { currentTourStep++; showTourStep(); };
-      const endTour = () => {
-        document.getElementById('tour-bubble').style.display = 'none';
-        document.querySelectorAll('.highlight-target').forEach(el => el.classList.remove('highlight-target'));
-      };
-
-      const initGlassGlow = () => {
-        const cards = document.querySelectorAll(".glass-interactive");
-        cards.forEach((card) => {
-          card.addEventListener("mousemove", (e) => {
-            const rect = card.getBoundingClientRect();
-            const x = ((e.clientX - rect.left) / card.clientWidth) * 100;
-            const y = ((e.clientY - rect.top) / card.clientHeight) * 100;
-            card.style.setProperty("--mouse-x", `${x}%`);
-            card.style.setProperty("--mouse-y", `${y}%`);
-          });
-        });
-      };
-
-      const copyDiscord = (btn) => {
-        navigator.clipboard.writeText(config.profile.discordTag);
-        const originalText = btn.innerHTML;
-        btn.innerHTML = `<i data-lucide="check"></i> ${translations[currentLang].copySuccess}`;
-        btn.classList.add('copy-feedback');
-        lucide.createIcons();
-        setTimeout(() => { btn.innerHTML = originalText; btn.classList.remove('copy-feedback'); lucide.createIcons(); }, 2000);
-      };
+      // initGlassGlow moved to script.js
+      // copyDiscord moved to script.js
 
       window.addEventListener("hashchange", render);
       window.addEventListener("load", render);
