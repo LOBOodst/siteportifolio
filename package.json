@@ -2,28 +2,38 @@
   "name": "siteportifolio",
   "version": "1.0.0",
   "description": "",
-  "main": "script.js",
+  "main": "src/main.jsx",
+  "type": "module",
   "scripts": {
-    "build": "tailwindcss -i ./input.css -o ./output.css",
-    "dev": "tailwindcss -i ./input.css -o ./output.css --watch"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "format": "biome format --write .",
+    "lint": "biome lint .",
+    "check": "biome check --write ."
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/LOBOodst/siteportifolio.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
   "bugs": {
     "url": "https://github.com/LOBOodst/siteportifolio/issues"
   },
   "homepage": "https://github.com/LOBOodst/siteportifolio#readme",
   "devDependencies": {
-    "@tailwindcss/cli": "^4.3.1",
-    "tailwindcss": "^4.3.1"
+    "@biomejs/biome": "2.5.11",
+    "@tailwindcss/cli": "^4.3.3",
+    "@tailwindcss/vite": "^4.3.3",
+    "@vitejs/plugin-react": "^6.1.1",
+    "tailwindcss": "^4.3.3",
+    "vite": "^8.2.2"
   },
   "dependencies": {
-    "animejs": "^4.5.0"
+    "@gsap/react": "^2.1.2",
+    "animejs": "^4.5.0",
+    "clsx": "^2.1.1",
+    "gsap": "^3.15.0",
+    "lucide-react": "^1.37.0",
+    "motion": "^13.1.1",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "tailwind-merge": "^3.6.0",
+    "three": "^0.185.1"
   }
 }

@@ -1,0 +1,1160 @@
+
+      // INICIALIZAÇÃO DE ESTADO E CONFIGURAÇÃO (Movido para o topo)
+      let mascotState = {
+        x: 50,
+        y: window.innerHeight - 170,
+        targetX: 50,
+        targetY: window.innerHeight - 170,
+        isFlipped: false,
+        currentSection: null,
+        isActive: false,
+      };
+
+      const translations = {
+        en: {
+          contactBtn: "Contact",
+          techTitle: "Technical Stack",
+          projectTitle: "Project Documentation",
+          contactHero: "Let's discuss your next project",
+          backBtn: "Return to Home",
+          techSheet: "Technical Specifications",
+          mainRole: "Core Responsibility",
+          viewProject: "Launch Project",
+          location: "Belgium",
+          bio: "Game Programmer specializing in scalable systems and high-performance gameplay architecture. I focus on transforming complex logic into optimized, fluid experiences.",
+          aboutTitle: "Profile",
+          aboutRole: "Systems Engineer & Gameplay Architect",
+          aboutText:
+            "I am a Gameplay Architect who views code through the lens of Game Design. My philosophy centers on modularity and decoupled architecture: I build systems that aren't just functional, but reusable and scalable. I specialize in bridging the gap between abstract design and high-performance technical execution through clean, modular C++ and C# frameworks.",
+          downloadCV: "Download Resume",
+          videoLabel: "Technical Showcase",
+          discordLabel: "Discord",
+          levelInter: "🔵 Intermediate",
+          levelInterBlue: "🔷 Intermediate",
+          levelInterGreen: "🟢 Intermediate",
+          levelStrong: "🟡 Advanced Intermediate",
+          levelWorld: "🌍 Intermediate",
+          copySuccess: "Copied!",
+          mascotPrompt: "➜ Click to activate the mascot!",
+          conceptTitle: "The Concept",
+          howTitle: "Technical Implementation",
+          strengthsTitle: "Strengths",
+          weaknessesTitle: "Points for Improvement",
+          tour: {
+            step0: "Hi! I'm Hosch. Welcome to my portfolio! Let me show you around. Click 'Next' to start!",
+            step1: "Here's my Technical Stack. I focus on high-performance C++ and Unreal Engine.",
+            step2: "In my Profile, I share my philosophy: code should be as fluid as the gameplay it supports.",
+            step3: "Check out my projects! Each one was a unique technical challenge I've tackled.",
+            step4: "Need to build something? Let's connect here at the Spawn Point!",
+            next: "Next",
+            finish: "Got it!"
+          },
+          techWinsTitle: "Technical Wins",
+          stackLabel: "Stack",
+          commsLabel: "Comms",
+          pillars: [
+            { title: "Player-Centric Logic", text: "Code written to maximize 'game feel' and player response." },
+            { title: "Systemic Alignment", text: "Complete alignment between design mechanics and systems architecture." },
+            { title: "Designer Empowerment", text: "Creation of tools and workflows that allow rapid iteration for designers." }
+          ]
+        },
+        pt: {
+          contactBtn: "Contato",
+          techTitle: "Stack Técnica",
+          projectTitle: "Portfólio de Projetos",
+          contactHero: "Vamos viabilizar seu próximo projeto?",
+          backBtn: "Voltar ao Início",
+          techSheet: "Especificações Técnicas",
+          mainRole: "Responsabilidade Principal",
+          viewProject: "Ver Projeto",
+          location: "Bélgica",
+          bio: "Programador de Jogos especializado em sistemas escaláveis e arquitetura de gameplay de alta performance. Foco em transformar lógica complexa em experiências otimizadas e fluidas.",
+          aboutTitle: "Perfil",
+          aboutRole: "Systems Engineer & Gameplay Architect",
+          downloadCV: "Baixar Currículo",
+          aboutText:
+            "Sou um arquiteto de gameplay que enxerga o código através da lente do Game Design. Minha filosofia foca em modularidade e arquitetura desacoplada: crio sistemas que não apenas funcionam, mas que são reutilizáveis e escaláveis. Minha força é transformar conceitos de design em frameworks técnicos modulares de alta performance.",
+          videoLabel: "Demonstração Técnica",
+          discordLabel: "Discord",
+          levelInter: "🔵 Intermediário",
+          levelInterBlue: "🔷 Intermediário",
+          levelInterGreen: "🟢 Intermediário",
+          levelStrong: "🟡 Intermediário Avançado",
+          levelWorld: "🌍 Intermediário",
+          copySuccess: "Copiado!",
+          mascotPrompt: "➜ Clique para ativar o mascote!",
+          conceptTitle: "O Conceito",
+          howTitle: "Implementação Técnica",
+          strengthsTitle: "Pontos Fortes",
+          weaknessesTitle: "Pontos a Melhorar",
+          tour: {
+            step0: "Olá! Eu sou o Hosch. Bem-vindo ao meu portfólio! Deixa eu te mostrar o site. Clique em 'Próximo'!",
+            step1: "Esta é minha Stack Técnica. Foco total em C++ de alta performance e Unreal Engine.",
+            step2: "No meu Perfil, compartilho minha filosofia: o código deve ser tão fluido quanto o gameplay.",
+            step3: "Veja meus projetos! Cada um foi um desafio técnico que superei.",
+            step4: "Precisa de um programador? Vamos conversar aqui no Spawn Point!",
+            next: "Próximo",
+            finish: "Entendido!"
+          },
+          techWinsTitle: "Vitórias Técnicas",
+          stackLabel: "Tecnologias",
+          commsLabel: "Contato",
+          pillars: [
+            { title: "Lógica Centrada no Jogador", text: "Código escrito para maximizar o 'game feel' e a resposta do jogador." },
+            { title: "Alinhamento Sistêmico", text: "Alinhamento total entre as mecânicas de design e a arquitetura de sistemas." },
+            { title: "Empoderamento de Designers", text: "Criação de ferramentas e workflows que permitem iteração rápida para os designers." }
+          ]
+        },
+        fr: {
+          contactBtn: "Contact",
+          techTitle: "Stack Technique",
+          projectTitle: "Portfolio de Projets",
+          contactHero: "Discutons de votre prochain projet",
+          backBtn: "Retour à l'accueil",
+          techSheet: "Spécifications Techniques",
+          mainRole: "Responsabilité Principale",
+          viewProject: "Voir le Projet",
+          location: "Belgique",
+          bio: "Programmeur de Jeux spécialisé en systèmes évolutifs et architecture de gameplay haute performance. Je transforme la logique complexe en expériences fluides et optimisées.",
+          aboutTitle: "Profil",
+          aboutRole: "Systems Engineer & Gameplay Architect",
+          downloadCV: "Télécharger le CV",
+          aboutText:
+            "Je crois qu'un code bien structuré doit être aussi fluide que le gameplay qu'il soutient. Mon approche est systémique : je cherche à comprendre le projet dans sa totalité pour créer des solutions qui facilitent l'évolutivité et la maintenance. Je suis obsédé par les systèmes basés sur les événements et les comportements organiques.",
+          videoLabel: "Démonstration Technique",
+          discordLabel: "Discord",
+          levelInter: "🔵 Intermédiaire",
+          levelInterBlue: "🔷 Intermédiaire",
+          levelInterGreen: "🟢 Intermédiaire",
+          levelStrong: "🟡 Intermédiaire Avancé",
+          levelWorld: "🌍 Intermédiaire",
+          copySuccess: "Copié!",
+          mascotPrompt: "➜ Cliquez pour activer la mascotte !",
+          conceptTitle: "Le Concept",
+          howTitle: "Implémentation Technique",
+          strengthsTitle: "Points Forts",
+          weaknessesTitle: "Points à Améliorer",
+          tour: {
+            step0: "Salut! Je suis Hosch. Bienvenue sur mon portfolio! Laisse-moi te guider. Cliquez sur 'Suivant'!",
+            step1: "Voici ma Stack Technique. Je me concentre sur le C++ haute performance et Unreal Engine.",
+            step2: "Dans mon Profil, je partage ma philosophie : le code doit être aussi fluide que le gameplay.",
+            step3: "Découvrez mes projets! Chacun a été un défi technique unique.",
+            step4: "Besoin d'un programmeur? Discutons ici au Spawn Point!",
+            next: "Suivant",
+            finish: "Compris!"
+          },
+          techWinsTitle: "Victoires Techniques",
+          stackLabel: "Technologies",
+          commsLabel: "Contact",
+          pillars: [
+            { title: "Logique Centrée sur le Joueur", text: "Code écrit pour maximiser le 'game feel' et la réponse du joueur." },
+            { title: "Alignement Systémique", text: "Alignement complet entre les mécaniques de conception et l'architecture des systèmes." },
+            { title: "Autonomisation des Designers", text: "Création d'outils et de workflows qui permettent une itération rapide pour les designers." }
+          ]
+        },
+      };
+
+      let currentLang = "en";
+      let isInitialLoad = true;
+      let characterGreeted = false;
+      let characterMessages = {
+        en: {
+          greeting: "Hey there! 👋 I'm Hosch, welcome to my portfolio!",
+          hover: "Click me to explore my work! 🚀",
+          tech: "Love this tech stack? Click to learn more!",
+          project: "Check out what I've built! 💻",
+          contact: "Let's build something amazing together! 🔗",
+          random: [
+            "Scalable systems are my jam! 💪",
+            "C++ and Unreal Engine are my playgrounds 🎮",
+            "Every line of code should be as smooth as the gameplay 🎯",
+            "Event-based systems? That's my passion! ⚡",
+            "Want to discuss architecture patterns? 🏗️"
+          ]
+        },
+        pt: {
+          greeting: "Oi! 👋 Eu sou o Hosch, bem-vindo ao meu portfólio!",
+          hover: "Clique em mim para explorar meu trabalho! 🚀",
+          tech: "Gosta dessa stack? Clique para saber mais!",
+          project: "Veja o que eu construí! 💻",
+          contact: "Vamos construir algo incrível juntos! 🔗",
+          random: [
+            "Sistemas escaláveis são minha paixão! 💪",
+            "C++ e Unreal Engine são meus playgrounds 🎮",
+            "Cada linha de código deve ser tão fluida quanto o gameplay 🎯",
+            "Sistemas baseados em eventos? Essa é minha especialidade! ⚡",
+            "Quer discutir padrões de arquitetura? 🏗️"
+          ]
+        },
+        fr: {
+          greeting: "Salut! 👋 Je suis Hosch, bienvenue sur mon portfolio!",
+          hover: "Cliquez sur moi pour explorer mon travail! 🚀",
+          tech: "Vous aimez cette stack? Cliquez pour en savoir plus!",
+          project: "Voyez ce que j'ai construit! 💻",
+          contact: "Construisons quelque chose d'incroyable ensemble! 🔗",
+          random: [
+            "Les systèmes évolutifs, c'est ma passion! 💪",
+            "C++ et Unreal Engine sont mes terrains de jeu 🎮",
+            "Chaque ligne de code doit être aussi fluide que le gameplay 🎯",
+            "Les systèmes basés sur les événements? C'est ma spécialité! ⚡",
+            "Vous voulez discuter de modèles d'architecture? 🏗️"
+          ]
+        }
+      };
+
+      const config = {
+        profile: {
+          name: "Hosch Alef",
+          photo: "images/photo_portifolio.png",
+          linkedin: "https://www.linkedin.com/in/alefhosch/",
+          github: "https://github.com/LOBOodst",
+          email: "mailto:alefah.ah@gmail.com",
+          discord: "https://discordapp.com/users/965563425021382666",
+          discordTag: "lobo_spartans",
+        },
+        skills: [
+          { n: "C++", l: "levelInter", c: "text-blue-400 border-blue-500/30" },
+          {
+            n: "Unreal Engine",
+            l: "levelInterBlue",
+            c: "text-blue-500 border-blue-600/30",
+          },
+          { n: "Git / GitHub", l: "levelStrong", c: "text-red-500 border-red-500/30" },
+          {
+            n: "C#",
+            l: "levelInterGreen",
+            c: "text-cyan-500 border-cyan-600/30",
+          },
+          { n: "Unity",
+            l: "levelInterGreen",
+            c: "text-cyan-400 border-cyan-500/30",
+          },
+          {
+            n: "Python",
+            l: "levelStrong",
+            c: "text-teal-400 border-teal-500/30",
+          },
+          {
+            n: "JavaScript",
+            l: "levelWorld",
+            c: "text-teal-500 border-teal-600/30",
+          },
+        ],
+
+        projects: [
+          {
+            id: "psychasteniac",
+            title: "Psychasteniac",
+            role: { en: "Gameplay & Systems Programmer", pt: "Programador de Gameplay e Sistemas", fr: "Programmeur de Gameplay et Systèmes" },
+            type: { en: "Psychological Horror / Narrative", pt: "Terror Psicológico / Narrativa", fr: "Horreur Psychologique / Narration" },
+            youtubeId: "aqRrje7DAw8",
+            techWins: { 
+              pt: ["Framework de Menu Modular (Vídeo/Áudio/Input)", "Geometria não-euclidiana via Shaders", "Sistema de Level Streaming Dinâmico"], 
+              en: ["Modular UI Framework (Video/Audio/Input)", "Non-euclidean geometry via Shaders", "Dynamic Level Streaming System"],
+              fr: ["Framework de Menu Modulaire", "Géométrie non euclidienne", "Système de Level Streaming"]
+            },
+            images: [
+              "images/psychasteniac_01.png",
+              "images/psychasteniac_02.png",
+              "images/psychasteniac_03.png",
+              "images/psychasteniac_04.png",
+              "images/psychasteniac_05.png",
+              "images/psychasteniac_06.png",
+            ],
+            tech: ["Unity", "C#", "Level Streaming"],
+            featured: true,
+            links: { github: "#", demo: "https://decloedt-sarah.itch.io/psychastenia" },
+            desc: {
+              en: "A psychological horror experience focused on shifting environments and distorted perception.",
+              pt: "Uma experiência de terror psicológico focada em ambientes mutáveis e percepção distorcida.",
+              fr: "Une expérience d'horreur psychologique axée sur des environnements changeants et une perception déformée.",
+            },
+            concept: {
+              en: "Challenge the player's sanity through non-euclidean geometry and events triggered by the player's gaze.",
+              pt: "Desafiar a sanidade do jogador através de geometria não-euclidiana e eventos disparados pelo olhar do jogador.",
+              fr: "Défier la santé mentale du joueur grâce à la géométrie non euclidienne et aux événements déclenchés par le regard du joueur."
+            },
+            howItWasMade: {
+              en: "Developed in Unity with a modular mindset. I implemented a decoupled 'Perception Trigger' system and a reusable UI framework for settings that can be ported to other projects.",
+              pt: "Desenvolvido na Unity com foco em modularidade. Implementei um sistema desacoplado de 'Perception Triggers' e um framework de UI reutilizável para configurações que pode ser portado para qualquer projeto.",
+              fr: "Développé avec Unity. J'ai implémenté un système de 'Perception Trigger' découplé et un framework UI réutilisable."
+            },
+            strengths: {
+              en: "Seamless environmental transitions and high psychological tension through technical tricks.",
+              pt: "Transições de ambiente imperceptíveis e alta tensão psicológica através de truques técnicos.",
+              fr: "Transitions environnementales fluides et haute tension psychologique grâce à des astuces techniques."
+            },
+            weaknesses: {
+              en: "Memory management for level streaming requires careful optimization to avoid stutters during fast movements.",
+              pt: "O gerenciamento de memória para level streaming requer otimização cuidadosa para evitar travamentos durante movimentos rápidos.",
+              fr: "La gestion de la mémoire pour le streaming de niveau nécessite une optimisation minutieuse."
+            }
+          },
+          {
+            id: "tactical-rpg",
+            title: "Tactical Turn-Based RPG Architecture",
+            role: { en: "Lead Systems Programmer", pt: "Programador Líder de Sistemas", fr: "Programmeur Principal de Systèmes" },
+            type: { en: "Featured / Technical Project", pt: "Destaque / Projeto Técnico", fr: "En Vedette / Projet Technique" },
+            images: [
+              "images/taticalRPG_1.png",
+              "images/taticalRPG_2.png",
+              "images/taticalRPG_3.png",
+            ],
+            techWins: {
+              pt: ["Grid System Desacoplado", "Pathfinding A* modular", "Máquina de Estados Finita (FSM)"],
+              en: ["Decoupled Grid System", "Modular A* Pathfinding", "Finite State Machine (FSM)"],
+              fr: ["Système de Grille Découplé", "Pathfinding A* modulaire", "Machine à États (FSM)"]
+            },
+            tech: ["Unreal Engine", "C++", "Architecture"],
+            links: { github: "#", demo: "#" },
+            featured: true,
+            desc: {
+              en: "Modular Turn-Based RPG framework implemented in C++ within Unreal Engine.",
+              pt: "Arquitetura técnica de um RPG tático por turnos implementado em C++ na Unreal Engine.",
+              fr: "Architecture technique d'un RPG tactique au tour par tour implémentée en C++.",
+            },
+            fullDesc: {
+              en: `This project implements a modular Tactical RPG framework.
+                        <br><br><strong>Grid System:</strong> Matrix-based tile management, pathfinding validation, and world-to-grid logical mapping.
+                        <br><strong>Turn Manager:</strong> Decoupled flow control for active units, initiative queues, and state handling.
+                        <br><strong>Character System:</strong> Base unit classes for Players and AI, integrating attributes and grid rules.`,
+              pt: `Este projeto implementa um Tactical RPG em C++ dentro da Unreal Engine, estruturado em sistemas modulares.
+                        <br><br><strong>Grid System:</strong> Gerenciamento de matriz de tiles, validação de movimentação e mapeamento lógico.
+                        <br><strong>Turn Manager:</strong> Controle de fluxo desacoplado, filas de iniciativa e estados de turno.
+                        <br><strong>Character System:</strong> Unidades base para Player e IA, integrando atributos e regras do grid.`,
+              fr: `Ce projet implémente un framework Tactical RPG modulaire en C++.
+                        <br><br><strong>Grid System:</strong> Gestion de grille, validation de mouvement et mapping logique.
+                        <br><strong>Turn Manager:</strong> Contrôle du flux de combat, files d'attente d'initiative et gestion d'états.`,
+            },
+            concept: {
+              en: "Create a scalable foundation for tactical games where logic is independent of visual representation.",
+              pt: "Criar uma base escalável para jogos táticos onde a lógica é independente da representação visual.",
+              fr: "Créer une base évolutive pour les jeux tactiques où la logique est indépendante da représentation visuelle."
+            },
+            howItWasMade: {
+              en: "Focus on a modular framework design where combat logic is entirely separated from the visual actors, allowing for easy expansion and testing.",
+              pt: "Foco no design de um framework modular onde a lógica de combate é inteiramente separada dos atores visuais, permitindo expansão e testes facilitados.",
+              fr: "Focus sur un framework modulaire où la logique de combat est séparée des acteurs visuels."
+            },
+            strengths: {
+              en: "Highly decoupled architecture; efficient grid calculations; easy to add new unit types.",
+              pt: "Arquitetura altamente desacoplada; cálculos de grid eficientes; facilidade para adicionar novos tipos de unidades.",
+              fr: "Architecture fortement découplée; calculs de grille efficaces; facilité d'ajout de nouvelles unités."
+            },
+            weaknesses: {
+              en: "Initial setup complexity; lacks a robust save/load system for mid-combat states.",
+              pt: "Complexidade inicial de setup; ausência de um sistema robusto de save/load para estados durante o combate.",
+              fr: "Complexité de la configuration initiale; manque d'un système de sauvegarde robuste."
+            }
+          },
+          {
+            id: "garage-war",
+            title: "Garage War",
+            role: { en: "Gameplay Programmer", pt: "Programador de Gameplay", fr: "Programmeur de Gameplay" },
+            type: { en: "Local Co-op / Party Game", pt: "Co-op Local / Party Game", fr: "Co-op Local / Jeu de Fête" },
+            images: [
+              "images/garage_war_01.png",
+              "images/garage_war_02.png",
+              "images/garage_war_03.png",
+            ],
+            techWins: {
+              pt: ["Input System Modular", "Validador de tarefas extensível", "Arquitetura baseada em Eventos"],
+              en: ["Modular Input System", "Extensible task validator", "Event-based Architecture"],
+              fr: ["Système d'Input Modulaire", "Validateur de tâches extensible", "Architecture par Événements"]
+            },
+            tech: ["Unity", "C#", "Multiplayer"],
+          
+            links: { github: "#", demo: "https://loboodst.itch.io/garagewar" },
+            desc: {
+              en: "Overcooked-inspired car tuning party game.",
+              pt: "Party game de tuning inspirado em Overcooked.",
+              fr: "Jeu de fête tuning inspiré par Overcooked.",
+            },
+            fullDesc: {
+              en: "4-player multi-input handling and real-time task validation.",
+              pt: "Gestão de multi-input para 4 jogadores e validação de tarefas em tempo real.",
+              fr: "Gestion multi-entrées pour 4 joueurs et validation des tâches en temps réel.",
+            },
+            concept: {
+              en: "A high-energy party game focusing on teamwork and frantic car tuning.",
+              pt: "Um party game de alta energia focado em trabalho em equipe e tuning frenético de carros."
+            },
+            howItWasMade: {
+              en: "Developed in Unity using C#. Implemented a robust multi-input system for 4 players and a state-based task validator.",
+              pt: "Desenvolvido em Unity usando C#. Implementei um sistema de multi-input para 4 jogadores e um validador de tarefas baseado em estados."
+            },
+            strengths: {
+              en: "Excellent local co-op feel and responsive task feedback.",
+              pt: "Excelente sensação de co-op local e feedback de tarefas responsivo."
+            },
+            weaknesses: {
+              en: "The logic for player interactions could be further decoupled for network play.",
+              pt: "A lógica de interação entre jogadores poderia ser mais desacoplada para jogo em rede."
+            }
+          },
+          {
+            id: "space-shooter",
+            title: "Retro Space Shooter",
+            role: { en: "Solo Developer", pt: "Desenvolvedor Solo", fr: "Développeur Solo" },
+            type: { en: "Custom Engine / Pure C++", pt: "Engine Customizada / C++ Puro", fr: "Moteur Personnalisé / C++ Pur" },
+            images: ["images/spaceshooter.png"],
+            techWins: {
+              pt: ["Renderização via SDL2 puro", "Otimização para telas CRT", "Polling de input frame-perfect"],
+              en: ["Pure SDL2 Rendering", "CRT Display Optimization", "Frame-perfect input polling"],
+              fr: ["Rendu SDL2 pur", "Optimisation pour écrans CRT", "Polling d'entrée frame-perfect"]
+            },
+            tech: ["C++", "SDL2", "Low-Level"],
+            links: { github: "#", demo: "#" },
+            desc: {
+              en: "Pure C++ & SDL2 shooter designed for CRT TVs and retro hardware feel.",
+              pt: "Shooter em C++ puro e SDL2 projetado para TVs de tubo (CRT) e hardware retrô.",
+              fr: "Shooter en C++ pur et SDL2 conçu pour les téléviseurs CRT et le matériel rétro.",
+            },
+            fullDesc: {
+              en: "A deep dive into low-level game development using C++ and SDL2. The project focuses on recreating the authentic arcade feel, specifically optimized for CRT displays and legacy hardware constraints.",
+              pt: "Um mergulho profundo no desenvolvimento de baixo nível usando C++ e SDL2. O projeto foca em recriar a sensação autêntica de arcade, otimizado especificamente para telas CRT (tubo) e restrições de hardware antigo.",
+              fr: "Une plongée dans le développement de bas niveau avec C++ et SDL2. Le projet se concentre sur la recréation de l'expérience arcade authentique, optimisée pour les écrans CRT.",
+            },
+            concept: {
+              en: "An authentic arcade experience designed specifically for CRT monitors and low-latency response.",
+              pt: "Uma experiência de arcade autêntica projetada especificamente para monitores CRT e resposta de baixa latência."
+            },
+            howItWasMade: {
+              en: "Built using pure C++ and SDL2. Focused on custom sprite batching and low-level input polling to bypass engine overhead.",
+              pt: "Construído usando C++ puro e SDL2. Focado em batching de sprites customizado e polling de input de baixo nível para evitar o overhead de engines prontas."
+            },
+            strengths: {
+              en: "Extremely lightweight executable and precise, frame-perfect input handling.",
+              pt: "Executável extremamente leve e manipulação de input precisa (frame-perfect)."
+            },
+            weaknesses: {
+              en: "Lack of a higher-level entity component system made complex enemy patterns harder to maintain.",
+              pt: "A falta de um sistema de componentes de entidade de alto nível tornou padrões de inimigos complexos mais difíceis de manter."
+            }
+          },
+          {
+            id: "unreal-mechanics",
+            title: "Unreal Engine Mechanics Challenge",
+            role: { en: "Gameplay Programmer", pt: "Programador de Gameplay", fr: "Programmeur de Gameplay" },
+            type: { en: "Featured / Mechanics Study", pt: "Destaque / Estudo de Mecânicas", fr: "En Vedette / Étude de Mécaniques" },
+            images: ["images/unrealmecanins.png"],
+            videos: [
+              "videos/bullet_drop.mp4",
+              "videos/vats_system.mp4",
+              "videos/possession_system.mp4",
+            ],
+            techWins: {
+              pt: ["Sistema VATS (Dilatação de tempo)", "Balística de projéteis realística", "Sistema de possessão modular"],
+              en: ["VATS System (Time dilation)", "Realistic projectile ballistics", "Modular possession system"],
+              fr: ["Système VATS", "Balistique des projectiles", "Système de possession modulaire"]
+            },
+            tech: ["Unreal Engine", "Blueprints", "Game Design"],
+            links: { github: "#", demo: "#" },
+            desc: {
+              en: "Recreating iconic mechanics 100% in Blueprints.",
+              pt: "Recriação de mecânicas icônicas 100% em Blueprints.",
+              fr: "Recréer des mécaniques iconiques 100% en Blueprints.",
+            },
+            fullDesc: {
+              en: "Recreation of complex gameplay systems using Visual Scripting:<br><br>1. <strong>Bullet Drop:</strong> Ballistics with gravity compensation.<br>2. <strong>V.A.T.S. System:</strong> Dynamic targeting and time dilation.<br>3. <strong>Possession System:</strong> Character swapping and AI takeover.",
+              pt: "Recriação de sistemas complexos via Visual Scripting:<br><br>1. <strong>Bullet Drop:</strong> Balística com compensação de gravidade.<br>2. <strong>Sistema V.A.T.S.:</strong> Seleção dinâmica de alvos e dilatação temporal.<br>3. <strong>Sistema de Possessão:</strong> Troca de personagens e controle de IA.",
+              fr: "Recréation de systèmes complexes via Visual Scripting.",
+            },
+            concept: {
+              en: "A technical study focused on reproducing complex AAA mechanics using only visual scripting.",
+              pt: "Um estudo técnico focado em reproduzir mecânicas AAA complexas usando apenas visual scripting."
+            },
+            howItWasMade: {
+              en: "Leveraged Unreal's Blueprint system for VATS time-management and vector math for projectile ballistics.",
+              pt: "Utilizei o sistema de Blueprints da Unreal para o gerenciamento de tempo do VATS e matemática vetorial para a balística de projéteis."
+            },
+            strengths: {
+              en: "Demonstrates deep mastery of Unreal's visual logic and gameplay APIs.",
+              pt: "Demonstra maestria profunda em lógica visual e APIs de gameplay da Unreal."
+            },
+            weaknesses: {
+              en: "Blueprint graphs for ballistics can become disorganized without strict math function encapsulation.",
+              pt: "Grafos de Blueprint para balística podem se tornar desorganizados sem uma encapsulação rígida de funções matemáticas."
+            }
+          },
+          {
+            id: "elevator-talks",
+            title: "Elevator Talks",
+            role: { en: "Gameplay Programmer", pt: "Programador de Gameplay", fr: "Programmeur de Gameplay" },
+            type: { en: "Game Jam / Narrative", pt: "Game Jam / Narrativa", fr: "Game Jam / Narration" },
+            images: [
+              "images/elevator_talks_01.png",
+              "images/elevator_talks_02.png",
+            ],
+            techWins: {
+              pt: ["Sistema de eventos randômicos ponderados", "Fluxo de diálogo dinâmico", "Gerenciador de tensão social"],
+              en: ["Weighted random event system", "Dynamic dialogue flow", "Social tension manager"],
+              fr: ["Système d'événements aléatoires", "Flux de dialogue dynamique", "Gestionnaire de tension"]
+            },
+            tech: ["Unity", "C#", "Logic"],
+            links: {
+              github: "#",
+              demo: "https://loboodst.itch.io/elevator-talks",
+            },
+            desc: {
+              en: "Conversation simulator in an infinite elevator.",
+              pt: "Simulador de conversas num elevador infinito.",
+              fr: "Simulateur de conversation dans un ascenseur infini.",
+            },
+            fullDesc: {
+              en: "Social tension mechanics using weighted random event systems.",
+              pt: "Mecânicas de tensão social utilizando sistemas de eventos aleatórios ponderados.",
+              fr: "Mécaniques de tension sociale.",
+            },
+            concept: {
+              en: "Exploration of social tension and claustrophobia through random NPC interactions.",
+              pt: "Exploração de tensão social e claustrofobia através de interações aleatórias com NPCs."
+            },
+            howItWasMade: {
+              en: "Used Unity and C#. Implemented a weighted random system to drive dynamic dialogue and social 'events'.",
+              pt: "Usei Unity e C#. Implementei um sistema randômico ponderado para gerir diálogos dinâmicos e 'eventos' sociais."
+            },
+            strengths: {
+              en: "Strong atmospheric consistency and unique logic for dialogue flow.",
+              pt: "Consistência atmosférica forte e lógica única para o fluxo de diálogo."
+            },
+            weaknesses: {
+              en: "The narrative branching is limited by the short development time of the game jam.",
+              pt: "As ramificações narrativas são limitadas pelo curto tempo de desenvolvimento da game jam."
+            }
+          },
+        ],
+      };
+
+      const setLanguage = (lang) => {
+        currentLang = lang;
+        characterGreeted = false;
+        render();
+      };
+
+      let isTransitioning = false;
+
+      const render = () => {
+        if (isTransitioning) return;
+        isTransitioning = true;
+
+        const hash = window.location.hash.replace("#", "");
+        const app = document.getElementById("app");
+        const t = translations[currentLang];
+
+        // Animate OUT (Scale Down / Recede)
+        gsap.to(app, {
+            scale: 0.95,
+            opacity: 0,
+            duration: 0.4,
+            ease: "power2.inOut",
+            onComplete: () => {
+                // Swap content while hidden
+                app.innerHTML =
+                  !hash || hash === "home" || hash === "contact"
+                    ? renderHome(t)
+                    : renderProjectDetail(
+                        config.projects.find((p) => p.id === hash) ||
+                          config.projects[0],
+                        t,
+                      );
+                
+                
+                lucide.createIcons();
+                initGSAPAnimations();
+                initGlassGlow();
+                initCharacterInteractions();
+                
+                if (!isInitialLoad) {
+                    initMotionHover();
+                }
+
+                // Apply scramble to main titles on new pages
+                const titles = document.querySelectorAll('.gradient-text, h2');
+                titles.forEach(t => {
+                    if (typeof scrambleText === 'function') {
+                        scrambleText(t);
+                        t.addEventListener('mouseenter', () => scrambleText(t));
+                    }
+                });
+
+                const profileImg = document.getElementById("profile-img");
+                if (profileImg) profileImg.addEventListener("click", activateMascot);
+
+                window.scrollTo({ top: 0, behavior: "instant" });
+
+                // Set initial state for Animate IN (Scale Up / Emerge)
+                gsap.set(app, { scale: 1.05, opacity: 0 });
+
+                // Animate IN
+                gsap.to(app, {
+                    scale: 1,
+                    opacity: 1,
+                    duration: 0.6,
+                    ease: "power3.out",
+                    onComplete: () => {
+                        isTransitioning = false;
+                    }
+                });
+            }
+        });
+
+        if (isInitialLoad) {
+            initAnimeLoader(() => {
+                characterGreeted = false;
+                setTimeout(() => {
+                    showCharacterMessage(characterMessages[currentLang].greeting);
+                }, 800);
+                isInitialLoad = false;
+                if (window.initGPGPUBirds) {
+                    window.initGPGPUBirds();
+                }
+                initMotionHover();
+                setupGSAPMascot();
+                
+                // Start Living Portfolio Features
+                if (typeof initLivingPortfolio === 'function') {
+                    initLivingPortfolio();
+                }
+
+                // Apply scramble to main titles
+                const titles = document.querySelectorAll('.gradient-text, h2');
+                titles.forEach(t => {
+                    if (typeof scrambleText === 'function') {
+                        scrambleText(t);
+                        t.addEventListener('mouseenter', () => scrambleText(t));
+                    }
+                });
+            });
+        } else if (isInitialLoad) { // fallback
+            isTransitioning = false;
+        }
+      };
+
+      const renderHome = (t) => `
+              <div class="page-transition">
+                  <nav class="flex flex-col sm:flex-row justify-between items-center glass p-4 px-6 sm:px-8 rounded-none sm:rounded-none mb-12 sm:mb-20 reveal gap-4">
+                      <div class="mono text-xs font-black text-cyan-400">HOSCH.CORE_V1</div>
+                      <div class="flex gap-6 items-center">
+                          <div class="flex gap-1 bg-white/5 p-1 rounded-none border border-white/10">
+                              <button onclick="setLanguage('en')" class="lang-btn ${currentLang === "en" ? "active" : "text-zinc-500"}">EN</button>
+                              <button onclick="setLanguage('fr')" class="lang-btn ${currentLang === "fr" ? "active" : "text-zinc-500"}">FR</button>
+                              <button onclick="setLanguage('pt')" class="lang-btn ${currentLang === "pt" ? "active" : "text-zinc-500"}">PT</button>
+                          </div>
+                          <a href="#contact" class="bg-blue-600 hover:bg-cyan-400 hover:text-black text-white px-6 py-2 rounded-none text-[10px] font-black uppercase tracking-widest transition-all shadow-lg">${t.contactBtn}</a>
+                      </div>
+                  </nav>
+
+                  <header class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center mb-20 sm:mb-32 reveal${mascotState.isActive ? " mascot-activated-header" : ""}">
+                      ${!mascotState.isActive ? `<div id="tour-start-container" class="md:col-span-5 flex flex-col items-center justify-center relative">
+                          <!-- Character Photo with Speech Bubble -->
+                          <div class="relative w-full flex flex-col items-center">
+                              <!-- Speech Bubble above photo -->
+                              <div id="character-bubble" class="speech-bubble glass mb-6 px-8 py-5 rounded-none border border-cyan-400/50 w-full max-w-xs shadow-2xl opacity-0 transform -translate-y-4 transition-all duration-500 pointer-events-none">
+                                  <div class="absolute -bottom-3 left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-l-transparent border-r-transparent border-t-cyan-400/50"></div>
+                                  <p id="bubble-text" class="text-white text-sm font-semibold leading-relaxed">Bem-vindo! 👋</p>
+                              </div>
+                              
+                              <!-- Profile Photo with glow effect -->
+                              <div class="relative group">
+                                  <div class="absolute -inset-1 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-none blur-2xl opacity-0 group-hover:opacity-50 transition-all duration-500"></div>
+                                  <img 
+                                      id="profile-img" 
+                                      role="button"
+                                      tabindex="0"
+                                      onclick="startTour()" 
+                                      onkeydown="if(event.key==='Enter'||event.key===' ') startTour()"
+                                      src="${config.profile.photo}" 
+                                      alt="${config.profile.name}" 
+                                      class="profile-photo float-animation w-72 h-72 object-cover rounded-none cursor-pointer hover:scale-105 transition-transform relative z-10 ring-4 ring-cyan-400/20 hover:ring-cyan-400/60" 
+                                      title="Clique para um tour!">
+                                  <div class="absolute inset-0 rounded-none bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300"></div>
+                              </div>
+
+                              <!-- Interactive prompt below -->
+                              <p class="mt-6 text-xs mono text-cyan-400 animate-pulse tracking-widest uppercase font-black">${t.mascotPrompt}</p>
+                          </div>
+                      </div>` : ""}
+                      <div class="${mascotState.isActive ? "md:col-span-12" : "md:col-span-7"} text-center ${mascotState.isActive ? "" : "md:text-left"}">
+                          <h1 class="text-5xl sm:text-7xl md:text-[8.5rem] uppercase mb-4 leading-none tracking-tighter">
+                              <span class="gradient-text">HOSCH</span><br>
+                              <span class="gradient-text">ALEF</span>
+                          </h1>
+                          <p class="text-xl text-zinc-400 italic border-l-4 border-cyan-400 pl-6 max-w-2xl${mascotState.isActive ? " text-center border-l-0 pl-0" : ""}">${t.bio}</p>
+                      </div>
+                  </header>
+
+                  <section id="tour-stack" class="mb-32 reveal">
+                      <h2 class="mono text-xs font-black text-blue-500 uppercase tracking-[0.4em] mb-10 flex items-center gap-4">
+                        <span class="h-px w-10 bg-blue-500"></span> ${t.techTitle}
+                      </h2>
+                      <!-- Skill Tree (Árvore de Habilidades Focada & Pertinente) -->
+                      <div class="skill-tree-container mb-24 relative overflow-x-auto pb-8 pt-4">
+                          <div class="min-w-[900px] flex flex-col gap-12">
+                              
+                              <!-- C++ / Systems Architecture Branch -->
+                              <div class="flex items-center justify-center gap-6">
+                                  <div class="skill-node bg-white/5 backdrop-blur-md border border-blue-500/50 p-6 w-56 text-center relative z-10">
+                                      <p class="font-black text-xl text-blue-400">C++ / Native</p>
+                                      <p class="mono text-[9px] opacity-60 mt-1 uppercase">Engineering & Gameplay</p>
+                                  </div>
+                                  
+                                  <div class="w-12 h-[2px] bg-blue-900/50 relative"></div>
+
+                                  <div class="flex flex-col gap-6 relative">
+                                      <div class="absolute -left-6 top-[25%] bottom-[25%] w-[2px] h-[50%] bg-blue-900/50"></div>
+                                      
+                                      <!-- Unreal Path -->
+                                      <div class="flex items-center gap-6 relative">
+                                          <div class="absolute -left-6 top-1/2 w-6 h-[2px] bg-blue-900/50"></div>
+                                          <div class="skill-node bg-white/5 backdrop-blur-md border border-blue-600/30 p-4 w-48 text-center">
+                                              <p class="font-black text-sm text-blue-500">Unreal Engine C++</p>
+                                              <p class="mono text-[9px] opacity-60 mt-1 uppercase">Turn-Based & AI</p>
+                                          </div>
+                                          <div class="w-8 h-[2px] bg-blue-900/50 relative"></div>
+                                          <div class="flex flex-col gap-2 relative">
+                                              <div class="absolute -left-6 top-[25%] bottom-[25%] w-[2px] bg-blue-900/50"></div>
+                                              
+                                              <div class="relative">
+                                                  <div class="absolute -left-6 top-1/2 w-6 h-[2px] bg-blue-900/50"></div>
+                                                  <div class="skill-node bg-white/5 backdrop-blur-md border border-blue-800/30 p-2 px-4 text-center">
+                                                      <p class="font-black text-[11px] text-blue-300">A* Pathfinding & Grid Math</p>
+                                                  </div>
+                                              </div>
+                                              <div class="relative">
+                                                  <div class="absolute -left-6 top-1/2 w-6 h-[2px] bg-blue-900/50"></div>
+                                                  <div class="skill-node bg-white/5 backdrop-blur-md border border-blue-800/30 p-2 px-4 text-center">
+                                                      <p class="font-black text-[11px] text-blue-300">Turn Managers & C++ HUDs</p>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
+
+                                      <!-- Graphics / Low-Level Path -->
+                                      <div class="flex items-center gap-6 relative">
+                                          <div class="absolute -left-6 top-1/2 w-6 h-[2px] bg-blue-900/50"></div>
+                                          <div class="skill-node bg-white/5 backdrop-blur-md border border-indigo-600/30 p-4 w-48 text-center">
+                                              <p class="font-black text-sm text-indigo-500">Custom Engine Dev</p>
+                                              <p class="mono text-[9px] opacity-60 mt-1 uppercase">Architecture & Low-Level</p>
+                                          </div>
+                                          <div class="w-8 h-[2px] bg-indigo-900/50 relative"></div>
+                                          <div class="flex flex-col gap-2 relative">
+                                              <div class="absolute -left-6 top-[25%] bottom-[25%] w-[2px] bg-indigo-900/50"></div>
+                                              
+                                              <div class="relative">
+                                                  <div class="absolute -left-6 top-1/2 w-6 h-[2px] bg-indigo-900/50"></div>
+                                                  <div class="skill-node bg-white/5 backdrop-blur-md border border-indigo-800/30 p-2 px-4 text-center">
+                                                      <p class="font-black text-[11px] text-indigo-300">Game Loop & Hardware Input</p>
+                                                  </div>
+                                              </div>
+                                              <div class="relative">
+                                                  <div class="absolute -left-6 top-1/2 w-6 h-[2px] bg-indigo-900/50"></div>
+                                                  <div class="skill-node bg-white/5 backdrop-blur-md border border-indigo-800/30 p-2 px-4 text-center">
+                                                      <p class="font-black text-[11px] text-indigo-300">SDL2 & Linear Algebra (GLM)</p>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+
+                              <!-- C# / Unity Branch -->
+                              <div class="flex items-center justify-center gap-6">
+                                  <div class="skill-node bg-white/5 backdrop-blur-md border border-cyan-600/50 p-6 w-56 text-center relative z-10">
+                                      <p class="font-black text-xl text-cyan-500">C# / Unity</p>
+                                      <p class="mono text-[9px] opacity-60 mt-1 uppercase">Systems & Design Patterns</p>
+                                  </div>
+                                  
+                                  <div class="w-12 h-[2px] bg-cyan-900/50 relative"></div>
+
+                                  <div class="flex flex-col gap-6 relative">
+                                      <div class="absolute -left-6 top-[25%] bottom-[25%] w-[2px] h-[50%] bg-cyan-900/50"></div>
+                                      
+                                      <!-- Gameplay Path -->
+                                      <div class="flex items-center gap-6 relative">
+                                          <div class="absolute -left-6 top-1/2 w-6 h-[2px] bg-cyan-900/50"></div>
+                                          <div class="skill-node bg-white/5 backdrop-blur-md border border-cyan-500/30 p-4 w-48 text-center">
+                                              <p class="font-black text-sm text-cyan-400">Optimization</p>
+                                              <p class="mono text-[9px] opacity-60 mt-1 uppercase">Memory & Performance</p>
+                                          </div>
+                                          <div class="w-8 h-[2px] bg-cyan-900/50 relative"></div>
+                                          <div class="flex flex-col gap-2 relative">
+                                              <div class="absolute -left-6 top-[25%] bottom-[25%] w-[2px] bg-cyan-900/50"></div>
+                                              
+                                              <div class="relative">
+                                                  <div class="absolute -left-6 top-1/2 w-6 h-[2px] bg-cyan-900/50"></div>
+                                                  <div class="skill-node bg-white/5 backdrop-blur-md border border-cyan-800/30 p-2 px-4 text-center">
+                                                      <p class="font-black text-[11px] text-cyan-300">Asynchronous Level Streaming</p>
+                                                  </div>
+                                              </div>
+                                              <div class="relative">
+                                                  <div class="absolute -left-6 top-1/2 w-6 h-[2px] bg-cyan-900/50"></div>
+                                                  <div class="skill-node bg-white/5 backdrop-blur-md border border-cyan-800/30 p-2 px-4 text-center">
+                                                      <p class="font-black text-[11px] text-cyan-300">State Management</p>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
+
+                                      <!-- Architecture Path -->
+                                      <div class="flex items-center gap-6 relative">
+                                          <div class="absolute -left-6 top-1/2 w-6 h-[2px] bg-cyan-900/50"></div>
+                                          <div class="skill-node bg-white/5 backdrop-blur-md border border-teal-600/30 p-4 w-48 text-center">
+                                              <p class="font-black text-sm text-teal-400">Software Architecture</p>
+                                              <p class="mono text-[9px] opacity-60 mt-1 uppercase">Documentation</p>
+                                          </div>
+                                          <div class="w-8 h-[2px] bg-teal-900/50 relative"></div>
+                                          <div class="flex flex-col gap-2 relative">
+                                              <div class="absolute -left-6 top-[25%] bottom-[25%] w-[2px] bg-teal-900/50"></div>
+                                              
+                                              <div class="relative">
+                                                  <div class="absolute -left-6 top-1/2 w-6 h-[2px] bg-teal-900/50"></div>
+                                                  <div class="skill-node bg-white/5 backdrop-blur-md border border-teal-800/30 p-2 px-4 text-center">
+                                                      <p class="font-black text-[11px] text-teal-300">UML & Class Blueprints</p>
+                                                  </div>
+                                              </div>
+                                              <div class="relative">
+                                                  <div class="absolute -left-6 top-1/2 w-6 h-[2px] bg-teal-900/50"></div>
+                                                  <div class="skill-node bg-white/5 backdrop-blur-md border border-teal-800/30 p-2 px-4 text-center">
+                                                      <p class="font-black text-[11px] text-teal-300">Component-Based Design</p>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                              
+                              <!-- Backend & Network Branch -->
+                              <div class="flex items-center justify-center gap-6">
+                                  <div class="skill-node bg-white/5 backdrop-blur-md border border-purple-500/50 p-6 w-56 text-center relative z-10">
+                                      <p class="font-black text-xl text-purple-400">Backend & Tools</p>
+                                      <p class="mono text-[9px] opacity-60 mt-1 uppercase">Network & Pipeline</p>
+                                  </div>
+                                  
+                                  <div class="w-12 h-[2px] bg-purple-900/50 relative"></div>
+
+                                  <div class="flex flex-col gap-6 relative">
+                                      <div class="absolute -left-6 top-[25%] bottom-[25%] w-[2px] h-[50%] bg-purple-900/50"></div>
+                                      
+                                      <!-- Multiplayer / Network Path -->
+                                      <div class="flex items-center gap-6 relative">
+                                          <div class="absolute -left-6 top-1/2 w-6 h-[2px] bg-purple-900/50"></div>
+                                          <div class="skill-node bg-white/5 backdrop-blur-md border border-purple-500/30 p-4 w-48 text-center">
+                                              <p class="font-black text-sm text-purple-400">Node.js Server</p>
+                                              <p class="mono text-[9px] opacity-60 mt-1 uppercase">REST APIs & Auth</p>
+                                          </div>
+                                          <div class="w-8 h-[2px] bg-purple-900/50 relative"></div>
+                                          <div class="flex flex-col gap-2 relative">
+                                              <div class="absolute -left-6 top-[25%] bottom-[25%] w-[2px] bg-purple-900/50"></div>
+                                              
+                                              <div class="relative">
+                                                  <div class="absolute -left-6 top-1/2 w-6 h-[2px] bg-purple-900/50"></div>
+                                                  <div class="skill-node bg-white/5 backdrop-blur-md border border-purple-800/30 p-2 px-4 text-center">
+                                                      <p class="font-black text-[11px] text-purple-300">JWT Authentication</p>
+                                                  </div>
+                                              </div>
+                                              <div class="relative">
+                                                  <div class="absolute -left-6 top-1/2 w-6 h-[2px] bg-purple-900/50"></div>
+                                                  <div class="skill-node bg-white/5 backdrop-blur-md border border-purple-800/30 p-2 px-4 text-center">
+                                                      <p class="font-black text-[11px] text-purple-300">Unreal Engine Networking</p>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
+
+                                      <!-- Tools Path -->
+                                      <div class="flex items-center gap-6 relative">
+                                          <div class="absolute -left-6 top-1/2 w-6 h-[2px] bg-purple-900/50"></div>
+                                          <div class="skill-node bg-white/5 backdrop-blur-md border border-fuchsia-600/30 p-4 w-48 text-center">
+                                              <p class="font-black text-sm text-fuchsia-400">Pipeline & Ops</p>
+                                              <p class="mono text-[9px] opacity-60 mt-1 uppercase">Workflow Automation</p>
+                                          </div>
+                                          <div class="w-8 h-[2px] bg-fuchsia-900/50 relative"></div>
+                                          <div class="flex flex-col gap-2 relative">
+                                              <div class="absolute -left-6 top-[25%] bottom-[25%] w-[2px] bg-fuchsia-900/50"></div>
+                                              
+                                              <div class="relative">
+                                                  <div class="absolute -left-6 top-1/2 w-6 h-[2px] bg-fuchsia-900/50"></div>
+                                                  <div class="skill-node bg-white/5 backdrop-blur-md border border-fuchsia-800/30 p-2 px-4 text-center">
+                                                      <p class="font-black text-[11px] text-fuchsia-300">Python Scripting</p>
+                                                  </div>
+                                              </div>
+                                              <div class="relative">
+                                                  <div class="absolute -left-6 top-1/2 w-6 h-[2px] bg-fuchsia-900/50"></div>
+                                                  <div class="skill-node bg-white/5 backdrop-blur-md border border-fuchsia-800/30 p-2 px-4 text-center">
+                                                      <p class="font-black text-[11px] text-fuchsia-300">Git / Version Control</p>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+
+                          </div>
+                      </div>
+                      
+                      <!-- Novos Pilares de Desenvolvimento -->
+                      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 reveal stagger-2 mb-20">
+                          <div class="p-6 border-l-2 border-cyan-500/30 bg-cyan-500/5 glass-interactive">
+                              <h4 class="mono text-cyan-400 text-[10px] font-black uppercase mb-2">${t.pillars[0].title}</h4>
+                              <p class="text-zinc-400 text-xs leading-relaxed italic">${t.pillars[0].text}</p>
+                          </div>
+                          <div class="p-6 border-l-2 border-blue-500/30 bg-blue-500/5 glass-interactive">
+                              <h4 class="mono text-blue-400 text-[10px] font-black uppercase mb-2">${t.pillars[1].title}</h4>
+                              <p class="text-zinc-400 text-xs leading-relaxed italic">${t.pillars[1].text}</p>
+                          </div>
+                          <div class="p-6 border-l-2 border-red-500/30 bg-red-500/5 glass-interactive">
+                              <h4 class="mono text-red-400 text-[10px] font-black uppercase mb-2">${t.pillars[2].title}</h4>
+                              <p class="text-zinc-400 text-xs leading-relaxed italic">${t.pillars[2].text}</p>
+                          </div>
+                      </div>
+                  </section>
+
+                  <section class="mb-32">
+                      <div id="tour-profile" class="glass glass-interactive reveal p-8 sm:p-12 md:p-16 rounded-none sm:rounded-none border-white/5 relative overflow-hidden">
+                          <div class="absolute -top-24 -right-24 w-64 h-64 bg-blue-600/10 blur-[100px]"></div>
+                          <h2 class="mono text-blue-500 text-xs font-black uppercase tracking-[0.4em] mb-4">${t.aboutTitle}</h2>
+                          <h3 class="text-3xl sm:text-4xl md:text-5xl font-black text-white uppercase mb-8 tracking-tighter">${t.aboutRole}</h3>
+                          <p class="text-lg sm:text-xl md:text-2xl text-zinc-400 leading-relaxed max-w-4xl mb-12">${t.aboutText}</p>
+                          <a href="CV/Hosch_Alef_CV2.pdf" target="_blank" class="inline-flex items-center gap-4 bg-cyan-400 text-black px-10 py-5 rounded-none font-black uppercase text-xs tracking-widest hover:scale-105 transition-all shadow-2xl">
+                              <i data-lucide="file-text"></i> ${t.downloadCV}
+                          </a>
+                      </div>
+                  </section>
+
+                  <section id="tour-projects" class="mb-32">
+                      <h2 class="mono text-xs font-black text-red-500 uppercase tracking-[0.4em] mb-10 flex items-center gap-4">
+                        <span class="h-px w-10 bg-red-500"></span> ${t.projectTitle}
+                      </h2>
+                      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-10">
+                          ${config.projects
+                            .map(
+                              (p) => `
+                              <article onclick="window.location.hash='${p.id}'" class="project-card glass-interactive rounded-none reveal ${p.featured ? "md:col-span-2" : ""}" aria-label="${p.title}">
+                                  <img src="${p.images[0]}" class="card-img ${p.featured ? "h-96" : "h-72"} w-full object-cover">
+                                  <div class="p-10">
+                                      <span class="mono text-[10px] text-cyan-400 font-black uppercase tracking-widest">${p.type[currentLang]}</span>
+                                      <h3 class="text-4xl font-black text-white mt-2 uppercase tracking-tighter">${p.title}</h3>
+                                      <p class="text-zinc-400 mt-4 leading-relaxed">${p.desc[currentLang]}</p>
+                                  </div>
+                              </article>
+                          `,
+                            )
+                            .join("")}
+                      </div>
+                  </section>
+
+                  <section id="contact" class="mb-32 reveal">
+                      <div class="glass p-8 sm:p-16 rounded-none sm:rounded-none text-center border-cyan-400/20">
+                          <h3 class="text-4xl sm:text-5xl md:text-7xl font-black text-white mb-10 uppercase tracking-tighter">Spawn <span class="text-blue-600">Point.</span></h3>
+                          <div class="flex flex-wrap justify-center gap-6">
+                            <a href="${config.profile.email}" target="_blank" rel="noopener noreferrer" class="bg-blue-600 text-white px-12 py-5 rounded-none font-black uppercase hover:scale-110 transition shadow-xl flex items-center gap-3"><i data-lucide="mail"></i> E-mail</a>
+                              <button onclick="copyDiscord(this)" class="bg-[#5865F2] text-white px-12 py-5 rounded-none font-black uppercase hover:scale-110 transition shadow-xl flex items-center gap-3"><i data-lucide="message-square"></i> Discord</button>
+                              <a href="${config.profile.github}" target="_blank" class="glass text-white px-12 py-5 rounded-none font-black uppercase hover:bg-white hover:text-black transition">GitHub</a>
+                              <a href="${config.profile.linkedin}" target="_blank" class="glass text-white px-12 py-5 rounded-none font-black uppercase hover:bg-white hover:text-black transition">LinkedIn</a>
+                          </div>
+                      </div>
+                  </section>
+
+                  <footer class="py-12 text-center border-t border-white/5">
+                      <p class="mono text-[10px] text-zinc-600 uppercase tracking-widest">© ${new Date().getFullYear()} // HOSCH ALEF // ${t.location}</p>
+                  </footer>
+              </div>
+            `;
+
+      const renderProjectDetail = (p, t) => `
+              <div class="page-transition">
+                  <button onclick="window.location.hash='home'" class="flex items-center gap-3 text-cyan-400 hover:text-white transition mono text-xs font-black uppercase mb-16">
+                      <i data-lucide="arrow-left"></i> ${t.backBtn}
+                  </button>
+                  <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16">
+                      <div class="lg:col-span-8">
+                          <h1 class="text-4xl sm:text-6xl md:text-8xl font-black text-white uppercase leading-none mb-10 tracking-tighter">${p.title}</h1>
+                          
+                          <div class="space-y-12 mb-16">
+                              <section>
+                                  <h2 class="mono text-red-500 text-xs font-black uppercase tracking-widest mb-4">${t.conceptTitle}</h2>
+                                  <p class="text-zinc-300 text-xl leading-relaxed">${p.concept ? p.concept[currentLang] : p.desc[currentLang]}</p>
+                              </section>
+
+                              <section>
+                                  <h2 class="mono text-cyan-500 text-xs font-black uppercase tracking-widest mb-4">${t.howTitle}</h2>
+                                  <div class="text-zinc-400 text-lg leading-relaxed">${p.howItWasMade ? p.howItWasMade[currentLang] : p.fullDesc[currentLang]}</div>
+                              </section>
+
+                              <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                  <div class="p-6 rounded-none bg-cyan-500/5 border border-cyan-500/20">
+                                      <h2 class="mono text-cyan-500 text-[10px] font-black uppercase mb-3">${t.strengthsTitle}</h2>
+                                      <p class="text-zinc-400 text-sm italic">${p.strengths ? p.strengths[currentLang] : '---'}</p>
+                                  </div>
+                                  <div class="p-6 rounded-none bg-red-500/5 border border-red-500/20">
+                                      <h2 class="mono text-red-500 text-[10px] font-black uppercase mb-3">${t.weaknessesTitle}</h2>
+                                      <p class="text-zinc-400 text-sm italic">${p.weaknesses ? p.weaknesses[currentLang] : '---'}</p>
+                                  </div>
+                              </div>
+                          </div>
+
+                          <div class="space-y-12">
+                              ${p.youtubeId ? `<div class="aspect-video rounded-none overflow-hidden border-2 border-white/5 shadow-2xl"><iframe class="w-full h-full" src="https://www.youtube.com/embed/${p.youtubeId}" title="${p.title} Technical Showcase" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>` : ""}
+                              ${p.videos ? p.videos.map((v) => `<video class="rounded-none w-full border-2 border-white/5" autoplay loop muted playsinline><source src="${v}" type="video/mp4"></video>`).join("") : ""}
+                              
+                              ${p.techWins ? `
+                                <div class="glass p-8 rounded-none border-cyan-500/20 bg-cyan-500/5">
+                                    <h3 class="mono text-cyan-400 text-xs font-black uppercase tracking-widest mb-6 flex items-center gap-3"><i data-lucide="award"></i> ${t.techWinsTitle}</h3>
+                                    <ul class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        ${p.techWins[currentLang].map(win => `<li class="flex items-start gap-3 text-zinc-300 text-sm"><i data-lucide="check-circle-2" class="text-cyan-500 w-4 h-4 mt-0.5"></i> ${win}</li>`).join('')}
+                                    </ul>
+                                </div>` : ""}
+
+                              ${p.images.map((img) => `<img src="${img}" alt="${p.title}" loading="lazy" class="rounded-none w-full border-2 border-white/5 shadow-2xl">`).join("")}
+                          </div>
+                      </div>
+                      <aside class="lg:col-span-4">
+                          <div class="glass p-10 rounded-none sticky top-10 border-blue-500/20">
+                              <h3 class="mono text-blue-500 text-xs font-black uppercase tracking-widest mb-10 border-b border-white/5 pb-4">${t.techSheet}</h3>
+                              <div class="space-y-8">
+                                  <div><p class="text-[10px] text-zinc-600 uppercase font-black mb-2">${t.mainRole}</p><p class="text-white font-black uppercase">${p.role[currentLang]}</p></div>
+                                  <div><p class="text-[10px] text-zinc-600 uppercase font-black mb-3">${t.stackLabel}</p><div class="flex flex-wrap gap-2">${p.tech.map((tech) => `<span class="mono text-[9px] bg-cyan-400 text-black px-3 py-1 rounded-none font-black uppercase">${tech}</span>`).join("")}</div></div>
+                                  <div><p class="text-[10px] text-zinc-600 uppercase font-black mb-2">${t.commsLabel}</p><a href="${config.profile.discord}" target="_blank" class="text-red-500 font-black uppercase text-xs mono hover:underline">${config.profile.discordTag}</a></div>
+                              </div>
+                              ${p.links.demo !== "#" ? `<a href="${p.links.demo}" target="_blank" class="mt-12 w-full bg-blue-600 text-white py-5 rounded-none font-black uppercase flex justify-center items-center gap-3 hover:bg-cyan-400 hover:text-black transition-all">${t.viewProject} <i data-lucide="zap"></i></a>` : ""}
+                          </div>
+                      </aside>
+                  </div>
+              </div>
+            `;
+
+      // initScrollReveal removed (handled by GSAP)
+
+      // character messages moved to script.js
+
+      const initCharacterInteractions = () => {
+        const profileImg = document.getElementById("profile-img");
+        const techSection = document.getElementById("tour-stack");
+        const profileSection = document.getElementById("tour-profile");
+        const projectsSection = document.getElementById("tour-projects");
+        const contactSection = document.getElementById("contact");
+        
+        if (profileImg) {
+          // Mensagem de hover
+          profileImg.addEventListener("mouseenter", () => {
+            if (!characterGreeted) {
+              showCharacterMessage(characterMessages[currentLang].greeting);
+              characterGreeted = true;
+            }
+          });
+          
+          profileImg.addEventListener("mouseleave", () => {
+            hideCharacterMessage();
+          });
+
+          // Mensagens ao clicar em seções
+          if (techSection) {
+            techSection.addEventListener("mouseenter", () => {
+              const messages = characterMessages[currentLang];
+              showCharacterMessage(messages.tech);
+            });
+            techSection.addEventListener("mouseleave", hideCharacterMessage);
+          }
+
+          if (profileSection) {
+            profileSection.addEventListener("mouseenter", () => {
+              const messages = characterMessages[currentLang];
+              showCharacterMessage(messages.hover);
+            });
+            profileSection.addEventListener("mouseleave", hideCharacterMessage);
+          }
+
+          if (projectsSection) {
+            projectsSection.addEventListener("mouseenter", () => {
+              const messages = characterMessages[currentLang];
+              showCharacterMessage(messages.project);
+            });
+            projectsSection.addEventListener("mouseleave", hideCharacterMessage);
+          }
+
+          if (contactSection) {
+            contactSection.addEventListener("mouseenter", () => {
+              const messages = characterMessages[currentLang];
+              showCharacterMessage(messages.contact);
+            });
+            contactSection.addEventListener("mouseleave", hideCharacterMessage);
+          }
+        }
+
+        // Mensagens aleatórias ao carregar
+        setTimeout(() => {
+          if (!characterGreeted && profileImg) {
+            const messages = characterMessages[currentLang];
+            const randomMsg = messages.random[Math.floor(Math.random() * messages.random.length)];
+            showCharacterMessage(randomMsg);
+          }
+        }, 4000);
+      };
+
+      const activateMascot = () => {
+        if (mascotState.isActive) return; // Previne ativação dupla
+        
+        mascotState.isActive = true;
+
+        const mascot = document.getElementById("character-mascot");
+        const profileContainer = document.getElementById("tour-start-container");
+        const characterBubble = document.getElementById("character-bubble");
+        const profileImg = document.getElementById("profile-img");
+        const app = document.getElementById("app");
+
+        // Adicionar classe de animação ao main
+        if (app) {
+          app.classList.add("mascot-mode");
+        }
+
+        // Esconder photo container e balão
+        if (profileContainer) {
+          profileContainer.style.transition = "all 0.5s ease-out";
+          profileContainer.style.opacity = "0";
+          profileContainer.style.transform = "scale(0.8)";
+          setTimeout(() => {
+            profileContainer.style.display = "none";
+          }, 500);
+        }
+
+        if (characterBubble) {
+          characterBubble.style.display = "none";
+        }
+
+        // Remover event listener do clique
+        if (profileImg) {
+          profileImg.removeEventListener("click", activateMascot);
+        }
+
+        // Ativar mascote
+        if (mascot) {
+          mascot.classList.remove("mascot-hidden");
+          mascot.classList.add("appear");
+          
+          setTimeout(() => {
+            mascot.classList.remove("appear");
+            // Reorganizar o layout do header para ficar cheio
+            const header = document.querySelector("header");
+            if (header) {
+              header.classList.add("mascot-activated-header");
+            }
+          }, 500);
+        }
+
+        // Iniciar mascote andando
+        setupGSAPMascot();
+
+        // Mostrar mensagem de ativação
+        showCharacterMessage(characterMessages[currentLang].greeting);
+        setTimeout(() => hideCharacterMessage(), 2000);
+      };
+
+      // old mascot functions removed, executed in script.js
+
+      // initGlassGlow moved to script.js
+      // copyDiscord moved to script.js
+
+      window.addEventListener("hashchange", render);
+      window.addEventListener("load", render);
+    

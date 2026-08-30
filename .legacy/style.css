@@ -1,22 +1,58 @@
-@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap");
-
+@import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=JetBrains+Mono:wght@300;400;600;700&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Space+Grotesk:wght@400;600;700&display=swap");
 
 :root {
-  --bg-pure: #030406; /* Deep space black */
-  --accent-primary: #00f0ff; /* Electric Cyan */
-  --accent-secondary: #0066ff; /* Deep Blue */
-  --accent-tertiary: #ff0055;  /* Danger/Alert */
-  --panel-bg: rgba(10, 15, 22, 0.85);
-  --border-color: rgba(0, 240, 255, 0.15);
+  --bg-pure: #05070a; /* Deepest Cosmic Void / Abyss */
+  --bg-surface: #0a0d14; /* Void Slate */
+
+  /* Ori / Spirit Palette */
+  --spirit-cyan: #22d3ee;
+  --spirit-teal: #2dd4bf;
+  --spirit-gold: #fbbf24;
+  --spirit-glow: rgba(34, 211, 238, 0.25);
+
+  /* Halo / UNSC Tactical Palette */
+  --unsc-blue: #3b82f6;
+  --unsc-shield: #60a5fa;
+  --unsc-hud-border: rgba(59, 130, 246, 0.25);
+
+  /* Ordem Paranormal / Occult Palette */
+  --paranormal-crimson: #f43f5e;
+  --paranormal-blood: #9f1239;
+  --occult-gold: #d97706;
+
+  /* Gris / Poetic Slate */
+  --gris-pearl: #f1f5f9;
+  --gris-mist: #94a3b8;
+  --gris-stone: #1e293b;
+
+  --panel-bg: rgba(9, 13, 20, 0.85);
+  --border-color: rgba(255, 255, 255, 0.08);
 }
 
 body {
-  font-family: "Space Grotesk", sans-serif;
+  font-family: "Plus Jakarta Sans", sans-serif;
   background-color: var(--bg-pure);
-  color: #e0e6ed;
+  color: #e2e8f0;
   -webkit-font-smoothing: antialiased;
   position: relative;
   overflow-x: hidden;
+  background-image:
+    radial-gradient(
+      circle at 15% 20%,
+      rgba(34, 211, 238, 0.04) 0%,
+      transparent 40%
+    ),
+    radial-gradient(
+      circle at 85% 60%,
+      rgba(244, 63, 94, 0.03) 0%,
+      transparent 40%
+    ),
+    radial-gradient(
+      circle at 50% 85%,
+      rgba(59, 130, 246, 0.04) 0%,
+      transparent 50%
+    );
+  background-attachment: fixed;
 }
 
 #bg-canvas {
@@ -29,118 +65,166 @@ body {
   pointer-events: none;
 }
 
+.font-cinzel {
+  font-family: "Cinzel", serif;
+  letter-spacing: 0.04em;
+}
+
+.font-tech {
+  font-family: "Space Grotesk", sans-serif;
+}
+
 .mono {
   font-family: "JetBrains Mono", monospace;
 }
 
-/* TECHNICAL PANELS (Replacing generic Glassmorphism) */
+/* ETHEREAL SPIRIT & TACTICAL PANELS (Ori + Halo + Ordem Paranormal) */
 .glass {
   background: var(--panel-bg);
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(16px);
   border: 1px solid var(--border-color);
   position: relative;
-  /* HUD styling: Sharp edges, chamfered corner */
   border-radius: 0;
-  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%);
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
 }
 
-/* HUD Greebles (Corner crosshairs) */
-.glass::after {
-  content: "+";
+/* Tactical & Occult Bracket Greebles */
+.glass::before {
+  content: "";
   position: absolute;
-  top: 4px;
-  right: 4px;
-  color: var(--accent-primary);
-  font-family: "JetBrains Mono";
-  font-size: 10px;
-  opacity: 0.5;
+  top: 0;
+  left: 0;
+  width: 8px;
+  height: 8px;
+  border-top: 1px solid var(--spirit-cyan);
+  border-left: 1px solid var(--spirit-cyan);
+  opacity: 0.7;
 }
 
-/* Efeito de luz que segue o mouse (adaptado para o HUD) */
+.glass::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 8px;
+  height: 8px;
+  border-bottom: 1px solid var(--paranormal-crimson);
+  border-right: 1px solid var(--paranormal-crimson);
+  opacity: 0.7;
+}
+
+/* Efeito de luz bioluminescente que segue o mouse (Ori + Gris style) */
 .glass-interactive::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(0, 240, 255, 0.1) 0%, transparent 60%);
+  background: radial-gradient(
+    circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(34, 211, 238, 0.12) 0%,
+    rgba(244, 63, 94, 0.04) 40%,
+    transparent 70%
+  );
   opacity: 0;
-  transition: opacity 0.3s;
+  transition: opacity 0.4s ease;
   pointer-events: none;
 }
 
 .glass-interactive:hover {
-  border-color: rgba(0, 240, 255, 0.4);
-  box-shadow: inset 0 0 20px rgba(0, 240, 255, 0.05);
+  border-color: rgba(34, 211, 238, 0.35);
+  box-shadow:
+    0 10px 40px -10px rgba(34, 211, 238, 0.15),
+    inset 0 0 20px rgba(34, 211, 238, 0.04);
 }
 
 .glass-interactive:hover::before {
   opacity: 1;
 }
 
-/* Título Principal HUD */
+/* Título Principal com Brilho Poético (Gris & Ori) */
 .gradient-text {
   color: #ffffff;
-  text-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 50%, #94a3b8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 25px rgba(34, 211, 238, 0.3));
+  font-family: "Cinzel", serif;
+  font-weight: 900;
+  letter-spacing: -0.01em;
 }
 
 /* Botões e Destaques */
 .lang-btn {
   border-radius: 0 !important;
   border: 1px solid transparent;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+  font-weight: 700;
   transition: all 0.2s;
 }
 
 .lang-btn.active {
-  background: rgba(0, 240, 255, 0.1);
-  color: var(--accent-primary);
-  border: 1px solid var(--accent-primary);
-  box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
+  background: rgba(34, 211, 238, 0.15);
+  color: var(--spirit-cyan);
+  border: 1px solid var(--spirit-cyan);
+  box-shadow: 0 0 15px rgba(34, 211, 238, 0.3);
 }
 
 .profile-photo {
-  border: 2px solid var(--accent-primary);
-  border-radius: 0 !important; /* Sharp box instead of circle */
-  box-shadow: 0 0 30px rgba(0, 240, 255, 0.2);
-  clip-path: polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px);
-  transform: none !important;
+  border: 1px solid rgba(34, 211, 238, 0.4);
+  border-radius: 0 !important;
+  box-shadow:
+    0 0 40px rgba(34, 211, 238, 0.2),
+    0 0 80px rgba(244, 63, 94, 0.1);
+  clip-path: polygon(
+    12px 0,
+    100% 0,
+    100% calc(100% - 12px),
+    calc(100% - 12px) 100%,
+    0 100%,
+    0 12px
+  );
 }
 
-/* Scrollbar temática (Tech style) */
+/* Scrollbar temática */
 ::-webkit-scrollbar-thumb {
-  background: var(--accent-secondary);
+  background: #1e293b;
   border-radius: 0px;
 }
+::-webkit-scrollbar-thumb:hover {
+  background: var(--spirit-cyan);
+}
 ::-webkit-scrollbar {
-  width: 4px; 
-  background: var(--bg-pure); 
+  width: 4px;
+  background: var(--bg-pure);
 }
 
-
-
-/* Efeito de Reatividade nos Cards de Projeto */
+/* Efeito de Reatividade nos Cards de Projeto (Ori Spirit Glow + Tactical Framing) */
 .project-card {
-  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
   cursor: pointer;
   overflow: hidden;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(10, 15, 24, 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  position: relative;
 }
 
 .project-card:hover {
-  transform: translateY(-15px) scale(1.01);
-  background: rgba(255, 255, 255, 0.05);
-  border-color: var(--accent-primary);
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  transform: translateY(-8px) scale(1.008);
+  background: rgba(13, 20, 32, 0.85);
+  border-color: rgba(34, 211, 238, 0.4);
+  box-shadow:
+    0 20px 50px -10px rgba(0, 0, 0, 0.7),
+    0 0 30px rgba(34, 211, 238, 0.15);
 }
 
 .card-img {
-  transition: transform 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .project-card:hover .card-img {
-  transform: scale(1.08);
+  transform: scale(1.04);
 }
 
 /* Feedback visual para cópia */
@@ -180,7 +264,11 @@ body {
   position: absolute;
   height: 100%;
   width: 0%; /* Animated by Anime.js */
-  background: linear-gradient(90deg, var(--accent-secondary), var(--accent-tertiary));
+  background: linear-gradient(
+    90deg,
+    var(--accent-secondary),
+    var(--accent-tertiary)
+  );
 }
 
 /* Overlay para o tour */
@@ -212,7 +300,9 @@ body.tour-active::before {
 #tour-bubble {
   /* ... estilos existentes ... */
   z-index: 10000; /* O mais alto z-index */
-  border-color: var(--accent-primary); /* Cor da borda combinando com o destaque */
+  border-color: var(
+    --accent-primary
+  ); /* Cor da borda combinando com o destaque */
 }
 
 /* Sistema de Diálogo do Tour */
@@ -227,15 +317,21 @@ body.tour-active::before {
   padding: 1.5rem;
   border-radius: 1.5rem;
   z-index: 10000;
-  box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
   backdrop-filter: blur(12px);
   display: none;
   animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @keyframes slideUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .highlight-target {
@@ -309,7 +405,8 @@ body.tour-active::before {
 
 /* Character Speaking Animation */
 @keyframes characterBounce {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1) translateY(0);
   }
   50% {
@@ -323,7 +420,8 @@ body.tour-active::before {
 
 /* Enhanced Float Animation */
 @keyframes enhancedFloat {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0) scale(1);
   }
   50% {
@@ -337,7 +435,8 @@ body.tour-active::before {
 
 /* Pulse effect for interactive prompt */
 @keyframes textPulse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 0.6;
   }
   50% {
@@ -347,7 +446,8 @@ body.tour-active::before {
 
 /* Character Idle Animation */
 @keyframes photoIdle {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0);
   }
   25% {
@@ -364,7 +464,8 @@ body.tour-active::before {
 
 /* Attention grabber animation */
 @keyframes attention {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
   }
   50% {
@@ -394,11 +495,11 @@ body.tour-active::before {
     width: 240px !important;
     height: 240px !important;
   }
-  
+
   .speech-bubble {
     font-size: 0.875rem;
   }
-  
+
   #tour-bubble {
     bottom: 1rem;
     right: 1rem;
@@ -441,7 +542,11 @@ body.tour-active::before {
   transform: translateX(-50%);
   width: 80%;
   height: 10px;
-  background: radial-gradient(ellipse at center, rgba(16, 185, 129, 0.3), transparent);
+  background: radial-gradient(
+    ellipse at center,
+    rgba(16, 185, 129, 0.3),
+    transparent
+  );
   border-radius: 50%;
 }
 
@@ -472,7 +577,7 @@ body.tour-active::before {
     right: 10px;
     left: auto;
   }
-  
+
   .mascot-image {
     border-radius: 15px;
     border-width: 2px;

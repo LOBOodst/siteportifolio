@@ -1,0 +1,36 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Production build
+dist/
+dist-ssr/
+*.local
+
+# IDE & Editors
+.vscode/
+.idea/
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Subprojects & archives
+three.js-master/
+DreamCoreProject/
+MecanicalGame/
+TaticalRPG-main/
+public/videos/Hosch_Alef_video.mp4
