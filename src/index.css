@@ -2,14 +2,14 @@
 @import "tailwindcss";
 
 :root {
-  --theme-primary: #a855f7;
-  --theme-secondary: #ec4899;
-  --theme-accent: #c084fc;
-  --theme-glow: rgba(168, 85, 247, 0.25);
-  --theme-surface-glow: rgba(168, 85, 247, 0.08);
-  --theme-badge-bg: rgba(168, 85, 247, 0.12);
-  --theme-badge-border: rgba(168, 85, 247, 0.35);
-  --theme-badge-text: #c084fc;
+  --theme-primary: #f59e0b;
+  --theme-secondary: #38bdf8;
+  --theme-accent: #fbbf24;
+  --theme-glow: rgba(245, 158, 11, 0.12);
+  --theme-surface-glow: rgba(245, 158, 11, 0.04);
+  --theme-badge-bg: rgba(245, 158, 11, 0.08);
+  --theme-badge-border: rgba(245, 158, 11, 0.25);
+  --theme-badge-text: #f59e0b;
 
   --font-display: "Space Grotesk", -apple-system, sans-serif;
   --font-sans:
@@ -22,8 +22,8 @@
 
 body {
   font-family: var(--font-sans);
-  background-color: #060911;
-  color: #f1f5f9;
+  background-color: #0a0c10;
+  color: #e2e8f0;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -31,7 +31,7 @@ body {
 
 ::selection {
   background: var(--theme-primary);
-  color: #060911;
+  color: #0a0c10;
 }
 
 .font-display {
@@ -42,69 +42,39 @@ body {
   font-family: var(--font-mono);
 }
 
-/* Luxury Studio Bento Card Surface */
+/* Studio Engineering Surface (Clean, Sharp, High Precision) */
+.engine-surface,
 .bento-card {
-  background: linear-gradient(
-    135deg,
-    rgba(15, 23, 42, 0.75) 0%,
-    rgba(10, 15, 29, 0.6) 100%
-  );
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background-color: #0e121a;
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 16px;
+  border-radius: 10px;
   position: relative;
-  overflow: hidden;
-  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  transition:
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
-.bento-card::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 16px;
-  padding: 1px;
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.15),
-    transparent 60%
-  );
-  -webkit-mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
-}
-
+.engine-surface:hover,
 .bento-card:hover {
-  border-color: rgba(255, 255, 255, 0.22);
-  transform: translateY(-3px);
-  box-shadow:
-    0 20px 40px -15px rgba(0, 0, 0, 0.6),
-    0 0 30px -10px var(--theme-glow);
+  border-color: rgba(255, 255, 255, 0.18);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px -10px rgba(0, 0, 0, 0.6);
 }
 
-/* Subtle ambient beam */
-.ambient-glow {
-  position: absolute;
-  width: 600px;
-  height: 600px;
-  border-radius: 50%;
-  filter: blur(120px);
-  pointer-events: none;
-  opacity: 0.15;
-  transition: background 0.8s ease;
+/* Hairline Blueprint Separator */
+.hairline-rule {
+  border-color: rgba(255, 255, 255, 0.08);
 }
 
-/* Custom Scrollbar */
+/* Studio Precision Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #060911;
+  background: #0a0c10;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -113,5 +83,5 @@ body {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--theme-primary);
+  background: rgba(255, 255, 255, 0.28);
 }

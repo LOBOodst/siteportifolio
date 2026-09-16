@@ -15,23 +15,21 @@ export const ThemeProvider = ({ children }) => {
     return localStorage.getItem("hosch_lang") || "pt";
   });
 
-  const [hoveredProject, setHoveredProject] = useState(null);
+  const [_hoveredProject, setHoveredProject] = useState(null);
   const [activeProject, setActiveProject] = useState(null);
-  const [mousePos, setMousePos] = useState({
-    x: 0,
-    y: 0,
-    normX: 0.5,
-    normY: 0.5,
-  });
 
   const setLang = useCallback((newLang) => {
     setLangState(newLang);
     localStorage.setItem("hosch_lang", newLang);
   }, []);
 
+  // Sync document language attribute for accessibility and SEO
+  useEffect(() => {
+    document.documentElement.lang = lang === "pt" ? "pt-BR" : lang;
+  }, [lang]);
+
   const t = translations[lang] || translations.pt;
-  const activeTheme =
-    hoveredProject?.theme || activeProject?.theme || defaultTheme;
+  const activeTheme = defaultTheme;
 
   // Real-time CSS Custom Properties sync with smooth easing
   useEffect(() => {
@@ -44,20 +42,33 @@ export const ThemeProvider = ({ children }) => {
     root.style.setProperty("--theme-badge-bg", activeTheme.badgeBg);
     root.style.setProperty("--theme-badge-border", activeTheme.badgeBorder);
     root.style.setProperty("--theme-badge-text", activeTheme.badgeText);
-  }, [activeTheme]);
+  }, []);
 
-  // Track mouse coordinates for interactive glow & particle attraction
+  // Track mouse coordinates purely via CSS variables using rAF (Zero React re-renders!)
   useEffect(() => {
+    let rafId = null;
+    let latestX = 0;
+    let latestY = 0;
+
+    const updateCssProps = () => {
+      document.documentElement.style.setProperty("--mouse-x", `${latestX}px`);
+      document.documentElement.style.setProperty("--mouse-y", `${latestY}px`);
+      rafId = null;
+    };
+
     const handleMouseMove = (e) => {
-      const normX = e.clientX / window.innerWidth;
-      const normY = e.clientY / window.innerHeight;
-      setMousePos({ x: e.clientX, y: e.clientY, normX, normY });
-      document.documentElement.style.setProperty("--mouse-x", `${e.clientX}px`);
-      document.documentElement.style.setProperty("--mouse-y", `${e.clientY}px`);
+      latestX = e.clientX;
+      latestY = e.clientY;
+      if (!rafId) {
+        rafId = requestAnimationFrame(updateCssProps);
+      }
     };
 
     window.addEventListener("mousemove", handleMouseMove, { passive: true });
-    return () => window.removeEventListener("mousemove", handleMouseMove);
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      if (rafId) cancelAnimationFrame(rafId);
+    };
   }, []);
 
   // Hash-based URL navigation for project deep links
@@ -123,7 +134,6 @@ export const ThemeProvider = ({ children }) => {
         closeProject,
         nextProject,
         prevProject,
-        mousePos,
         profileConfig,
         projects,
       }}

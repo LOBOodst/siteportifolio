@@ -1,22 +1,36 @@
 import { Check, Copy, Mail } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTheme } from "../../context/ThemeContext";
 import { GithubIcon, LinkedinIcon } from "../common/Icons";
 
 export const ContactSection = () => {
   const { t, activeTheme, profileConfig } = useTheme();
   const [copied, setCopied] = useState(false);
+  const copyTimeoutRef = useRef(null);
 
-  const handleCopyDiscord = () => {
-    navigator.clipboard.writeText(profileConfig.discordTag);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2500);
+  const handleCopyDiscord = async () => {
+    try {
+      if (navigator?.clipboard?.writeText) {
+        await navigator.clipboard.writeText(profileConfig.discordTag);
+        setCopied(true);
+        if (copyTimeoutRef.current) clearTimeout(copyTimeoutRef.current);
+        copyTimeoutRef.current = setTimeout(() => setCopied(false), 2500);
+      }
+    } catch (err) {
+      console.warn("Falha ao copiar para área de transferência:", err);
+    }
   };
+
+  useEffect(() => {
+    return () => {
+      if (copyTimeoutRef.current) clearTimeout(copyTimeoutRef.current);
+    };
+  }, []);
 
   return (
     <footer
       id="contact"
-      className="pt-12 pb-20 border-t border-white/5 bg-[#05070d]"
+      className="pt-16 pb-20 border-t border-slate-800/80 bg-[#07090e]"
     >
       <div className="max-w-4xl mx-auto px-6 text-center">
         {/* Header */}
@@ -29,7 +43,7 @@ export const ContactSection = () => {
         <h3 className="font-display text-3xl sm:text-5xl font-bold text-white tracking-tight mb-4">
           {t.contactHero}
         </h3>
-        <p className="text-slate-400 text-sm sm:text-base max-w-xl mx-auto mb-10 leading-relaxed">
+        <p className="text-slate-400 text-sm sm:text-base max-w-xl mx-auto mb-10 leading-relaxed font-normal">
           {t.contactSub}
         </p>
 
@@ -40,7 +54,7 @@ export const ContactSection = () => {
             href={profileConfig.email}
             target="_blank"
             rel="noopener noreferrer"
-            className="px-6 py-3.5 rounded-xl font-semibold text-xs transition-all hover:opacity-90 text-slate-950 flex items-center gap-2 shadow-xl"
+            className="px-6 py-3.5 rounded-lg font-semibold text-xs font-mono transition-all hover:opacity-95 text-slate-950 flex items-center gap-2 shadow-sm"
             style={{ backgroundColor: activeTheme.primary }}
           >
             <Mail className="w-4 h-4" />
@@ -51,12 +65,13 @@ export const ContactSection = () => {
           <button
             type="button"
             onClick={handleCopyDiscord}
-            className="bento-card px-6 py-3.5 rounded-xl font-semibold text-xs text-indigo-300 border border-indigo-500/30 hover:border-indigo-400/60 transition-all flex items-center gap-2"
+            aria-label={`Copiar Discord tag: ${profileConfig.discordTag}`}
+            className="engine-surface px-6 py-3.5 rounded-lg font-semibold text-xs font-mono text-slate-200 border border-slate-800 hover:border-slate-700 transition-all flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-amber-500 bg-[#0e121a]"
           >
             {copied ? (
               <Check className="w-4 h-4 text-emerald-400" />
             ) : (
-              <Copy className="w-4 h-4" />
+              <Copy className="w-4 h-4 text-amber-400" />
             )}
             <span>
               {copied ? t.copySuccess : `Discord: ${profileConfig.discordTag}`}
@@ -68,7 +83,7 @@ export const ContactSection = () => {
             href={profileConfig.github}
             target="_blank"
             rel="noopener noreferrer"
-            className="bento-card px-6 py-3.5 rounded-xl font-semibold text-xs text-slate-300 border border-slate-700/60 hover:text-white transition-all flex items-center gap-2"
+            className="engine-surface px-6 py-3.5 rounded-lg font-semibold text-xs font-mono text-slate-300 border border-slate-800 hover:border-slate-700 hover:text-white transition-all flex items-center gap-2 bg-[#0e121a]"
           >
             <GithubIcon className="w-4 h-4" />
             <span>GitHub</span>
@@ -79,7 +94,7 @@ export const ContactSection = () => {
             href={profileConfig.linkedin}
             target="_blank"
             rel="noopener noreferrer"
-            className="bento-card px-6 py-3.5 rounded-xl font-semibold text-xs text-blue-300 border border-blue-500/30 hover:border-blue-400/60 transition-all flex items-center gap-2"
+            className="engine-surface px-6 py-3.5 rounded-lg font-semibold text-xs font-mono text-slate-300 border border-slate-800 hover:border-slate-700 hover:text-white transition-all flex items-center gap-2 bg-[#0e121a]"
           >
             <LinkedinIcon className="w-4 h-4" />
             <span>LinkedIn</span>

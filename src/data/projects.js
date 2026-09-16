@@ -1,14 +1,14 @@
 export const defaultTheme = {
   id: "default",
-  name: "Obsidian Cyber",
-  primary: "#00f0ff",
-  secondary: "#8b5cf6",
-  accent: "#38bdf8",
-  glow: "rgba(0, 240, 255, 0.35)",
-  surfaceGlow: "rgba(0, 240, 255, 0.12)",
-  badgeBg: "rgba(0, 240, 255, 0.12)",
-  badgeBorder: "rgba(0, 240, 255, 0.35)",
-  badgeText: "#00f0ff",
+  name: "Studio Obsidian",
+  primary: "#f59e0b",
+  secondary: "#38bdf8",
+  accent: "#fbbf24",
+  glow: "rgba(245, 158, 11, 0.12)",
+  surfaceGlow: "rgba(245, 158, 11, 0.04)",
+  badgeBg: "rgba(245, 158, 11, 0.08)",
+  badgeBorder: "rgba(245, 158, 11, 0.25)",
+  badgeText: "#f59e0b",
 };
 
 export const projects = [
@@ -42,10 +42,7 @@ export const projects = [
       "images/fps_lan_weapons.png",
       "images/fps_lan_powers.png",
     ],
-    videos: [
-      "https://www.youtube-nocookie.com/embed/nlYcvFZwmKY",
-      "videos/Hosch_Alef_video.mp4",
-    ],
+    videos: ["https://www.youtube-nocookie.com/embed/nlYcvFZwmKY"],
     theme: {
       id: "fps-lan",
       name: "Cyber-Cyan Tactical",

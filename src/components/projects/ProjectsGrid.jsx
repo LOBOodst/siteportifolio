@@ -23,7 +23,7 @@ export const ProjectsGrid = () => {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-10">
           <div>
             <h2
-              className="text-xs font-bold uppercase tracking-wider mb-2"
+              className="text-xs font-bold uppercase tracking-wider mb-2 font-mono"
               style={{ color: activeTheme.primary }}
             >
               {t.projectTitle}
@@ -33,8 +33,8 @@ export const ProjectsGrid = () => {
             </h3>
           </div>
 
-          {/* Filter Pills with Motion.dev Layout Animation */}
-          <div className="flex flex-wrap gap-1.5 bg-slate-900 border border-slate-800 p-1 rounded-lg relative">
+          {/* Studio Filter Segmented Control */}
+          <div className="flex flex-wrap gap-1 bg-[#0e121a] border border-slate-800 p-1 rounded-lg relative">
             {[
               { id: "all", label: t.filterAll },
               { id: "featured", label: t.filterFeatured },
@@ -45,7 +45,7 @@ export const ProjectsGrid = () => {
                 key={tab.id}
                 type="button"
                 onClick={() => setFilter(tab.id)}
-                className={`relative px-3.5 py-1.5 text-xs font-medium rounded-md transition-colors z-10 ${
+                className={`relative px-3.5 py-1.5 text-xs font-mono font-medium rounded-md transition-colors z-10 ${
                   filter === tab.id
                     ? "text-white"
                     : "text-slate-400 hover:text-slate-200"
@@ -55,7 +55,7 @@ export const ProjectsGrid = () => {
                   <motion.div
                     layoutId="activeFilterPill"
                     transition={{ type: "spring", stiffness: 450, damping: 32 }}
-                    className="absolute inset-0 bg-slate-800 rounded-md shadow-sm -z-10"
+                    className="absolute inset-0 bg-[#1c2436] rounded-md shadow-sm -z-10"
                   />
                 )}
                 <span>{tab.label}</span>
@@ -74,10 +74,10 @@ export const ProjectsGrid = () => {
               <motion.div
                 key={project.id}
                 layout
-                initial={{ opacity: 0, scale: 0.95 }}
+                initial={{ opacity: 0, scale: 0.96 }}
                 animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.25 }}
+                exit={{ opacity: 0, scale: 0.96 }}
+                transition={{ duration: 0.2 }}
                 className={project.featured ? "lg:col-span-2" : ""}
               >
                 <ProjectCard project={project} />

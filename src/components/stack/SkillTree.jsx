@@ -1,85 +1,84 @@
-import {
-  CheckCircle2,
-  Code2,
-  Database,
-  Layers,
-  Terminal,
-  Workflow,
-} from "lucide-react";
+import { Code2, Database, Workflow } from "lucide-react";
 import { motion } from "motion/react";
 import { useTheme } from "../../context/ThemeContext";
 
 export const SkillTree = () => {
   const { t, activeTheme } = useTheme();
 
-  const languageSkills = [
+  const engineeringDomains = [
     {
-      lang: "C++",
-      level: "Native & Unreal Engine 5",
-      badge: "Engine & Core",
-      color: "border-blue-500/30 text-blue-400 bg-blue-500/10",
-      icon: <Code2 className="w-5 h-5 text-blue-400" />,
-      skills: [
-        "Unreal Engine 5 Gameplay Framework & Native Game Loop",
-        "Zero-Trust Server Authority & Net Driver Replication",
-        "Dijkstra / BFS 3D Grid Pathfinding & LineTrace Topology",
-        "Linear Algebra (Vectors, Quaternions, 4x4 Matrices)",
+      title: "Core Engine & Low-Level Architecture",
+      primaryTech: "C++ • Unreal Engine 5",
+      subtitle: "Deterministic Simulation, Netcode & Memory Discipline",
+      badge: "Core & Engine",
+      icon: <Code2 className="w-5 h-5 text-amber-400" />,
+      concepts: [
+        {
+          label: "Server Authority",
+          desc: "Zero-Trust authoritative server model with client prediction, reconciliation, and Net Driver replication.",
+        },
+        {
+          label: "Spatial Pathfinding",
+          desc: "Dijkstra and BFS 3D grid pathfinding generated via vertical LineTrace topology and terrain elevation costs.",
+        },
+        {
+          label: "Linear Algebra",
+          desc: "Vector kinematics, Quaternions, 4x4 coordinate space transformations, and physics impulses.",
+        },
+        {
+          label: "Gameplay Framework",
+          desc: "Native Unreal Engine Actor/Component architecture, tick management, and decoupled delegates.",
+        },
       ],
-      projects: "LAN FPS / TPS • Tactical RPG Engine • Mechanics Playground",
+      appliedIn: "LAN FPS / TPS • Tactical RPG Engine • Mechanics Playground",
     },
     {
-      lang: "C#",
-      level: "Unity Engine & Architecture",
-      badge: "Systems & IA",
-      color: "border-teal-500/30 text-teal-400 bg-teal-500/10",
-      icon: <Workflow className="w-5 h-5 text-teal-400" />,
-      skills: [
-        "Hierarchical Finite State Machines (HFSM) for Complex AI",
-        "Volumetric 6-Dir SphereCasts & Acoustic Perception Propagation",
-        "4-Player Local Input System Device Routing & Hotplugging",
-        "Atomic JSON State Persistence & GC-Zero Object Pooling",
+      title: "Gameplay Systems & Spatial AI",
+      primaryTech: "C# • Unity Engine",
+      subtitle: "Perception Arrays, State Machines & GC-Zero Pipelines",
+      badge: "Gameplay & AI",
+      icon: <Workflow className="w-5 h-5 text-sky-400" />,
+      concepts: [
+        {
+          label: "Spatial AI & Perception",
+          desc: "6-directional volumetric SphereCast arrays combined with real-time acoustic sound propagation calculations.",
+        },
+        {
+          label: "State Management",
+          desc: "Hierarchical Finite State Machines (HFSM) for reactive, emergent enemy stalking and tactical behaviors.",
+        },
+        {
+          label: "GC-Zero Optimization",
+          desc: "Pre-allocated Object Pooling architecture ensuring zero garbage collection spikes during bullet hell waves.",
+        },
+        {
+          label: "Multi-Device Routing",
+          desc: "4-player concurrent gamepad device assignment, hotplugging resilience, and atomic JSON state persistence.",
+        },
       ],
-      projects: "Psychastenia • Garage War • Space Shooter • Elevator Talks",
+      appliedIn: "Psychastenia • Garage War • Space Shooter • Elevator Talks",
     },
     {
-      lang: "Python",
-      level: "Automation & Tooling",
-      badge: "DevOps & CLI",
-      color: "border-amber-500/30 text-amber-400 bg-amber-500/10",
-      icon: <Terminal className="w-5 h-5 text-amber-400" />,
-      skills: [
-        "Automated Build & CI/CD Pipeline Automation",
-        "Batch Asset Processing & File Format Conversion",
-        "Custom CLI Utilities for Game Data Verification",
-        "Telemetry & Performance Profiling Log Parsing",
+      title: "Tooling, Infrastructure & Data",
+      primaryTech: "Python • Node.js • SQL",
+      subtitle: "Build Automation, Microservices & Data Integrity",
+      badge: "Pipeline & Data",
+      icon: <Database className="w-5 h-5 text-emerald-400" />,
+      concepts: [
+        {
+          label: "Pipeline Automation",
+          desc: "Python CLI tools for automated game build verification, asset packaging, and telemetry log parsing.",
+        },
+        {
+          label: "Microservices & Auth",
+          desc: "Decoupled Express.js REST microservice issuing signed JWT tokens for LAN matchmaking handshakes.",
+        },
+        {
+          label: "Relational Schemas",
+          desc: "Relational SQL database modeling with strict foreign key constraints, atomic transactions, and persistence.",
+        },
       ],
-      projects: "DevOps Automation • Asset Pipeline Tooling",
-    },
-    {
-      lang: "JavaScript",
-      level: "Node.js & Backend Services",
-      badge: "Matchmaking & Auth",
-      color: "border-yellow-500/30 text-yellow-400 bg-yellow-500/10",
-      icon: <Layers className="w-5 h-5 text-yellow-400" />,
-      skills: [
-        "Express.js REST Microservices for Matchmaking & Auth",
-        "Cryptographic Handshakes with JWT Tokens & bcrypt",
-        "Full-Stack Web Portfolio Architecture (React 19, Vite)",
-      ],
-      projects: "LAN FPS Authentication Service • Web Portfolio",
-    },
-    {
-      lang: "SQL",
-      level: "Relational Databases",
-      badge: "Persistence & Schema",
-      color: "border-rose-500/30 text-rose-400 bg-rose-500/10",
-      icon: <Database className="w-5 h-5 text-rose-400" />,
-      skills: [
-        "Relational Schema Modeling (PK/FK Constraints)",
-        "CRUD Queries, Joins, Aggregations & Transactions",
-        "Player Account & Inventory Persistence Schemas",
-      ],
-      projects: "Database Persistence • Player Data Modeling",
+      appliedIn: "LAN Matchmaking Auth • Game Data CLI • Web Portfolio",
     },
   ];
 
@@ -99,59 +98,59 @@ export const SkillTree = () => {
           </h3>
         </div>
 
-        {/* 5 Languages Technical Bento Matrix */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {languageSkills.map((item, idx) => (
+        {/* 3 Engineering Domains Matrix */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {engineeringDomains.map((domain, idx) => (
             <motion.div
-              key={item.lang}
-              initial={{ opacity: 0, y: 20 }}
+              key={domain.title}
+              initial={{ opacity: 0, y: 18 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: idx * 0.08 }}
-              className="bento-card p-6 flex flex-col justify-between"
+              transition={{ duration: 0.4, delay: idx * 0.1 }}
+              className="engine-surface p-6 sm:p-7 flex flex-col justify-between border border-slate-800 bg-[#0e121a]"
             >
               <div>
-                <div className="flex items-center justify-between mb-4 pb-3 border-b border-slate-800">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 rounded-lg bg-slate-900 border border-slate-800">
-                      {item.icon}
-                    </div>
-                    <div>
-                      <h4 className="font-display text-2xl font-bold text-white leading-tight">
-                        {item.lang}
-                      </h4>
-                      <span className="text-[11px] text-slate-400 font-mono">
-                        {item.level}
-                      </span>
-                    </div>
+                {/* Header */}
+                <div className="flex items-start justify-between gap-3 mb-4 pb-4 border-b border-slate-800/80">
+                  <div>
+                    <span className="text-[11px] font-mono font-semibold uppercase tracking-wider text-slate-400 block mb-1">
+                      {domain.primaryTech}
+                    </span>
+                    <h4 className="font-display text-lg sm:text-xl font-bold text-white">
+                      {domain.title}
+                    </h4>
                   </div>
-
-                  <span
-                    className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded-full border ${item.color}`}
-                  >
-                    {item.badge}
-                  </span>
+                  <div className="p-2 rounded-md bg-[#141926] border border-slate-800 shrink-0">
+                    {domain.icon}
+                  </div>
                 </div>
 
-                <ul className="space-y-2.5 mb-6 text-xs text-slate-300">
-                  {item.skills.map((skill, sIdx) => (
-                    <li key={sIdx} className="flex items-start gap-2">
-                      <CheckCircle2
-                        className="w-3.5 h-3.5 mt-0.5 shrink-0"
-                        style={{ color: activeTheme.primary }}
-                      />
-                      <span>{skill}</span>
-                    </li>
+                <p className="text-xs text-slate-400 font-mono mb-6">
+                  {domain.subtitle}
+                </p>
+
+                {/* Architecture Concepts */}
+                <div className="space-y-4 mb-8">
+                  {domain.concepts.map((concept, cIdx) => (
+                    <div key={cIdx} className="text-xs">
+                      <span className="font-mono font-semibold text-slate-200 block mb-1">
+                        ▸ {concept.label}
+                      </span>
+                      <p className="text-slate-400 leading-relaxed pl-3 border-l border-slate-800">
+                        {concept.desc}
+                      </p>
+                    </div>
                   ))}
-                </ul>
+                </div>
               </div>
 
-              <div className="pt-3 border-t border-slate-800 text-[11px] text-slate-400">
-                <span className="text-slate-500 block text-[10px] uppercase font-semibold mb-0.5 font-mono">
+              {/* Applied in */}
+              <div className="pt-4 border-t border-slate-800/80 text-[11px]">
+                <span className="text-slate-500 block text-[10px] uppercase font-semibold mb-1 font-mono">
                   {t.appliedIn}
                 </span>
-                <span className="font-medium text-slate-300">
-                  {item.projects}
+                <span className="font-mono text-slate-300">
+                  {domain.appliedIn}
                 </span>
               </div>
             </motion.div>
