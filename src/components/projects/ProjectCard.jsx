@@ -1,5 +1,6 @@
-import { ArrowUpRight, Play, Video } from "lucide-react";
+import { ArrowUpRight, Play, Users, Video } from "lucide-react";
 import { useTheme } from "../../context/ThemeContext";
+import { FACT_FIELDS } from "../../data/projects";
 
 const getAssetUrl = (path) => {
   if (!path) return "";
@@ -10,6 +11,11 @@ const getAssetUrl = (path) => {
 
 export const ProjectCard = ({ project }) => {
   const { lang, t, setHoveredProject, openProject } = useTheme();
+
+  // e.g. "Team of 8 (sole programmer) · 3 weeks · Final-year project at HEAJ"
+  const factLine = FACT_FIELDS.map(({ key }) => project.facts?.[key]?.[lang])
+    .filter(Boolean)
+    .join(" · ");
 
   const handleMouseEnter = () => {
     setHoveredProject(project);
@@ -64,6 +70,14 @@ export const ProjectCard = ({ project }) => {
         <h3 className="font-display text-xl sm:text-2xl font-bold text-white mb-2.5 group-hover:text-amber-300 transition-colors">
           {project.title}
         </h3>
+
+        {/* Team / duration / context at a glance */}
+        {factLine && (
+          <p className="flex items-start gap-1.5 text-[11px] font-mono text-slate-400 mb-3">
+            <Users className="w-3.5 h-3.5 text-amber-400 shrink-0 mt-px" />
+            <span>{factLine}</span>
+          </p>
+        )}
 
         {/* Concept Description */}
         <p className="text-slate-300 text-sm leading-relaxed mb-5 font-normal">

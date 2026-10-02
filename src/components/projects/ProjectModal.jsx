@@ -1,7 +1,8 @@
-import { ArrowLeft, ArrowRight, Award, X, Zap } from "lucide-react";
+import { ArrowLeft, ArrowRight, Award, UserRound, X, Zap } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useRef } from "react";
 import { useTheme } from "../../context/ThemeContext";
+import { FACT_FIELDS } from "../../data/projects";
 import { GithubIcon } from "../common/Icons";
 
 const getAssetUrl = (path) => {
@@ -166,6 +167,34 @@ export const ProjectModal = () => {
                     </p>
                   </section>
 
+                  {/* What I Did: personal contribution within the team */}
+                  {p.myWork?.[lang]?.length > 0 && (
+                    <section className="p-6 rounded-lg border border-slate-800/80 bg-[#121622]/60">
+                      <h3
+                        className="text-xs font-bold uppercase tracking-wider mb-3 flex items-center gap-2 font-mono"
+                        style={{ color: p.theme.primary }}
+                      >
+                        <UserRound className="w-4 h-4" /> {t.myWorkTitle}
+                      </h3>
+                      <ul className="space-y-2">
+                        {p.myWork[lang].map((item) => (
+                          <li
+                            key={item}
+                            className="flex items-start gap-2.5 text-slate-200 text-sm sm:text-base leading-relaxed"
+                          >
+                            <span
+                              className="font-mono text-sm leading-none mt-1.5 shrink-0"
+                              style={{ color: p.theme.primary }}
+                            >
+                              ▸
+                            </span>
+                            <span>{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </section>
+                  )}
+
                   {/* Technical Implementation Section */}
                   <section className="p-6 rounded-lg border border-slate-800/80 bg-[#121622]/60">
                     <h3
@@ -302,6 +331,20 @@ export const ProjectModal = () => {
                         {p.role[lang]}
                       </p>
                     </div>
+
+                    {/* Project facts: team, duration, context */}
+                    {FACT_FIELDS.map(({ key, label }) =>
+                      p.facts?.[key]?.[lang] ? (
+                        <div key={key}>
+                          <p className="text-[11px] text-slate-500 uppercase font-semibold mb-1 font-mono">
+                            {t[label]}
+                          </p>
+                          <p className="text-white font-medium text-xs">
+                            {p.facts[key][lang]}
+                          </p>
+                        </div>
+                      ) : null,
+                    )}
 
                     <div>
                       <p className="text-[11px] text-slate-500 uppercase font-semibold mb-2 font-mono">

@@ -11,6 +11,13 @@ export const defaultTheme = {
   badgeText: "#f59e0b",
 };
 
+// Order in which project facts are displayed, with their translation keys
+export const FACT_FIELDS = [
+  { key: "team", label: "factTeam" },
+  { key: "duration", label: "factDuration" },
+  { key: "context", label: "factContext" },
+];
+
 export const projects = [
   {
     id: "fps-lan",
@@ -96,6 +103,11 @@ export const projects = [
       en: "Requires dedicated server binary hosting; latency compensation tuning required for cross-continent pings > 150ms.",
       pt: "Exige instância de servidor dedicado; calibração contínua de rollback para conexões com ping superior a 150ms.",
       fr: "Nécessite un serveur dédié ; calibrage fin du rollback pour les latences supérieures à 150ms.",
+    },
+    facts: {
+      team: { pt: "Projeto solo", en: "Solo project", fr: "Projet solo" },
+      // TODO: duration: { pt: "X semanas", en: "X weeks", fr: "X semaines" },
+      // TODO: context: { pt: "...", en: "...", fr: "..." },
     },
     links: { demo: "#" },
   },
@@ -184,6 +196,30 @@ export const projects = [
       pt: "Cálculos volumétricos de raycast exigem bounding rígido de LOD para dispositivos de baixa performance.",
       fr: "Les calculs volumétriques nécessitent une gestion stricte des LOD sur les configurations modestes.",
     },
+    facts: {
+      team: {
+        pt: "Equipe de 8 (único programador)",
+        en: "Team of 8 (sole programmer)",
+        fr: "Équipe de 8 (seul programmeur)",
+      },
+      duration: { pt: "3 semanas", en: "3 weeks", fr: "3 semaines" },
+      context: {
+        pt: "Projeto de fim de ciclo na HEAJ",
+        en: "Final-year project at HEAJ",
+        fr: "Travail de fin de cycle à la HEAJ",
+      },
+    },
+    myWork: {
+      pt: [
+        "Todo o código do jogo, como único programador ao lado de 5 artistas e 2 designers",
+      ],
+      en: [
+        "All of the game's code, as the sole programmer alongside 5 artists and 2 designers",
+      ],
+      fr: [
+        "Tout le code du jeu, en tant que seul programmeur aux côtés de 5 artistes et 2 designers",
+      ],
+    },
     links: {
       demo: "https://decloedt-sarah.itch.io/psychastenia",
     },
@@ -270,6 +306,11 @@ export const projects = [
       pt: "Geração de grid em mapas gigantes (>200x200) requer chunk streaming para evitar picos de frame.",
       fr: "La projection de grille sur de très grandes cartes (>200x200) nécessite un streaming par chunks.",
     },
+    facts: {
+      team: { pt: "Projeto solo", en: "Solo project", fr: "Projet solo" },
+      // TODO: duration: { pt: "X semanas", en: "X weeks", fr: "X semaines" },
+      // TODO: context: { pt: "...", en: "...", fr: "..." },
+    },
     links: { demo: "#" },
   },
   {
@@ -354,6 +395,36 @@ export const projects = [
       pt: "Múltiplas juntas físicas conectadas exigiram amortecimento calibrado para prevenir bugs de velocidade extrema.",
       fr: "Les articulations physiques multiples ont nécessité des contraintes amorties pour éviter les instabilités.",
     },
+    facts: {
+      team: {
+        pt: "Equipe de 6 (único programador)",
+        en: "Team of 6 (sole programmer)",
+        fr: "Équipe de 6 (seul programmeur)",
+      },
+      duration: { pt: "2 semanas", en: "2 weeks", fr: "2 semaines" },
+      context: {
+        pt: "Sprint multijogador na HEAJ",
+        en: "Multiplayer sprint at HEAJ",
+        fr: "Sprint multijoueur à la HEAJ",
+      },
+    },
+    myWork: {
+      pt: [
+        "Toda a programação de gameplay e do jogo, como único programador",
+        "Conceito original do jogo",
+        "Contribuição no game design e no level design",
+      ],
+      en: [
+        "All gameplay and game programming, as the sole programmer",
+        "Original game concept",
+        "Contributed to game design and level design",
+      ],
+      fr: [
+        "Toute la programmation gameplay et du jeu, en tant que seul programmeur",
+        "Concept original du jeu",
+        "Participation au game design et au level design",
+      ],
+    },
     links: {
       demo: "https://loboodst.itch.io/garagewar",
     },
@@ -436,6 +507,13 @@ export const projects = [
       pt: "Limitado ao plano 2.5D; futura expansão para movimentação dogfight 3D com roll axial.",
       fr: "Limité au plan 2.5D ; extension future vers un pilotage 3D complet.",
     },
+    // TODO: preencha com os dados reais e descomente (campos vazios não aparecem no site)
+    // facts: {
+    //   team: { pt: "Solo", en: "Solo", fr: "Solo" },
+    //   duration: { pt: "X semanas", en: "X weeks", fr: "X semaines" },
+    //   context: { pt: "Projeto pessoal", en: "Personal project", fr: "Projet personnel" },
+    // },
+    // myWork: { pt: ["..."], en: ["..."], fr: ["..."] },
     links: { demo: "#" },
   },
   {
@@ -516,6 +594,11 @@ export const projects = [
       pt: "Focado em mecânica pura sem contexto narrativo completo.",
       fr: "Projet centré sur la technique, sans contexte narratif.",
     },
+    facts: {
+      team: { pt: "Projeto solo", en: "Solo project", fr: "Projet solo" },
+      // TODO: duration: { pt: "X semanas", en: "X weeks", fr: "X semaines" },
+      // TODO: context: { pt: "...", en: "...", fr: "..." },
+    },
     links: { demo: "#" },
   },
   {
@@ -591,6 +674,30 @@ export const projects = [
       en: "Linear voice-acting assets required for voice-over expansion.",
       pt: "Expansão de voz exige pipeline de dublagem linear associado a IDs de nós.",
       fr: "L'extension vocale nécessite un pipeline audio synchronisé aux IDs.",
+    },
+    facts: {
+      team: {
+        pt: "Equipe de 6 (único programador)",
+        en: "Team of 6 (sole programmer)",
+        fr: "Équipe de 6 (seul programmeur)",
+      },
+      duration: { pt: "3 dias", en: "3 days", fr: "3 jours" },
+      context: {
+        pt: "Protótipo de conceito",
+        en: "Concept prototype",
+        fr: "Prototype de concept",
+      },
+    },
+    myWork: {
+      pt: [
+        "Toda a programação de gameplay, como único programador ao lado de 3 artistas, 1 tech artist e 1 designer",
+      ],
+      en: [
+        "All gameplay programming, as the sole programmer alongside 3 artists, 1 tech artist and 1 designer",
+      ],
+      fr: [
+        "Toute la programmation gameplay, en tant que seul programmeur aux côtés de 3 artistes, 1 tech artist et 1 designer",
+      ],
     },
     links: {
       demo: "https://loboodst.itch.io/elevator-talks",
