@@ -36,11 +36,11 @@ export const projects = [
       fr: "Architecte Réseau Multijoueur & Développeur Systèmes de Gameplay",
     },
     images: [
-      "images/fps_lan_gameplay_map.png",
-      "images/fps_lan_lobby.png",
-      "images/fps_lan_scoreboard.png",
-      "images/fps_lan_weapons.png",
-      "images/fps_lan_powers.png",
+      "images/fps_lan_gameplay_map.webp",
+      "images/fps_lan_lobby.webp",
+      "images/fps_lan_scoreboard.webp",
+      "images/fps_lan_weapons.webp",
+      "images/fps_lan_powers.webp",
     ],
     videos: ["https://www.youtube-nocookie.com/embed/nlYcvFZwmKY"],
     theme: {
@@ -122,12 +122,12 @@ export const projects = [
       fr: "Lead Gameplay Programmer & Architecte Systèmes",
     },
     images: [
-      "images/psychasteniac_01.png",
-      "images/psychasteniac_02.png",
-      "images/psychasteniac_03.png",
-      "images/psychasteniac_04.png",
-      "images/psychasteniac_05.png",
-      "images/psychasteniac_06.png",
+      "images/psychasteniac_01.webp",
+      "images/psychasteniac_02.webp",
+      "images/psychasteniac_03.webp",
+      "images/psychasteniac_04.webp",
+      "images/psychasteniac_05.webp",
+      "images/psychasteniac_06.webp",
     ],
     videos: ["https://www.youtube-nocookie.com/embed/aqRrje7DAw8"],
     theme: {
@@ -211,9 +211,9 @@ export const projects = [
       fr: "Architecte Gameplay & Développeur IA",
     },
     images: [
-      "images/taticalRPG_1.png",
-      "images/taticalRPG_2.png",
-      "images/taticalRPG_3.png",
+      "images/taticalRPG_1.webp",
+      "images/taticalRPG_2.webp",
+      "images/taticalRPG_3.webp",
     ],
     videos: [],
     theme: {
@@ -270,7 +270,7 @@ export const projects = [
       pt: "Geração de grid em mapas gigantes (>200x200) requer chunk streaming para evitar picos de frame.",
       fr: "La projection de grille sur de très grandes cartes (>200x200) nécessite un streaming par chunks.",
     },
-    links: { demo: "#", github: "https://github.com/LOBOodst/siteportifolio" },
+    links: { demo: "#" },
   },
   {
     id: "garage-war",
@@ -295,9 +295,9 @@ export const projects = [
       fr: "Développeur Systèmes Physiques & Gameplay Multijoueur Local",
     },
     images: [
-      "images/garage_war_01.png",
-      "images/garage_war_02.png",
-      "images/garage_war_03.png",
+      "images/garage_war_01.webp",
+      "images/garage_war_02.webp",
+      "images/garage_war_03.webp",
     ],
     videos: [],
     theme: {
@@ -356,7 +356,6 @@ export const projects = [
     },
     links: {
       demo: "https://loboodst.itch.io/garagewar",
-      github: "https://github.com/LOBOodst/siteportifolio",
     },
   },
   {
@@ -381,7 +380,7 @@ export const projects = [
       pt: "Programador de Gameplay & Otimização",
       fr: "Développeur Gameplay & Optimisation",
     },
-    images: ["images/spaceshooter.png"],
+    images: ["images/spaceshooter.webp"],
     videos: [],
     theme: {
       id: "space-shooter-pro",
@@ -437,7 +436,7 @@ export const projects = [
       pt: "Limitado ao plano 2.5D; futura expansão para movimentação dogfight 3D com roll axial.",
       fr: "Limité au plan 2.5D ; extension future vers un pilotage 3D complet.",
     },
-    links: { demo: "#", github: "https://github.com/LOBOodst/siteportifolio" },
+    links: { demo: "#" },
   },
   {
     id: "unreal-playground",
@@ -460,7 +459,7 @@ export const projects = [
       pt: "Prototipador de Mecânicas C++",
       fr: "Prototypiste Mécaniques C++",
     },
-    images: ["images/unrealmecanins.png"],
+    images: ["images/unrealmecanins.webp"],
     videos: [
       "videos/bullet_drop.mp4",
       "videos/possession_system.mp4",
@@ -540,7 +539,7 @@ export const projects = [
       pt: "Programador de Sistemas Narrativos & UI",
       fr: "Développeur Systèmes Narratifs & Interface",
     },
-    images: ["images/elevator_talks_01.png", "images/elevator_talks_02.png"],
+    images: ["images/elevator_talks_01.webp", "images/elevator_talks_02.webp"],
     videos: [],
     theme: {
       id: "elevator-talks",

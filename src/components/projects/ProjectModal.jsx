@@ -13,7 +13,7 @@ const getAssetUrl = (path) => {
 
 const getYouTubeEmbedUrl = (url) => {
   if (!url) return null;
-  if (url.includes("youtube.com/embed/")) return url;
+  if (/youtube(-nocookie)?\.com\/embed\//.test(url)) return url;
 
   // Handles https://youtu.be/VIDEO_ID
   const shortMatch = url.match(/youtu\.be\/([a-zA-Z0-9_-]+)/);
@@ -233,8 +233,9 @@ export const ProjectModal = () => {
                 <div className="space-y-6">
                   {p.videos &&
                     p.videos.map((v, i) => {
+                      // Matches youtube.com, youtube-nocookie.com and youtu.be
                       const isYouTube =
-                        v.includes("youtube.com") || v.includes("youtu.be");
+                        /youtube(-nocookie)?\.com|youtu\.be/.test(v);
                       const embedUrl = isYouTube ? getYouTubeEmbedUrl(v) : null;
 
                       return (

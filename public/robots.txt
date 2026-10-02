@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://loboost.github.io/siteportifolio/sitemap.xml
+Sitemap: https://loboodst.github.io/siteportifolio/sitemap.xml
