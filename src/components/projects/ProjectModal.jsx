@@ -1,435 +1,417 @@
-import { ArrowLeft, ArrowRight, Award, UserRound, X, Zap } from "lucide-react";
+import { ArrowLeft, ArrowRight, ExternalLink, Play, X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useTheme } from "../../context/ThemeContext";
 import { FACT_FIELDS } from "../../data/projects";
+import { getProjectMedia } from "../../utils/media";
 import { GithubIcon } from "../common/Icons";
 
-const getAssetUrl = (path) => {
-  if (!path) return "";
-  if (path.startsWith("http://") || path.startsWith("https://")) return path;
-  const cleanPath = path.startsWith("/") ? path.slice(1) : path;
-  return `${import.meta.env.BASE_URL}${cleanPath}`;
+// Keys pressed inside these elements belong to them (seek a video, type in a field).
+const OWNS_ARROW_KEYS =
+  "video, input, textarea, select, iframe, [data-own-keys]";
+
+const MediaViewer = ({ project, t }) => {
+  const media = useMemo(() => getProjectMedia(project), [project]);
+  const [index, setIndex] = useState(0);
+  const current = media[index];
+
+  if (!current) return null;
+
+  return (
+    <div className="on-dark bg-stage">
+      <div className="max-w-6xl mx-auto px-0 sm:px-8 pt-0 sm:pt-8 pb-6">
+        <div className="aspect-video bg-black sm:rounded-[3px] overflow-hidden">
+          {current.kind === "youtube" && (
+            <iframe
+              key={current.src}
+              src={current.src}
+              title={`${project.title} — ${t.videoThumb}`}
+              sandbox="allow-scripts allow-same-origin allow-presentation"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              className="w-full h-full border-0"
+            />
+          )}
+          {current.kind === "video" && (
+            <video
+              key={current.src}
+              src={current.src}
+              controls
+              preload="metadata"
+              playsInline
+              className="w-full h-full object-contain"
+            />
+          )}
+          {current.kind === "image" && (
+            <img
+              key={current.src}
+              src={current.src}
+              alt={`${project.title} — ${t.mediaItem} ${index + 1}`}
+              className="w-full h-full object-contain"
+            />
+          )}
+        </div>
+
+        {media.length > 1 && (
+          <ul
+            data-own-keys
+            className="reel mt-4 px-5 sm:px-1 flex gap-3 overflow-x-auto pt-1 pb-2"
+            aria-label={t.mediaItem}
+          >
+            {media.map((item, i) => (
+              <li key={item.src} className="shrink-0">
+                <button
+                  type="button"
+                  onClick={() => setIndex(i)}
+                  aria-label={`${item.kind === "image" ? t.mediaItem : t.videoThumb} ${i + 1}`}
+                  aria-current={i === index ? "true" : undefined}
+                  className={`relative block w-28 sm:w-36 aspect-video overflow-hidden rounded-[3px] transition ${
+                    i === index
+                      ? "outline-[3px] outline-offset-2 outline-select"
+                      : "opacity-60 hover:opacity-100"
+                  }`}
+                >
+                  {item.thumb ? (
+                    <img
+                      src={item.thumb}
+                      alt=""
+                      loading="lazy"
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <span className="w-full h-full flex items-center justify-center bg-stage-line text-stage-text text-xs font-semibold">
+                      {t.videoThumb} {i + 1}
+                    </span>
+                  )}
+                  {item.kind !== "image" && (
+                    <span className="absolute inset-0 flex items-center justify-center">
+                      <span className="w-8 h-8 rounded-full bg-stage/80 flex items-center justify-center">
+                        <Play
+                          aria-hidden="true"
+                          className="w-3.5 h-3.5 text-white fill-white ml-0.5"
+                        />
+                      </span>
+                    </span>
+                  )}
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </div>
+  );
 };
 
-const getYouTubeEmbedUrl = (url) => {
-  if (!url) return null;
-  if (/youtube(-nocookie)?\.com\/embed\//.test(url)) return url;
+const Block = ({ title, children }) => (
+  <section>
+    <h3 className="semiwide text-lg font-extrabold text-ink mb-3">{title}</h3>
+    {children}
+  </section>
+);
 
-  // Handles https://youtu.be/VIDEO_ID
-  const shortMatch = url.match(/youtu\.be\/([a-zA-Z0-9_-]+)/);
-  if (shortMatch) {
-    return `https://www.youtube-nocookie.com/embed/${shortMatch[1]}`;
-  }
-
-  // Handles https://www.youtube.com/watch?v=VIDEO_ID
-  const watchMatch = url.match(/[?&]v=([a-zA-Z0-9_-]+)/);
-  if (watchMatch) {
-    return `https://www.youtube-nocookie.com/embed/${watchMatch[1]}`;
-  }
-
-  return url;
-};
+const Bullets = ({ items }) => (
+  <ul className="space-y-2.5">
+    {items.map((item) => (
+      <li key={item} className="flex gap-3 text-ink-2 leading-relaxed">
+        <span
+          aria-hidden="true"
+          className="mt-[0.6em] w-1.5 h-1.5 shrink-0 bg-ink"
+        />
+        <span>{item}</span>
+      </li>
+    ))}
+  </ul>
+);
 
 export const ProjectModal = () => {
   const {
-    activeProject,
+    activeProject: p,
     closeProject,
     nextProject,
     prevProject,
     lang,
     t,
     projects,
-    profileConfig,
   } = useTheme();
+  const headingRef = useRef(null);
+  const scrollerRef = useRef(null);
+  const returnFocusRef = useRef(null);
+  const isOpen = Boolean(p);
 
-  const closeButtonRef = useRef(null);
-  const previousActiveElement = useRef(null);
-
-  // Close modal on Escape key press, navigate with arrows, and manage focus
+  // Lock page scroll and remember where focus was, once per open/close.
   useEffect(() => {
-    if (!activeProject) return;
-
-    previousActiveElement.current = document.activeElement;
+    if (!isOpen) return;
+    returnFocusRef.current = document.activeElement;
+    const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      returnFocusRef.current?.focus?.({ preventScroll: true });
+    };
+  }, [isOpen]);
 
-    // Focus close button on open
-    setTimeout(() => {
-      closeButtonRef.current?.focus();
-    }, 50);
+  // On every project shown: start at the top and move focus to its title.
+  useEffect(() => {
+    if (!p) return;
+    scrollerRef.current?.scrollTo({ top: 0 });
+    headingRef.current?.focus({ preventScroll: true });
+  }, [p]);
 
-    const handleKeyDown = (e) => {
+  useEffect(() => {
+    if (!isOpen) return;
+    const onKeyDown = (e) => {
       if (e.key === "Escape") {
         closeProject();
-      } else if (e.key === "ArrowRight") {
-        nextProject();
-      } else if (e.key === "ArrowLeft") {
-        prevProject();
+        return;
       }
+      if (e.target instanceof Element && e.target.closest(OWNS_ARROW_KEYS))
+        return;
+      if (e.key === "ArrowRight") nextProject();
+      if (e.key === "ArrowLeft") prevProject();
     };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [isOpen, closeProject, nextProject, prevProject]);
 
-    window.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      document.body.style.overflow = "unset";
-      window.removeEventListener("keydown", handleKeyDown);
-      if (
-        previousActiveElement.current &&
-        previousActiveElement.current.focus
-      ) {
-        previousActiveElement.current.focus();
-      }
-    };
-  }, [activeProject, closeProject, nextProject, prevProject]);
-
-  const p = activeProject;
-  const currentIndex = p ? projects.findIndex((proj) => proj.id === p.id) : 0;
-  const nextProj = projects[(currentIndex + 1) % projects.length];
-  const prevProj =
-    projects[(currentIndex - 1 + projects.length) % projects.length];
+  const index = p ? projects.findIndex((proj) => proj.id === p.id) : 0;
+  const prev = projects[(index - 1 + projects.length) % projects.length];
+  const next = projects[(index + 1) % projects.length];
+  const facts = p
+    ? FACT_FIELDS.filter(({ key }) => p.facts?.[key]?.[lang]).map(
+        ({ key, label }) => ({
+          label: t[label],
+          value: p.facts[key][lang],
+        }),
+      )
+    : [];
+  const demo = p?.links?.demo && p.links.demo !== "#" ? p.links.demo : null;
+  const repo =
+    p?.links?.github && p.links.github !== "#" ? p.links.github : null;
 
   return (
     <AnimatePresence>
-      {activeProject && (
+      {p && (
         <motion.div
+          key="project-dialog"
+          ref={scrollerRef}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="modal-project-title"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="modal-project-title"
-          onClick={(e) => {
-            if (e.target === e.currentTarget) {
-              closeProject();
-            }
-          }}
-          className="fixed inset-0 z-50 overflow-y-auto bg-[#0a0c10]/95 backdrop-blur-md px-4 py-8 sm:p-12"
+          className="fixed inset-0 z-50 overflow-y-auto overscroll-contain bg-paper"
         >
-          <motion.div
-            initial={{ scale: 0.98, opacity: 0, y: 15 }}
-            animate={{ scale: 1, opacity: 1, y: 0 }}
-            exit={{ scale: 0.98, opacity: 0, y: 15 }}
-            transition={{ duration: 0.25, ease: "easeOut" }}
-            className="max-w-5xl mx-auto engine-surface p-6 sm:p-10 border border-slate-700/60 shadow-2xl bg-[#0e121a]"
-          >
-            {/* Top Navigation Control */}
-            <div className="flex justify-between items-center pb-6 mb-8 border-b border-slate-800">
+          {/* Top bar */}
+          <div className="on-dark sticky top-0 z-10 bg-stage/95 backdrop-blur text-stage-text border-b border-stage-line">
+            <div className="max-w-6xl mx-auto px-3 sm:px-8 h-14 flex items-center justify-between gap-3">
               <button
                 type="button"
                 onClick={closeProject}
-                className="flex items-center gap-2 text-xs font-semibold text-slate-400 hover:text-white transition-colors font-mono"
+                className="inline-flex items-center gap-2 px-2 py-1.5 rounded-md font-semibold hover:text-white"
               >
-                <ArrowLeft
-                  className="w-4 h-4"
-                  style={{ color: p.theme.primary }}
-                />
-                <span>{t.backBtn}</span>
+                <ArrowLeft aria-hidden="true" className="w-4 h-4" />
+                {t.backBtn}
               </button>
 
-              <span className="text-xs text-slate-400 font-medium font-mono">
-                {p.type[lang]}
-              </span>
-
-              <button
-                ref={closeButtonRef}
-                type="button"
-                onClick={closeProject}
-                className="w-8 h-8 rounded-lg flex items-center justify-center border border-slate-800 hover:border-slate-600 text-slate-400 hover:text-white transition-all bg-[#141926] focus:outline-none focus:ring-2 focus:ring-amber-500"
-                aria-label="Close modal"
-              >
-                <X className="w-4 h-4" />
-              </button>
+              <div className="flex items-center gap-1">
+                <button
+                  type="button"
+                  onClick={prevProject}
+                  aria-label={`${t.prevProject}: ${prev.title}`}
+                  className="p-2 rounded-md hover:bg-stage-line hover:text-white"
+                >
+                  <ArrowLeft aria-hidden="true" className="w-4 h-4" />
+                </button>
+                <span className="text-sm tabular-nums px-1" aria-hidden="true">
+                  {index + 1} / {projects.length}
+                </span>
+                <button
+                  type="button"
+                  onClick={nextProject}
+                  aria-label={`${t.nextProject}: ${next.title}`}
+                  className="p-2 rounded-md hover:bg-stage-line hover:text-white"
+                >
+                  <ArrowRight aria-hidden="true" className="w-4 h-4" />
+                </button>
+                <button
+                  type="button"
+                  onClick={closeProject}
+                  aria-label={t.closeModal}
+                  className="ml-2 p-2 rounded-md hover:bg-stage-line hover:text-white"
+                >
+                  <X aria-hidden="true" className="w-5 h-5" />
+                </button>
+              </div>
             </div>
+          </div>
 
-            {/* Modal Content Layout */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
-              {/* Main Technical Breakdown */}
+          <motion.div
+            key={p.id}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.2 }}
+          >
+            <MediaViewer project={p} t={t} />
+
+            <div className="max-w-6xl mx-auto px-5 sm:px-8 py-10 sm:py-14 grid gap-12 lg:grid-cols-12">
               <div className="lg:col-span-8">
+                <p className="text-sm text-ink-3 mb-2">{p.type[lang]}</p>
                 <h2
                   id="modal-project-title"
-                  className="font-display text-3xl sm:text-4xl font-bold text-white leading-tight mb-6"
+                  ref={headingRef}
+                  tabIndex={-1}
+                  className="wide font-black text-ink tracking-tight leading-[0.95] text-4xl sm:text-5xl outline-none"
                 >
                   {p.title}
                 </h2>
+                <p className="mt-6 text-xl text-ink leading-relaxed max-w-[60ch]">
+                  {p.concept[lang]}
+                </p>
 
-                <div className="space-y-8 mb-12">
-                  {/* Concept Section */}
-                  <section className="p-6 rounded-lg border border-slate-800/80 bg-[#121622]/60">
-                    <h3
-                      className="text-xs font-bold uppercase tracking-wider mb-2.5 font-mono"
-                      style={{ color: p.theme.primary }}
-                    >
-                      {t.conceptTitle}
-                    </h3>
-                    <p className="text-slate-200 text-base sm:text-lg leading-relaxed font-normal">
-                      {p.concept[lang]}
-                    </p>
-                  </section>
-
-                  {/* What I Did: personal contribution within the team */}
+                <div className="mt-12 space-y-10 max-w-[68ch]">
                   {p.myWork?.[lang]?.length > 0 && (
-                    <section className="p-6 rounded-lg border border-slate-800/80 bg-[#121622]/60">
-                      <h3
-                        className="text-xs font-bold uppercase tracking-wider mb-3 flex items-center gap-2 font-mono"
-                        style={{ color: p.theme.primary }}
-                      >
-                        <UserRound className="w-4 h-4" /> {t.myWorkTitle}
-                      </h3>
-                      <ul className="space-y-2">
-                        {p.myWork[lang].map((item) => (
-                          <li
-                            key={item}
-                            className="flex items-start gap-2.5 text-slate-200 text-sm sm:text-base leading-relaxed"
-                          >
-                            <span
-                              className="font-mono text-sm leading-none mt-1.5 shrink-0"
-                              style={{ color: p.theme.primary }}
-                            >
-                              ▸
-                            </span>
-                            <span>{item}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </section>
+                    <Block title={t.myWorkTitle}>
+                      <Bullets items={p.myWork[lang]} />
+                    </Block>
                   )}
 
-                  {/* Technical Implementation Section */}
-                  <section className="p-6 rounded-lg border border-slate-800/80 bg-[#121622]/60">
-                    <h3
-                      className="text-xs font-bold uppercase tracking-wider mb-2.5 font-mono"
-                      style={{ color: p.theme.primary }}
-                    >
-                      {t.howTitle}
-                    </h3>
-                    <div className="text-slate-300 text-sm sm:text-base leading-relaxed">
-                      {p.howItWasMade[lang]}
-                    </div>
-                  </section>
-
-                  {/* Strengths & Challenges Grid */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="p-5 rounded-lg bg-[#121622]/60 border border-slate-800">
-                      <h4 className="text-xs font-bold uppercase tracking-wider text-sky-400 mb-2 font-mono">
-                        {t.strengthsTitle}
-                      </h4>
-                      <p className="text-slate-300 text-xs sm:text-sm leading-relaxed">
-                        {p.strengths ? p.strengths[lang] : "---"}
+                  {p.howItWasMade?.[lang] && (
+                    <Block title={t.howTitle}>
+                      <p className="text-ink-2 leading-relaxed">
+                        {p.howItWasMade[lang]}
                       </p>
-                    </div>
+                    </Block>
+                  )}
 
-                    <div className="p-5 rounded-lg bg-[#121622]/60 border border-slate-800">
-                      <h4 className="text-xs font-bold uppercase tracking-wider text-amber-400 mb-2 font-mono">
-                        {t.weaknessesTitle}
-                      </h4>
-                      <p className="text-slate-300 text-xs sm:text-sm leading-relaxed">
-                        {p.weaknesses ? p.weaknesses[lang] : "---"}
-                      </p>
-                    </div>
-                  </div>
+                  {p.techWins?.[lang] && (
+                    <Block title={t.techWinsTitle}>
+                      <Bullets items={p.techWins[lang]} />
+                    </Block>
+                  )}
 
-                  {/* Technical Wins Checklist */}
-                  {p.techWins && (
-                    <div className="p-6 rounded-lg border border-slate-800/80 bg-[#121622]/60">
-                      <h3
-                        className="text-xs font-bold uppercase tracking-wider mb-4 flex items-center gap-2 font-mono"
-                        style={{ color: p.theme.primary }}
-                      >
-                        <Award className="w-4 h-4" /> {t.techWinsTitle}
-                      </h3>
-                      <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        {p.techWins[lang].map((win, idx) => (
-                          <li
-                            key={idx}
-                            className="flex items-start gap-2.5 text-slate-300 text-xs sm:text-sm"
-                          >
-                            <span
-                              className="font-mono text-sm leading-none mt-0.5 shrink-0"
-                              style={{ color: p.theme.primary }}
-                            >
-                              ▸
-                            </span>
-                            <span>{win}</span>
-                          </li>
-                        ))}
-                      </ul>
+                  {(p.strengths?.[lang] || p.weaknesses?.[lang]) && (
+                    <div className="grid gap-8 sm:grid-cols-2">
+                      {p.strengths?.[lang] && (
+                        <Block title={t.strengthsTitle}>
+                          <p className="text-ink-2 leading-relaxed">
+                            {p.strengths[lang]}
+                          </p>
+                        </Block>
+                      )}
+                      {p.weaknesses?.[lang] && (
+                        <Block title={t.weaknessesTitle}>
+                          <p className="text-ink-2 leading-relaxed">
+                            {p.weaknesses[lang]}
+                          </p>
+                        </Block>
+                      )}
                     </div>
                   )}
-                </div>
-
-                {/* Media Gallery: Supports MP4 Video + YouTube Embeds + Images */}
-                <div className="space-y-6">
-                  {p.videos &&
-                    p.videos.map((v, i) => {
-                      // Matches youtube.com, youtube-nocookie.com and youtu.be
-                      const isYouTube =
-                        /youtube(-nocookie)?\.com|youtu\.be/.test(v);
-                      const embedUrl = isYouTube ? getYouTubeEmbedUrl(v) : null;
-
-                      return (
-                        <div
-                          key={i}
-                          className="aspect-video overflow-hidden rounded-lg border border-slate-800 bg-black shadow-xl"
-                        >
-                          {isYouTube ? (
-                            <iframe
-                              src={embedUrl}
-                              title={`${p.title} video ${i + 1}`}
-                              loading="lazy"
-                              sandbox="allow-scripts allow-same-origin allow-presentation"
-                              className="w-full h-full border-0"
-                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                              allowFullScreen
-                            />
-                          ) : (
-                            <video
-                              className="w-full h-full object-contain"
-                              controls
-                              preload="metadata"
-                              playsInline
-                            >
-                              <source src={getAssetUrl(v)} type="video/mp4" />
-                            </video>
-                          )}
-                        </div>
-                      );
-                    })}
-
-                  {p.images.map((img, i) => (
-                    <div
-                      key={i}
-                      className="rounded-lg overflow-hidden border border-slate-800 shadow-xl bg-slate-950"
-                    >
-                      <img
-                        src={getAssetUrl(img)}
-                        alt={`${p.title} frame ${i + 1}`}
-                        loading="lazy"
-                        className="w-full object-cover"
-                      />
-                    </div>
-                  ))}
                 </div>
               </div>
 
-              {/* Sticky Tech Specs Sidebar */}
               <aside className="lg:col-span-4">
-                <div className="p-6 sm:p-7 sticky top-24 border border-slate-800 rounded-lg bg-[#121622]/60">
-                  <h3
-                    className="text-xs font-bold uppercase tracking-wider mb-5 border-b border-slate-800 pb-3 font-mono"
-                    style={{ color: p.theme.primary }}
-                  >
+                <div className="lg:sticky lg:top-24 rounded-md bg-raised border border-line p-6">
+                  <h3 className="semiwide font-extrabold text-ink mb-5">
                     {t.techSheet}
                   </h3>
-
-                  <div className="space-y-5">
+                  <dl className="space-y-4">
                     <div>
-                      <p className="text-[11px] text-slate-500 uppercase font-semibold mb-1 font-mono">
-                        {t.mainRole}
-                      </p>
-                      <p className="text-white font-medium text-xs">
-                        {p.role[lang]}
-                      </p>
+                      <dt className="text-sm text-ink-3">{t.mainRole}</dt>
+                      <dd className="font-semibold text-ink">{p.role[lang]}</dd>
                     </div>
-
-                    {/* Project facts: team, duration, context */}
-                    {FACT_FIELDS.map(({ key, label }) =>
-                      p.facts?.[key]?.[lang] ? (
-                        <div key={key}>
-                          <p className="text-[11px] text-slate-500 uppercase font-semibold mb-1 font-mono">
-                            {t[label]}
-                          </p>
-                          <p className="text-white font-medium text-xs">
-                            {p.facts[key][lang]}
-                          </p>
-                        </div>
-                      ) : null,
-                    )}
-
-                    <div>
-                      <p className="text-[11px] text-slate-500 uppercase font-semibold mb-2 font-mono">
-                        {t.stackLabel}
-                      </p>
-                      <div className="flex flex-wrap gap-1.5">
-                        {p.tech.map((tech) => (
-                          <span
-                            key={tech}
-                            className="text-[11px] font-mono px-2 py-0.5 font-medium rounded bg-[#141926] border border-slate-800 text-slate-200"
-                          >
-                            {tech}
-                          </span>
-                        ))}
+                    {facts.map((fact) => (
+                      <div key={fact.label}>
+                        <dt className="text-sm text-ink-3">{fact.label}</dt>
+                        <dd className="font-semibold text-ink">{fact.value}</dd>
                       </div>
-                    </div>
-
+                    ))}
                     <div>
-                      <p className="text-[11px] text-slate-500 uppercase font-semibold mb-1 font-mono">
-                        {t.commsLabel}
-                      </p>
-                      <p className="text-slate-300 font-medium text-xs font-mono">
-                        Discord: {profileConfig.discordTag}
-                      </p>
+                      <dt className="text-sm text-ink-3 mb-2">
+                        {t.stackLabel}
+                      </dt>
+                      <dd>
+                        <ul className="flex flex-wrap gap-1.5">
+                          {p.tech.map((tech) => (
+                            <li
+                              key={tech}
+                              className="text-[0.8rem] font-medium text-ink-2 bg-paper border border-line px-2 py-0.5 rounded-[3px]"
+                            >
+                              {tech}
+                            </li>
+                          ))}
+                        </ul>
+                      </dd>
                     </div>
-                  </div>
+                  </dl>
 
-                  {/* Action Links */}
-                  <div className="mt-6 space-y-2.5">
-                    {p.links?.demo && p.links.demo !== "#" && (
-                      <a
-                        href={p.links.demo}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="w-full py-3 rounded-lg font-semibold flex justify-center items-center gap-2 transition-all text-xs text-slate-950 shadow-sm font-mono"
-                        style={{ backgroundColor: p.theme.primary }}
-                      >
-                        {t.viewProject} <Zap className="w-4 h-4" />
-                      </a>
-                    )}
-
-                    {p.links?.github && p.links.github !== "#" && (
-                      <a
-                        href={p.links.github}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="w-full py-2.5 rounded-lg font-semibold flex justify-center items-center gap-2 transition-all text-xs text-white border border-slate-700 bg-[#182030] hover:bg-[#202b40] font-mono shadow-sm"
-                      >
-                        <GithubIcon className="w-4 h-4 text-slate-300" />
-                        <span>GitHub Repository</span>
-                      </a>
-                    )}
-                  </div>
+                  {(demo || repo) && (
+                    <div className="mt-6 space-y-2.5">
+                      {demo && (
+                        <a
+                          href={demo}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center justify-center gap-2 w-full py-3 rounded-md bg-select text-on-select font-bold hover:bg-select-deep transition-colors"
+                        >
+                          {t.openGamePage}
+                          <ExternalLink
+                            aria-hidden="true"
+                            className="w-4 h-4"
+                          />
+                        </a>
+                      )}
+                      {repo && (
+                        <a
+                          href={repo}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center justify-center gap-2 w-full py-3 rounded-md border-2 border-ink text-ink font-bold hover:bg-ink hover:text-paper transition-colors"
+                        >
+                          <GithubIcon className="w-4 h-4" />
+                          {t.githubRepo}
+                        </a>
+                      )}
+                    </div>
+                  )}
                 </div>
               </aside>
             </div>
 
-            {/* Carousel Next / Prev Footer */}
-            <div className="mt-14 pt-6 border-t border-slate-800 grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <nav
+              aria-label={t.allProjects}
+              className="max-w-6xl mx-auto px-5 sm:px-8 pb-16 grid gap-4 sm:grid-cols-2"
+            >
               <button
                 type="button"
                 onClick={prevProject}
-                className="p-5 rounded-lg text-left border border-slate-800 hover:border-slate-700 bg-[#121622]/40 group transition-all"
+                className="group text-left p-5 rounded-md border border-line hover:border-ink transition-colors"
               >
-                <span className="text-[11px] text-slate-500 uppercase font-semibold flex items-center gap-1 mb-1 font-mono">
-                  <ArrowLeft className="w-3.5 h-3.5" /> {t.prevProject}
+                <span className="flex items-center gap-1.5 text-sm text-ink-3">
+                  <ArrowLeft aria-hidden="true" className="w-4 h-4" />
+                  {t.prevProject}
                 </span>
-                <p className="font-display text-base font-bold text-white group-hover:text-amber-300 transition-colors">
-                  {prevProj.title}
-                </p>
+                <span className="block mt-1 semiwide font-extrabold text-ink decoration-2 underline-offset-4 group-hover:underline">
+                  {prev.title}
+                </span>
               </button>
-
               <button
                 type="button"
                 onClick={nextProject}
-                className="p-5 rounded-lg text-right border border-slate-800 hover:border-slate-700 bg-[#121622]/40 group transition-all"
+                className="group text-right p-5 rounded-md border border-line hover:border-ink transition-colors"
               >
-                <span className="text-[11px] text-slate-500 uppercase font-semibold flex items-center justify-end gap-1 mb-1 font-mono">
-                  {t.nextProject} <ArrowRight className="w-3.5 h-3.5" />
+                <span className="flex items-center justify-end gap-1.5 text-sm text-ink-3">
+                  {t.nextProject}
+                  <ArrowRight aria-hidden="true" className="w-4 h-4" />
                 </span>
-                <p className="font-display text-base font-bold text-white group-hover:text-amber-300 transition-colors">
-                  {nextProj.title}
-                </p>
+                <span className="block mt-1 semiwide font-extrabold text-ink decoration-2 underline-offset-4 group-hover:underline">
+                  {next.title}
+                </span>
               </button>
-            </div>
+            </nav>
           </motion.div>
         </motion.div>
       )}

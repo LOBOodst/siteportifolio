@@ -30,9 +30,6 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks(id) {
-          if (id.includes("node_modules/three")) {
-            return "vendor-three";
-          }
           if (id.includes("node_modules/motion")) {
             return "vendor-motion";
           }

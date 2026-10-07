@@ -1,90 +1,100 @@
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 import { useTheme } from "../../context/ThemeContext";
+import { EngineSwatch } from "../common/EngineMark";
 import { ProjectCard } from "./ProjectCard";
 
+const usesCpp = (p) =>
+  p.tech.some((t) => t.includes("C++") || t.includes("Unreal"));
+const usesCsharp = (p) =>
+  p.tech.some((t) => t.includes("C#") || t.includes("Unity"));
+
 export const ProjectsGrid = () => {
-  const { t, activeTheme, projects } = useTheme();
+  const { t, projects } = useTheme();
   const [filter, setFilter] = useState("all");
 
-  const filteredProjects = projects.filter((p) => {
-    if (filter === "featured") return p.featured;
-    if (filter === "cpp")
-      return p.tech.some((t) => t.includes("C++") || t.includes("Unreal"));
-    if (filter === "csharp")
-      return p.tech.some((t) => t.includes("C#") || t.includes("Unity"));
-    return true;
-  });
+  const filters = [
+    { id: "all", label: t.filterAll, match: () => true },
+    { id: "cpp", label: t.filterCpp, match: usesCpp, family: "unreal" },
+    { id: "csharp", label: t.filterCsharp, match: usesCsharp, family: "unity" },
+  ];
+  const active = filters.find((f) => f.id === filter) || filters[0];
+  const visible = projects.filter(active.match);
+
+  // With no filter, featured projects get the large layout up top.
+  const featured = filter === "all" ? visible.filter((p) => p.featured) : [];
+  const rest = visible.filter((p) => !featured.includes(p));
 
   return (
-    <section id="tour-projects" className="mb-28">
-      <div className="max-w-6xl mx-auto px-6">
-        {/* Section Header */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-10">
-          <div>
+    <section
+      id="tour-projects"
+      aria-labelledby="projects-heading"
+      className="py-16 sm:py-24 border-t border-line"
+    >
+      <div className="max-w-6xl mx-auto px-5 sm:px-8">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+          <div className="max-w-2xl">
             <h2
-              className="text-xs font-bold uppercase tracking-wider mb-2 font-mono"
-              style={{ color: activeTheme.primary }}
+              id="projects-heading"
+              className="wide font-black text-ink tracking-tight text-4xl sm:text-5xl"
             >
-              {t.projectTitle}
+              {t.projectsHeading}
             </h2>
-            <h3 className="font-display text-2xl sm:text-4xl font-bold text-white tracking-tight">
-              Case Studies & Systems
-            </h3>
+            <p className="mt-4 text-ink-2 text-lg leading-relaxed">
+              {t.projectsIntro}
+            </p>
           </div>
 
-          {/* Studio Filter Segmented Control */}
-          <div className="flex flex-wrap gap-1 bg-[#0e121a] border border-slate-800 p-1 rounded-lg relative">
-            {[
-              { id: "all", label: t.filterAll },
-              { id: "featured", label: t.filterFeatured },
-              { id: "cpp", label: t.filterCpp },
-              { id: "csharp", label: t.filterCsharp },
-            ].map((tab) => (
+          <fieldset className="flex gap-1 shrink-0">
+            <legend className="sr-only">{t.stackLabel}</legend>
+            {filters.map((f) => (
               <button
-                key={tab.id}
+                key={f.id}
                 type="button"
-                onClick={() => setFilter(tab.id)}
-                className={`relative px-3.5 py-1.5 text-xs font-mono font-medium rounded-md transition-colors z-10 ${
-                  filter === tab.id
-                    ? "text-white"
-                    : "text-slate-400 hover:text-slate-200"
+                onClick={() => setFilter(f.id)}
+                aria-pressed={filter === f.id}
+                className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-md text-sm font-semibold transition-colors ${
+                  filter === f.id
+                    ? "bg-ink text-paper"
+                    : "text-ink-2 hover:text-ink hover:bg-raised"
                 }`}
               >
-                {filter === tab.id && (
-                  <motion.div
-                    layoutId="activeFilterPill"
-                    transition={{ type: "spring", stiffness: 450, damping: 32 }}
-                    className="absolute inset-0 bg-[#1c2436] rounded-md shadow-sm -z-10"
-                  />
-                )}
-                <span>{tab.label}</span>
+                {f.family && <EngineSwatch family={f.family} />}
+                {f.label}
               </button>
             ))}
-          </div>
+          </fieldset>
         </div>
 
-        {/* Projects Grid with Motion Layout */}
-        <motion.div
+        {featured.length > 0 && (
+          <ul className="space-y-16 sm:space-y-20 mb-16 sm:mb-20">
+            {featured.map((project) => (
+              <li key={project.id}>
+                <ProjectCard project={project} variant="feature" />
+              </li>
+            ))}
+          </ul>
+        )}
+
+        <motion.ul
           layout
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6"
+          className="grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3"
         >
-          <AnimatePresence>
-            {filteredProjects.map((project) => (
-              <motion.div
+          <AnimatePresence mode="popLayout" initial={false}>
+            {rest.map((project) => (
+              <motion.li
                 key={project.id}
                 layout
-                initial={{ opacity: 0, scale: 0.96 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.96 }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
                 transition={{ duration: 0.2 }}
-                className={project.featured ? "lg:col-span-2" : ""}
               >
                 <ProjectCard project={project} />
-              </motion.div>
+              </motion.li>
             ))}
           </AnimatePresence>
-        </motion.div>
+        </motion.ul>
       </div>
     </section>
   );

@@ -1,145 +1,77 @@
----
-version: "alpha"
-name: "Hosch Alef Systems Architecture"
-description: "Official visual identity system and design tokens for Hosch Alef's Gameplay & Systems Architecture portfolio."
-colors:
-  primary: "#00f0ff"
-  secondary: "#3b82f6"
-  tertiary: "#f43f5e"
-  neutral-bg: "#080c14"
-  neutral-surface: "#0f172a"
-  neutral-surface-hover: "#1e293b"
-  neutral-text: "#f8fafc"
-  neutral-muted: "#94a3b8"
-  border-subtle: "rgba(255, 255, 255, 0.08)"
-  border-hover: "rgba(255, 255, 255, 0.20)"
-  on-primary: "#080c14"
-  on-surface: "#f8fafc"
-typography:
-  h1:
-    fontFamily: "Space Grotesk"
-    fontSize: "3.5rem"
-    fontWeight: "700"
-    lineHeight: "1.1"
-  h2:
-    fontFamily: "Space Grotesk"
-    fontSize: "2.25rem"
-    fontWeight: "700"
-    lineHeight: "1.2"
-  h3:
-    fontFamily: "Space Grotesk"
-    fontSize: "1.5rem"
-    fontWeight: "600"
-    lineHeight: "1.3"
-  body-lg:
-    fontFamily: "Plus Jakarta Sans"
-    fontSize: "1.125rem"
-    fontWeight: "400"
-    lineHeight: "1.7"
-  body-md:
-    fontFamily: "Plus Jakarta Sans"
-    fontSize: "0.875rem"
-    fontWeight: "400"
-    lineHeight: "1.6"
-  mono-sm:
-    fontFamily: "JetBrains Mono"
-    fontSize: "0.75rem"
-    fontWeight: "500"
-    lineHeight: "1.5"
-rounded:
-  sm: "6px"
-  md: "10px"
-  lg: "16px"
-  full: "9999px"
-spacing:
-  xs: "4px"
-  sm: "8px"
-  md: "16px"
-  lg: "24px"
-  xl: "32px"
-  "2xl": "48px"
-  "3xl": "64px"
-components:
-  button-primary:
-    backgroundColor: "{colors.primary}"
-    textColor: "{colors.on-primary}"
-    rounded: "{rounded.md}"
-    padding: "12px 24px"
-  button-primary-hover:
-    backgroundColor: "#38bdf8"
-  button-secondary:
-    backgroundColor: "{colors.neutral-surface}"
-    textColor: "{colors.neutral-text}"
-    rounded: "{rounded.md}"
-    padding: "12px 24px"
-  card:
-    backgroundColor: "{colors.neutral-surface}"
-    textColor: "{colors.neutral-text}"
-    rounded: "{rounded.lg}"
-    padding: "24px"
-  card-hover:
-    backgroundColor: "{colors.neutral-surface-hover}"
----
+# Design system: "Blockout"
 
-## Overview
+The site borrows the look of a greyboxed level open in a dark engine editor: editor-grey
+surfaces, light text, the editor's yellow selection highlight, and the transform-gizmo
+axis colours. The real game screenshots and videos supply the rest of the colour.
 
-A dark, high-precision interface embodying the craft of low-level gameplay engineering and systems architecture. The design pairs the technical authority of game development viewports and telemetry with clean, human-readable editorial clarity.
+Audience: game studio leads and recruiters (Belgium / Europe). Their job on this page:
+see the games within seconds, then read what I built. Everything else stays quiet.
 
-## Colors
+## Colour
 
-The palette is rooted in deep space neutrals paired with dynamic project-driven chromatic accents:
+Dark theme, modelled on a dark engine editor UI. All tokens live in `src/index.css` (`@theme`)
+and are used as Tailwind classes (`bg-paper`, `text-ink-2`…). Names describe roles:
+`paper` is the page background, `ink` the main text colour.
 
-- **Neutral Background (`#080c14`):** Deep obsidian canvas that sets high contrast for code and gameplay imagery.
-- **Neutral Surface (`#0f172a`):** Rich slate surface for interactive cards with subtle backdrop blur.
-- **Primary Cyber Cyan (`#00f0ff`):** Represents server authority, C++ engine architecture, and primary actions.
-- **Secondary Blue (`#3b82f6`):** Secondary systems and navigational elements.
-- **Tertiary Crimson (`#f43f5e`):** Highlights tension, spatial AI perception, and critical mechanics.
-- **Muted Text (`#94a3b8`):** Readable, accessible metadata and secondary explanations.
+| Token | Hex | Use | Contrast |
+|---|---|---|---|
+| `paper` | `#1b1d22` | Page background (editor grey) | – |
+| `raised` | `#24272d` | Panels, tags, hover backgrounds | – |
+| `ink` | `#eceef1` | Headings, emphasis, secondary-button borders, focus ring | 14.5:1 on paper |
+| `ink-2` | `#bfc4cc` | Body text | 9.6:1 on paper |
+| `ink-3` | `#979da8` | Secondary text, labels | 6.2:1 on paper |
+| `line` | `#363a43` | Dividers, tag borders | decorative |
+| `select` | `#ffb21a` | Primary action, selected/hovered item outline, links in the footer | 9.3:1 on paper |
+| `on-select` | `#16181d` | Text on `select` | 9.8:1 |
+| `axis-x` | `#f0505c` | Unreal Engine / C++ marker | 4.8:1 (non-text) |
+| `axis-y` | `#33b860` | Unity / C# marker | 6.6:1 (non-text) |
+| `axis-z` | `#5b8ff9` | Python / Node.js marker | 5.4:1 (non-text) |
+| `stage` | `#111215` | Media viewer, modal bar, contact footer (darker than the page) | – |
+| `stage-text` / `stage-muted` | `#d3d6dc` / `#9aa0aa` | Text on stage | 16:1 / 7:1 |
 
-## Typography
+Rules:
+- One accent. `select` marks what you can act on or what is selected, nothing else.
+  Text placed on it always uses `on-select`.
+- Axis colours are a code for the engine family and always sit next to its name
+  (`EngineMark` / `EngineSwatch` in `src/components/common/EngineMark.jsx`). Never use them as decoration.
+- No gradients, glows or glass.
 
-Typography establishes clear hierarchy across technical data and narrative case studies:
+## Type
 
-- **Space Grotesk:** Headlines, section titles, and project names. Provides geometric structure and confident voice.
-- **Plus Jakarta Sans:** Body prose, bio manifesto, and technical explanations. Engineered for effortless readability on dark surfaces.
-- **JetBrains Mono:** Code snippets, engine metrics, programming language tags, and architecture parameters.
+One family: **Archivo** (variable, self-hosted via `@fontsource-variable/archivo`, no Google Fonts request).
+Its width axis carries the hierarchy:
+
+- `wide` (font-stretch 125%), weight 900: the name and section headings.
+- `semiwide` (112%), weight 700–800: project titles, sub-headings.
+- Normal width, 400–600: everything you read.
+
+Sentence case everywhere. No all-caps labels, no monospace labels.
 
 ## Layout
 
-- **Max Width Container:** Centered `max-w-6xl` grid with fluid horizontal padding (`px-6` to `px-10`).
-- **Section Rhythm:** Consistent vertical breathing room (`mb-28`) between architectural components.
-- **Featured Grid:** 2-column spotlight for primary case studies (LAN FPS C++ and Psychasteniac C#), followed by responsive grid cards for supporting systems.
+- Content column `max-w-6xl`, left-aligned. Reading text capped around 60–68 characters.
+- Order: Hero (name + screenshot reel) → Projects → Stack → About → Contact.
+- Projects: featured projects get a wide image-left row; the rest a 3-column grid.
+- Screenshots: 3px radius (viewport-like); buttons and panels 6px.
+- Hover/selection on a screenshot = 3px `select` outline, like a selected actor in the editor.
+- The one bold element: the name in the hero is shown as the **selected actor** (`SelectedName.jsx`):
+  yellow selection frame, `BP_HoschAlef` label, X/Y/Z gizmo at the pivot. It can be dragged
+  sideways and springs back. Don't repeat this treatment anywhere else.
+- Easter egg: the Konami code (↑ ↑ ↓ ↓ ← → ← → B A), or the hint button in the footer,
+  toggles "debug draw" (`html[data-debug]` in `index.css`): every element gets an outline,
+  coloured with the gizmo code. A yellow toast confirms on/off.
+- About: one sentence from the bio is pulled out as a large quote; it is removed from the
+  paragraph so it isn't read twice.
 
-## Elevation & Depth
+## Motion
 
-- **Base Layer:** Ambient canvas with soft radial particle dust.
-- **Surface Layer:** 16px backdrop-blur glassmorphic cards with `1px solid rgba(255, 255, 255, 0.08)` border.
-- **Interactive Layer:** Subtle `translateY(-2px)` elevation with enhanced border opacity (`0.20`) and soft shadow on hover.
-- **Overlay Layer:** Modal deep-dive layer at `z-50` with `bg-[#080c14]/95` backdrop-blur.
+One orchestrated moment: the hero (name, then the reel sliding in). Elsewhere motion only
+answers an action (filter change, opening a project). `prefers-reduced-motion` is honoured
+globally and through `MotionConfig reducedMotion="user"`.
 
-## Shapes
+## Do / don't
 
-- **Corner Radii:** Consistent `rounded.lg` (16px) on primary cards, `rounded.md` (10px) on buttons and interactive pills, and `rounded.full` for active status beacons.
-- **Dividers:** Refined 1px hairline rules (`border-slate-800` / `border-white/5`).
-
-## Components
-
-- **Navbar:** Fixed frosted glass header with brand logo, direct section links, and live `PT | EN | FR` language switcher.
-- **Hero Thesis:** Name, systems architect title, availability beacon, and primary action CTAs.
-- **Competency Matrix:** 5-language breakdown (C++, C#, Python, JavaScript, SQL) with concrete project linkages.
-- **Case Study Modal:** Fullscreen technical breakdown featuring real gameplay videos, architecture highlights, and keyboard navigation (`Escape`, `ArrowLeft`, `ArrowRight`).
-- **Contact Hub:** Frictionless communication triggers (instant Discord tag copy `lobo_spartans`, direct email, LinkedIn, GitHub).
-
-## Do's and Don'ts
-
-### Do's
-- **DO** use 100% authentic in-game screenshots and real gameplay videos.
-- **DO** keep animations subtle, organic, and respectful of reduced-motion preferences.
-- **DO** explain game mechanics from an architectural perspective (FSM, Dijkstra grid, server authority, SphereCasts).
-- **DO** maintain strict WCAG AA contrast standards.
-
-### Don'ts
-- **DON'T** use AI-generated images or concept art.
-- **DON'T** include fake telemetry overlays (e.g. fake coordinates `X:0.521 Y:0.842` or fake uptime counters).
-- **DON'T** add chatbot mascots with speech bubbles.
-- **DON'T** hardcode raw internal script paths (e.g. `PlayerController.cs`).
+- **Do** use only real in-game screenshots and recorded gameplay.
+- **Do** keep the project modal media-first: video at the top, text below.
+- **Don't** add AI-generated images, fake telemetry overlays or decorative counters.
+- **Don't** cite raw script paths; explain systems architecturally.

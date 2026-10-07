@@ -1,92 +1,127 @@
-@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap");
 @import "tailwindcss";
 
-:root {
-  --theme-primary: #f59e0b;
-  --theme-secondary: #38bdf8;
-  --theme-accent: #fbbf24;
-  --theme-glow: rgba(245, 158, 11, 0.12);
-  --theme-surface-glow: rgba(245, 158, 11, 0.04);
-  --theme-badge-bg: rgba(245, 158, 11, 0.08);
-  --theme-badge-border: rgba(245, 158, 11, 0.25);
-  --theme-badge-text: #f59e0b;
+/*
+  Design tokens. See DESIGN.md for the reasoning.
+  "Blockout", dark: the look of a greyboxed level in a dark engine editor.
+  - Editor-grey surfaces, light text.
+  - Selection yellow (the editor's selected-actor highlight) marks the
+    primary action and what is selected. Text on it is always `on-select`.
+  - Transform-gizmo axis colours (X red, Y green, Z blue) code the engine
+    family of each project. Always paired with a text label.
+  Names describe roles: `paper` = page background, `ink` = main text.
+*/
+@theme {
+  --color-paper: #1b1d22;
+  --color-raised: #24272d;
+  --color-ink: #eceef1;
+  --color-ink-2: #bfc4cc;
+  --color-ink-3: #979da8;
+  --color-line: #363a43;
+  --color-select: #ffb21a;
+  --color-select-deep: #ffc54d;
+  --color-on-select: #16181d;
+  --color-axis-x: #f0505c;
+  --color-axis-y: #33b860;
+  --color-axis-z: #5b8ff9;
+  --color-stage: #111215;
+  --color-stage-line: #2a2d33;
+  --color-stage-text: #d3d6dc;
+  --color-stage-muted: #9aa0aa;
 
-  --font-display: "Space Grotesk", -apple-system, sans-serif;
   --font-sans:
-    "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-mono: "JetBrains Mono", monospace;
-
-  --mouse-x: 50vw;
-  --mouse-y: 50vh;
+    "Archivo Variable", "Archivo", system-ui, -apple-system, "Segoe UI",
+    sans-serif;
 }
 
-/* Keep anchor targets clear of the fixed navbar */
+/* Archivo's width axis: expanded for display type, normal for reading. */
+@utility wide {
+  font-stretch: 125%;
+}
+@utility semiwide {
+  font-stretch: 112%;
+}
+
 html {
+  color-scheme: dark;
+  scroll-behavior: smooth;
   scroll-padding-top: 5rem;
+  -webkit-text-size-adjust: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
 }
 
 body {
   font-family: var(--font-sans);
-  background-color: #0a0c10;
-  color: #e2e8f0;
-  overflow-x: hidden;
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  font-size: 1.0625rem;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
 
 ::selection {
-  background: var(--theme-primary);
-  color: #0a0c10;
+  background: var(--color-select);
+  color: var(--color-on-select);
 }
 
-.font-display {
-  font-family: var(--font-display);
+:focus-visible {
+  outline: 3px solid var(--color-ink);
+  outline-offset: 3px;
 }
 
-.font-mono {
-  font-family: var(--font-mono);
+/* Headings that receive focus programmatically (modal title) don't need a ring */
+[tabindex="-1"]:focus-visible {
+  outline: none;
 }
 
-/* Studio Engineering Surface (Clean, Sharp, High Precision) */
-.engine-surface,
-.bento-card {
-  background-color: #0e121a;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 10px;
-  position: relative;
-  transition:
-    border-color 0.2s ease,
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
+/* On the darker stage surfaces the focus ring switches to selection yellow */
+.on-dark :focus-visible {
+  outline-color: var(--color-select);
 }
 
-.engine-surface:hover,
-.bento-card:hover {
-  border-color: rgba(255, 255, 255, 0.18);
-  transform: translateY(-2px);
-  box-shadow: 0 12px 28px -10px rgba(0, 0, 0, 0.6);
+/* Thin, quiet scrollbar for horizontal strips (screenshot reel, thumbnails) */
+.reel {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-line) transparent;
 }
 
-/* Hairline Blueprint Separator */
-.hairline-rule {
-  border-color: rgba(255, 255, 255, 0.08);
+/* Aligns a full-bleed horizontal strip with the max-w-6xl content column */
+.bleed-pad {
+  --bleed: max(1.25rem, calc((100vw - 72rem) / 2 + 1.25rem));
+  padding-inline: var(--bleed);
+  /* Snap points respect the same inset, so the first item stays aligned */
+  scroll-padding-inline: var(--bleed);
+}
+@media (min-width: 640px) {
+  .bleed-pad {
+    --bleed: max(2rem, calc((100vw - 72rem) / 2 + 2rem));
+  }
 }
 
-/* Studio Precision Scrollbar */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+/*
+  Debug draw (cheat code easter egg): outlines every element like an engine's
+  debug view. Colours follow the gizmo code: blue = layout blocks,
+  green = text, red = everything else.
+*/
+html[data-debug] body * {
+  outline: 1px solid rgb(240 80 92 / 0.55);
+  outline-offset: -1px;
 }
-
-::-webkit-scrollbar-track {
-  background: #0a0c10;
+html[data-debug] :is(header, nav, main, section, footer, article, ul, dl) {
+  outline: 1px dashed rgb(91 143 249 / 0.9);
 }
-
-::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.14);
-  border-radius: 9999px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.28);
+html[data-debug] :is(h1, h2, h3, p, li, dt, dd, blockquote, a, button) {
+  outline-color: rgb(51 184 96 / 0.8);
 }

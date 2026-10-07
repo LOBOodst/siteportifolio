@@ -1,114 +1,95 @@
-import { Check, Copy, Mail } from "lucide-react";
+import { Check, Copy } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useTheme } from "../../context/ThemeContext";
 import { GithubIcon, LinkedinIcon } from "../common/Icons";
 
-export const ContactSection = () => {
-  const { t, activeTheme, profileConfig } = useTheme();
+export const ContactSection = ({ onToggleDebugDraw }) => {
+  const { t, profileConfig } = useTheme();
   const [copied, setCopied] = useState(false);
   const copyTimeoutRef = useRef(null);
+  const email = profileConfig.email.replace("mailto:", "");
 
   const handleCopyDiscord = async () => {
     try {
-      if (navigator?.clipboard?.writeText) {
-        await navigator.clipboard.writeText(profileConfig.discordTag);
-        setCopied(true);
-        if (copyTimeoutRef.current) clearTimeout(copyTimeoutRef.current);
-        copyTimeoutRef.current = setTimeout(() => setCopied(false), 2500);
-      }
-    } catch (err) {
-      console.warn("Falha ao copiar para área de transferência:", err);
+      await navigator.clipboard.writeText(profileConfig.discordTag);
+      setCopied(true);
+      clearTimeout(copyTimeoutRef.current);
+      copyTimeoutRef.current = setTimeout(() => setCopied(false), 2500);
+    } catch {
+      // Clipboard unavailable: the username stays visible on the button.
     }
   };
 
-  useEffect(() => {
-    return () => {
-      if (copyTimeoutRef.current) clearTimeout(copyTimeoutRef.current);
-    };
-  }, []);
+  useEffect(() => () => clearTimeout(copyTimeoutRef.current), []);
+
+  const secondary =
+    "inline-flex items-center gap-2 px-4 py-2.5 rounded-md border border-stage-line text-stage-text font-semibold hover:border-stage-text hover:text-white transition-colors";
 
   return (
     <footer
       id="contact"
-      className="pt-16 pb-20 border-t border-slate-800/80 bg-[#07090e]"
+      className="on-dark bg-stage text-stage-text border-t border-line"
     >
-      <div className="max-w-4xl mx-auto px-6 text-center">
-        {/* Header */}
-        <h2
-          className="text-xs font-bold uppercase tracking-wider mb-3 font-mono"
-          style={{ color: activeTheme.primary }}
-        >
-          {t.contactBtn}
-        </h2>
-        <h3 className="font-display text-3xl sm:text-5xl font-bold text-white tracking-tight mb-4">
+      <div className="max-w-6xl mx-auto px-5 sm:px-8 pt-20 sm:pt-28 pb-10">
+        <h2 className="wide font-black text-white tracking-tight leading-[0.95] text-[clamp(2.5rem,7vw,5rem)] max-w-4xl">
           {t.contactHero}
-        </h3>
-        <p className="text-slate-400 text-sm sm:text-base max-w-xl mx-auto mb-10 leading-relaxed font-normal">
-          {t.contactSub}
-        </p>
+        </h2>
+        <p className="mt-5 text-lg text-stage-muted">{t.contactSub}</p>
 
-        {/* Contact Buttons Grid */}
-        <div className="flex flex-wrap justify-center gap-3 sm:gap-4 mb-16">
-          {/* Email */}
-          <a
-            href={profileConfig.email}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-6 py-3.5 rounded-lg font-semibold text-xs font-mono transition-all hover:opacity-95 text-slate-950 flex items-center gap-2 shadow-sm"
-            style={{ backgroundColor: activeTheme.primary }}
-          >
-            <Mail className="w-4 h-4" />
-            <span>{profileConfig.email.replace("mailto:", "")}</span>
-          </a>
+        <a
+          href={profileConfig.email}
+          className="mt-10 inline-block semiwide font-bold text-white text-xl sm:text-3xl break-all underline decoration-select decoration-[3px] underline-offset-[6px] hover:text-select transition-colors"
+        >
+          {email}
+        </a>
 
-          {/* Discord Button with Copy feedback */}
+        <div className="mt-8 flex flex-wrap gap-3">
           <button
             type="button"
             onClick={handleCopyDiscord}
-            aria-label={`Copiar Discord tag: ${profileConfig.discordTag}`}
-            className="engine-surface px-6 py-3.5 rounded-lg font-semibold text-xs font-mono text-slate-200 border border-slate-800 hover:border-slate-700 transition-all flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-amber-500 bg-[#0e121a]"
+            aria-label={`${t.copyDiscord}: ${profileConfig.discordTag}`}
+            className={secondary}
           >
             {copied ? (
-              <Check className="w-4 h-4 text-emerald-400" />
+              <Check aria-hidden="true" className="w-4 h-4 text-emerald-400" />
             ) : (
-              <Copy className="w-4 h-4 text-amber-400" />
+              <Copy aria-hidden="true" className="w-4 h-4" />
             )}
-            <span>
+            <span aria-live="polite">
               {copied ? t.copySuccess : `Discord: ${profileConfig.discordTag}`}
             </span>
           </button>
-
-          {/* GitHub Button */}
           <a
             href={profileConfig.github}
             target="_blank"
             rel="noopener noreferrer"
-            className="engine-surface px-6 py-3.5 rounded-lg font-semibold text-xs font-mono text-slate-300 border border-slate-800 hover:border-slate-700 hover:text-white transition-all flex items-center gap-2 bg-[#0e121a]"
+            className={secondary}
           >
             <GithubIcon className="w-4 h-4" />
-            <span>GitHub</span>
+            GitHub
           </a>
-
-          {/* LinkedIn Button */}
           <a
             href={profileConfig.linkedin}
             target="_blank"
             rel="noopener noreferrer"
-            className="engine-surface px-6 py-3.5 rounded-lg font-semibold text-xs font-mono text-slate-300 border border-slate-800 hover:border-slate-700 hover:text-white transition-all flex items-center gap-2 bg-[#0e121a]"
+            className={secondary}
           >
             <LinkedinIcon className="w-4 h-4" />
-            <span>LinkedIn</span>
+            LinkedIn
           </a>
         </div>
 
-        {/* Minimal Footer Signature */}
-        <div className="text-xs text-slate-500 flex flex-col sm:flex-row items-center justify-between gap-4 pt-8 border-t border-slate-900">
+        <div className="mt-20 pt-6 border-t border-stage-line flex flex-col sm:flex-row justify-between gap-2 text-sm text-stage-muted">
           <span>
-            © {new Date().getFullYear()} Hosch Alef. All rights reserved.
+            © {new Date().getFullYear()} Hosch Alef. {t.footerRights}
           </span>
-          <span className="font-mono text-[11px] text-slate-400">
-            Gameplay Programmer & Systems Architect
-          </span>
+          <button
+            type="button"
+            onClick={onToggleDebugDraw}
+            className="self-start sm:self-auto text-left hover:text-stage-text transition-colors"
+          >
+            {t.cheatHint}
+          </button>
         </div>
       </div>
     </footer>
