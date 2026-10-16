@@ -56,7 +56,9 @@ Sentence case everywhere. No all-caps labels, no monospace labels.
 - Hover/selection on a screenshot = 3px `select` outline, like a selected actor in the editor.
 - The one bold element: the name in the hero is shown as the **selected actor** (`SelectedName.jsx`):
   yellow selection frame, `BP_HoschAlef` label, X/Y/Z gizmo at the pivot. It can be dragged
-  sideways and springs back. Don't repeat this treatment anywhere else.
+  sideways and springs back. While it moves, a transform readout (`X 12.4`) appears next to
+  the label, like the editor's Details panel, and counts back to 0.0 with the spring.
+  Don't repeat this treatment anywhere else.
 - Easter egg: the Konami code (↑ ↑ ↓ ↓ ← → ← → B A), or the hint button in the footer,
   toggles "debug draw" (`html[data-debug]` in `index.css`): every element gets an outline,
   coloured with the gizmo code. A yellow toast confirms on/off.
@@ -68,6 +70,21 @@ Sentence case everywhere. No all-caps labels, no monospace labels.
 One orchestrated moment: the hero (name, then the reel sliding in). Elsewhere motion only
 answers an action (filter change, opening a project). `prefers-reduced-motion` is honoured
 globally and through `MotionConfig reducedMotion="user"`.
+
+## Voice
+
+The personality comes from specifics, not adjectives. Write like a programmer explaining
+their own work to another programmer.
+
+- Say what the thing does, in the order a player meets it. "The creature hears and sees",
+  not "multi-layered acoustic propagation matrix".
+- Only claim what the build or the footage shows. No "sub-millisecond", "zero corruption",
+  "flawless", "rock-solid", "seamless", "robust", "engineered", "high-octane".
+- Tags are tools or techniques (`Object pooling`, `Line traces`), never slogans.
+- Roles say what I did (`Gameplay & AI programmer`), not inflated titles.
+- The project page ends with "What worked" and "What I'd do differently": an honest limit
+  reads as seniority.
+- No em dashes in visible text. Sentence case.
 
 ## Do / don't
 

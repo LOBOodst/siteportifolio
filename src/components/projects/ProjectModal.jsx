@@ -25,7 +25,7 @@ const MediaViewer = ({ project, t }) => {
             <iframe
               key={current.src}
               src={current.src}
-              title={`${project.title} — ${t.videoThumb}`}
+              title={`${project.title}: ${t.videoThumb}`}
               sandbox="allow-scripts allow-same-origin allow-presentation"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
@@ -47,7 +47,7 @@ const MediaViewer = ({ project, t }) => {
             <img
               key={current.src}
               src={current.src}
-              alt={`${project.title} — ${t.mediaItem} ${index + 1}`}
+              alt={`${project.title}: ${t.mediaItem} ${index + 1}`}
               className="w-full h-full object-contain"
             />
           )}

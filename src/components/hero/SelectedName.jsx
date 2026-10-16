@@ -1,4 +1,5 @@
-import { motion } from "motion/react";
+import { motion, useMotionValue, useTransform } from "motion/react";
+import { useState } from "react";
 
 const ease = [0.22, 1, 0.36, 1];
 
@@ -54,43 +55,66 @@ const Handle = ({ className }) => (
 
 /**
  * The name, presented as the selected actor in a level editor.
- * It can be dragged sideways and springs back to its pivot.
+ * It can be dragged sideways and springs back to its pivot. While it moves,
+ * a transform readout shows its X offset, like the editor's Details panel.
  */
-export const SelectedName = ({ children }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 24 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.7, ease }}
-    className="relative inline-block mt-9 ml-3 sm:ml-4"
-  >
-    <motion.div
-      drag="x"
-      dragConstraints={{ left: 0, right: 0 }}
-      dragElastic={0.35}
-      dragTransition={{ bounceStiffness: 420, bounceDamping: 11 }}
-      whileDrag={{ scale: 1.01 }}
-      className="relative cursor-grab active:cursor-grabbing select-none touch-pan-y"
-    >
-      <h1 className="wide font-black text-ink tracking-[-0.035em] leading-[0.88] text-[clamp(2.9rem,11vw,8.75rem)]">
-        {children}
-      </h1>
+export const SelectedName = ({ children }) => {
+  const x = useMotionValue(0);
+  // Motion values render straight into the DOM, no React re-render per frame
+  const readout = useTransform(x, (v) => (v / 10).toFixed(1));
+  const [moving, setMoving] = useState(false);
 
-      {/* Selection frame: appears just after the name lands */}
-      <motion.span
-        aria-hidden="true"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.25, delay: 0.75 }}
-        className="pointer-events-none absolute -inset-x-3 -top-2 -bottom-3 sm:-inset-x-4 sm:-top-3 sm:-bottom-4 border-2 border-select"
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 24 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.7, ease }}
+      className="relative inline-block mt-9 ml-3 sm:ml-4"
+    >
+      <motion.div
+        drag="x"
+        style={{ x }}
+        dragConstraints={{ left: 0, right: 0 }}
+        dragElastic={0.35}
+        dragTransition={{ bounceStiffness: 420, bounceDamping: 11 }}
+        whileDrag={{ scale: 1.01 }}
+        onDragStart={() => setMoving(true)}
+        onDragTransitionEnd={() => setMoving(false)}
+        className="relative cursor-grab active:cursor-grabbing select-none touch-pan-y"
       >
-        <Handle className="-left-[5px] -top-[5px]" />
-        <Handle className="-right-[5px] -top-[5px]" />
-        <Handle className="-right-[5px] -bottom-[5px]" />
-        <span className="absolute left-[-2px] -top-7 bg-select text-on-select text-xs font-bold px-1.5 py-1 leading-none">
-          BP_HoschAlef
-        </span>
-        <Gizmo />
-      </motion.span>
+        <h1 className="wide font-black text-ink tracking-[-0.035em] leading-[0.88] text-[clamp(2.9rem,11vw,8.75rem)]">
+          {children}
+        </h1>
+
+        {/* Selection frame: appears just after the name lands */}
+        <motion.span
+          aria-hidden="true"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.25, delay: 0.75 }}
+          className="pointer-events-none absolute -inset-x-3 -top-2 -bottom-3 sm:-inset-x-4 sm:-top-3 sm:-bottom-4 border-2 border-select"
+        >
+          <Handle className="-left-[5px] -top-[5px]" />
+          <Handle className="-right-[5px] -top-[5px]" />
+          <Handle className="-right-[5px] -bottom-[5px]" />
+          <span className="absolute left-[-2px] -top-7 flex items-stretch text-xs font-bold leading-none">
+            <span className="bg-select text-on-select px-1.5 py-1">
+              BP_HoschAlef
+            </span>
+            <span
+              className={`flex items-center gap-1.5 bg-stage text-stage-text px-1.5 tabular-nums transition-opacity duration-150 ${
+                moving ? "opacity-100" : "opacity-0"
+              }`}
+            >
+              <span className="w-1.5 h-1.5 bg-axis-x" />X
+              <motion.span className="min-w-[4ch] text-right">
+                {readout}
+              </motion.span>
+            </span>
+          </span>
+          <Gizmo />
+        </motion.span>
+      </motion.div>
     </motion.div>
-  </motion.div>
-);
+  );
+};
