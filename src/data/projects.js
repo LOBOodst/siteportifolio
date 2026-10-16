@@ -1,16 +1,3 @@
-export const defaultTheme = {
-  id: "default",
-  name: "Studio Obsidian",
-  primary: "#f59e0b",
-  secondary: "#38bdf8",
-  accent: "#fbbf24",
-  glow: "rgba(245, 158, 11, 0.12)",
-  surfaceGlow: "rgba(245, 158, 11, 0.04)",
-  badgeBg: "rgba(245, 158, 11, 0.08)",
-  badgeBorder: "rgba(245, 158, 11, 0.25)",
-  badgeText: "#f59e0b",
-};
-
 // Order in which project facts are displayed, with their translation keys
 export const FACT_FIELDS = [
   { key: "team", label: "factTeam" },
@@ -50,20 +37,6 @@ export const projects = [
       "images/fps_lan_powers.webp",
     ],
     videos: ["https://www.youtube-nocookie.com/embed/nlYcvFZwmKY"],
-    theme: {
-      id: "fps-lan",
-      name: "Cyber-Cyan Tactical",
-      primary: "#00f0ff",
-      secondary: "#0077ff",
-      accent: "#38bdf8",
-      glow: "rgba(0, 240, 255, 0.35)",
-      surfaceGlow: "rgba(0, 240, 255, 0.12)",
-      meshGradient:
-        "radial-gradient(at 15% 15%, rgba(0, 240, 255, 0.2) 0px, transparent 55%), radial-gradient(at 85% 85%, rgba(0, 119, 255, 0.2) 0px, transparent 55%)",
-      badgeBg: "rgba(0, 240, 255, 0.12)",
-      badgeBorder: "rgba(0, 240, 255, 0.4)",
-      badgeText: "#00f0ff",
-    },
     concept: {
       en: "High-octane tactical shooter bridging local LAN server authority with secure cloud authentication and client prediction.",
       pt: "Shooter tático de alta performance unindo autoridade de servidor local (LAN) com autenticação segura na nuvem e predição de cliente.",
@@ -142,20 +115,6 @@ export const projects = [
       "images/psychasteniac_06.webp",
     ],
     videos: ["https://www.youtube-nocookie.com/embed/aqRrje7DAw8"],
-    theme: {
-      id: "psychastenia",
-      name: "Occult Paranormal Crimson",
-      primary: "#f43f5e",
-      secondary: "#a855f7",
-      accent: "#fb7185",
-      glow: "rgba(244, 63, 94, 0.35)",
-      surfaceGlow: "rgba(244, 63, 94, 0.12)",
-      meshGradient:
-        "radial-gradient(at 15% 15%, rgba(244, 63, 94, 0.2) 0px, transparent 55%), radial-gradient(at 85% 85%, rgba(168, 85, 247, 0.2) 0px, transparent 55%)",
-      badgeBg: "rgba(244, 63, 94, 0.12)",
-      badgeBorder: "rgba(244, 63, 94, 0.4)",
-      badgeText: "#f43f5e",
-    },
     concept: {
       en: "An atmospheric survival horror where darkness and sound dictate survival against a reactive, predatory artificial intelligence.",
       pt: "Um survival horror atmosférico onde a escuridão e a acústica governam a sobrevivência contra uma IA predatória altamente reativa.",
@@ -252,20 +211,6 @@ export const projects = [
       "images/taticalRPG_3.webp",
     ],
     videos: [],
-    theme: {
-      id: "tactical-rpg",
-      name: "Arcane Fantasy Emerald",
-      primary: "#10b981",
-      secondary: "#f59e0b",
-      accent: "#34d399",
-      glow: "rgba(16, 185, 129, 0.35)",
-      surfaceGlow: "rgba(16, 185, 129, 0.12)",
-      meshGradient:
-        "radial-gradient(at 15% 15%, rgba(16, 185, 129, 0.2) 0px, transparent 55%), radial-gradient(at 85% 85%, rgba(245, 158, 11, 0.2) 0px, transparent 55%)",
-      badgeBg: "rgba(16, 185, 129, 0.12)",
-      badgeBorder: "rgba(16, 185, 129, 0.4)",
-      badgeText: "#10b981",
-    },
     concept: {
       en: "A strategic turn-based combat framework featuring procedural grid projection, action point economies, and utility-scored AI decision making.",
       pt: "Framework tático de combate em turnos com projeção procedural de grid, economia de Pontos de Ação e IA de decisão orientada por utilidade.",
@@ -341,20 +286,6 @@ export const projects = [
       "images/garage_war_03.webp",
     ],
     videos: [],
-    theme: {
-      id: "garage-war",
-      name: "Industrial Combustion Amber",
-      primary: "#f97316",
-      secondary: "#eab308",
-      accent: "#fb923c",
-      glow: "rgba(249, 115, 22, 0.35)",
-      surfaceGlow: "rgba(249, 115, 22, 0.12)",
-      meshGradient:
-        "radial-gradient(at 15% 15%, rgba(249, 115, 22, 0.2) 0px, transparent 55%), radial-gradient(at 85% 85%, rgba(234, 179, 8, 0.2) 0px, transparent 55%)",
-      badgeBg: "rgba(249, 115, 22, 0.12)",
-      badgeBorder: "rgba(249, 115, 22, 0.4)",
-      badgeText: "#f97316",
-    },
     concept: {
       en: "A chaotic 4-player local multiplayer brawler where players assemble modular scrap vehicles, weld components, and launch projectiles under intense time pressure.",
       pt: "Um party game caótico para até 4 jogadores onde o objetivo é montar veículos modulares com sucata, soldar peças e arremessar componentes sob pressão de tempo.",
@@ -453,20 +384,6 @@ export const projects = [
     },
     images: ["images/spaceshooter.webp"],
     videos: [],
-    theme: {
-      id: "space-shooter-pro",
-      name: "Cosmic Neon Magenta",
-      primary: "#ec4899",
-      secondary: "#8b5cf6",
-      accent: "#f472b6",
-      glow: "rgba(236, 72, 153, 0.35)",
-      surfaceGlow: "rgba(236, 72, 153, 0.12)",
-      meshGradient:
-        "radial-gradient(at 15% 15%, rgba(236, 72, 153, 0.2) 0px, transparent 55%), radial-gradient(at 85% 85%, rgba(139, 92, 246, 0.2) 0px, transparent 55%)",
-      badgeBg: "rgba(236, 72, 153, 0.12)",
-      badgeBorder: "rgba(236, 72, 153, 0.4)",
-      badgeText: "#ec4899",
-    },
     concept: {
       en: "Fast-paced arcade shoot-'em-up optimized for zero GC allocation during intense bullet hell waves.",
       pt: "Shoot 'em up arcade frenético projetado para taxa zero de alocação no Garbage Collector durante ondas massivas de disparos.",
@@ -543,20 +460,6 @@ export const projects = [
       "videos/possession_system.mp4",
       "videos/vats_system.mp4",
     ],
-    theme: {
-      id: "unreal-playground",
-      name: "Prismatic Cyber Turquoise",
-      primary: "#06b6d4",
-      secondary: "#3b82f6",
-      accent: "#67e8f9",
-      glow: "rgba(6, 182, 212, 0.35)",
-      surfaceGlow: "rgba(6, 182, 212, 0.12)",
-      meshGradient:
-        "radial-gradient(at 15% 15%, rgba(6, 182, 212, 0.2) 0px, transparent 55%), radial-gradient(at 85% 85%, rgba(59, 130, 246, 0.2) 0px, transparent 55%)",
-      badgeBg: "rgba(6, 182, 212, 0.12)",
-      badgeBorder: "rgba(6, 182, 212, 0.4)",
-      badgeText: "#06b6d4",
-    },
     concept: {
       en: "Experimental C++ testbed for physical object manipulation, grabber handles, pressure plates, and raycast interaction interfaces.",
       pt: "Ambiente experimental em C++ para manipulação de objetos físicos, garras magnéticas, placas de pressão e interfaces de raycast.",
@@ -624,20 +527,6 @@ export const projects = [
     },
     images: ["images/elevator_talks_01.webp", "images/elevator_talks_02.webp"],
     videos: [],
-    theme: {
-      id: "elevator-talks",
-      name: "Cinematic Indigo & Amber",
-      primary: "#6366f1",
-      secondary: "#f59e0b",
-      accent: "#818cf8",
-      glow: "rgba(99, 102, 241, 0.35)",
-      surfaceGlow: "rgba(99, 102, 241, 0.12)",
-      meshGradient:
-        "radial-gradient(at 15% 15%, rgba(99, 102, 241, 0.2) 0px, transparent 55%), radial-gradient(at 85% 85%, rgba(245, 158, 11, 0.2) 0px, transparent 55%)",
-      badgeBg: "rgba(99, 102, 241, 0.12)",
-      badgeBorder: "rgba(99, 102, 241, 0.4)",
-      badgeText: "#818cf8",
-    },
     concept: {
       en: "A dynamic conversation system featuring JSON-driven dialogue nodes, branching response choices, and typewriter audio synchronization.",
       pt: "Sistema dinâmico de conversas com nós de diálogo em JSON, escolhas ramificadas e sincronização de som de digitação.",

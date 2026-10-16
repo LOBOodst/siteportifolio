@@ -36,8 +36,9 @@ const MediaViewer = ({ project, t }) => {
             <video
               key={current.src}
               src={current.src}
+              poster={current.thumb || undefined}
               controls
-              preload="metadata"
+              preload="none"
               playsInline
               className="w-full h-full object-contain"
             />

@@ -7,13 +7,14 @@
 
 ## 🚀 Architecture Overview
 
-This portfolio is built as a high-performance, living single-page application using:
+A single-page portfolio built with:
 
 - **Framework**: [React 19](https://react.dev/) + [Vite](https://vitejs.dev/)
-- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/) + Custom Figma Glassmorphic Design Tokens
-- **Icons**: [Lucide React](https://lucide.dev/) + Custom SVG Vector Components
+- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/) with the "Blockout" design tokens in `src/index.css` (see [`DESIGN.md`](DESIGN.md))
+- **Motion**: [Motion](https://motion.dev/) (honours `prefers-reduced-motion`)
+- **Icons**: [Lucide React](https://lucide.dev/) + custom SVGs
 - **Linter & Formatter**: [Biome](https://biomejs.dev/)
-- **Atmospheric Engine**: Dynamic Chromatic Theme Lerping & Bioluminescent Canvas Particles
+- **Languages**: English, Português, Français (auto-detected, remembered per visitor)
 
 ---
 
@@ -21,39 +22,38 @@ This portfolio is built as a high-performance, living single-page application us
 
 ```text
 siteportifolio/
-├── public/                     # Static assets served at root
-│   ├── images/                 # High-resolution gameplay screenshots & badges
-│   ├── videos/                 # Gameplay showcase recordings
-│   └── CV/                     # Official resumes & documentation
+├── public/
+│   ├── images/        # Real in-game screenshots
+│   ├── videos/        # Gameplay recordings (+ a .webp still frame per clip)
+│   └── CV/            # Résumé PDFs
 │
-├── src/                        # React Application Source
-│   ├── components/             # Reusable UI Components
-│   │   ├── background/         # Living particle canvas & UNSC telemetry HUD
-│   │   ├── common/             # Accessible icons & shared design primitives
-│   │   ├── contact/            # Spawn point comms & social connectors
-│   │   ├── hero/               # Cinematic header, ethos manifesto & badges
-│   │   ├── mascot/             # Interactive Hosch companion unit & guided tour
-│   │   ├── navigation/         # Frosted glass navbar & language switcher
-│   │   ├── profile/            # Ori/Gris, Halo & Ordem Paranormal pillars
-│   │   ├── projects/           # Spring-hover cards, grid & case study modal
-│   │   └── stack/              # Objective 5-language skill tree & matrix
-│   │
-│   ├── context/
-│   │   └── ThemeContext.jsx    # Global reactive chromatic state orchestrator
-│   │
-│   ├── data/
-│   │   ├── projects.js         # Case study metadata, technical wins & themes
-│   │   └── translations.js     # Multilingual dictionaries (PT, EN, FR)
-│   │
-│   ├── App.jsx                 # Master application layout
-│   ├── index.css               # Design tokens, CSS variables & typography
-│   └── main.jsx                # React root mount entry point
+├── src/
+│   ├── components/
+│   │   ├── common/      # Icons and the engine-family marker
+│   │   ├── contact/     # Footer with e-mail, Discord, socials
+│   │   ├── hero/        # Name as the "selected actor" + screenshot reel
+│   │   ├── navigation/  # Navbar, scroll-spy and language switch
+│   │   ├── profile/     # About section
+│   │   ├── projects/    # Cards, filtered grid and project page (modal)
+│   │   └── stack/       # Engineering domains
+│   ├── context/ThemeContext.jsx  # Language + open project (deep links: #project-id)
+│   ├── data/          # projects.js, skills.js, translations.js
+│   ├── hooks/         # Konami-code easter egg
+│   └── utils/media.js # Asset URLs and YouTube / local video handling
 │
-├── biome.json                  # Biome code quality & formatting rules
-├── index.html                  # HTML5 shell with CSP & security headers
-├── package.json                # Project dependencies & scripts
-├── vite.config.js              # Vite bundler & plugin configuration
-└── .gitignore                  # Production ignore definitions
+├── DESIGN.md          # Design system and rules
+└── index.html         # HTML shell with CSP, Open Graph and structured data
+```
+
+### Adding a project
+
+Add an entry to `src/data/projects.js`. Every text field takes `{ pt, en, fr }`;
+empty optional fields (`facts`, `myWork`, `links`) are simply not rendered.
+For a local video clip, put a still frame next to it with the same name
+(`videos/clip.mp4` → `videos/clip.webp`), for example:
+
+```bash
+ffmpeg -ss 3 -i public/videos/clip.mp4 -frames:v 1 -vf scale=1280:-2 public/videos/clip.webp
 ```
 
 ---

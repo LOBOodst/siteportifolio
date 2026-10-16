@@ -28,7 +28,12 @@ export const getProjectMedia = (project) => {
           src: `https://www.youtube-nocookie.com/embed/${youtubeId}`,
           thumb: `https://i.ytimg.com/vi/${youtubeId}/hqdefault.jpg`,
         }
-      : { kind: "video", src: getAssetUrl(src), thumb: null };
+      : {
+          kind: "video",
+          src: getAssetUrl(src),
+          // A still frame lives next to each clip (same name, .webp)
+          thumb: getAssetUrl(src.replace(/\.\w+$/, ".webp")),
+        };
   });
   const images = (project.images || []).map((src) => ({
     kind: "image",

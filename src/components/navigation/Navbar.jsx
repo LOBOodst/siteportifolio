@@ -1,5 +1,5 @@
 import { Menu, X } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTheme } from "../../context/ThemeContext";
 
 const LANGS = ["pt", "en", "fr"];
@@ -7,6 +7,7 @@ const LANGS = ["pt", "en", "fr"];
 export const Navbar = () => {
   const { lang, setLang, t } = useTheme();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [current, setCurrent] = useState(null);
 
   const navLinks = [
     { href: "#tour-projects", label: t.navProjects },
@@ -14,6 +15,40 @@ export const Navbar = () => {
     { href: "#tour-profile", label: t.navAbout },
     { href: "#contact", label: t.contactBtn },
   ];
+
+  // Scroll-spy: mark the section that crosses the upper third of the viewport.
+  useEffect(() => {
+    const ids = [
+      "home",
+      "tour-projects",
+      "tour-stack",
+      "tour-profile",
+      "contact",
+    ];
+    const sections = ids
+      .map((id) => document.getElementById(id))
+      .filter(Boolean);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) setCurrent(`#${entry.target.id}`);
+        }
+      },
+      { rootMargin: "-30% 0px -65% 0px" },
+    );
+    for (const section of sections) observer.observe(section);
+    return () => observer.disconnect();
+  }, []);
+
+  // Escape closes the mobile menu.
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onKeyDown = (e) => {
+      if (e.key === "Escape") setMenuOpen(false);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [menuOpen]);
 
   const languageSwitch = (
     <fieldset className="flex items-center gap-0.5 text-sm">
@@ -55,7 +90,8 @@ export const Navbar = () => {
             <li key={link.href}>
               <a
                 href={link.href}
-                className="hover:text-ink underline-offset-8 decoration-[3px] decoration-select hover:underline"
+                aria-current={current === link.href ? "location" : undefined}
+                className="hover:text-ink underline-offset-8 decoration-[3px] decoration-select hover:underline aria-[current]:text-ink aria-[current]:underline"
               >
                 {link.label}
               </a>
